@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Together Group — Sign Up</title>
+    <meta name="description" content="Register an account with Together Group — Buyer or Seller." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="css/global.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/auth.css" />
+</head>
+<body class="auth-page">
+
+<header class="tg-header" role="banner">
+    <div class="tg-header-inner">
+        <a class="tg-brand" href="home.html" aria-label="Together Group home">
+            <img class="tg-brand-logo" src="images/Asset%201.png" alt="Together Group logo" />
+            <span class="tg-brand-title">Together group</span>
+        </a>
+
+        <nav class="tg-nav" role="navigation" aria-label="Main menu">
+            <ul class="tg-nav-list">
+                <li><a href="home.html">Home</a></li>
+                <li><a href="properties.html">Properties</a></li>
+                <li><a href="services.html">Our Services</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+
+        <div class="tg-header-actions">
+            <a class="tg-header-cta" href="login.html">
+                <i class="fas fa-sign-in-alt"></i> Log In
+            </a>
+            <button class="tg-hamburger" id="tg-hamburger" aria-expanded="false" aria-controls="tg-mobile-menu" aria-label="Open menu">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </div>
+
+    <div id="tg-mobile-menu" class="tg-mobile-menu" aria-hidden="true">
+        <ul>
+            <li><a href="home.html"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="properties.html"><i class="fas fa-building"></i> Properties</a></li>
+            <li><a href="services.html"><i class="fas fa-concierge-bell"></i> Our Services</a></li>
+            <li><a href="about.html"><i class="fas fa-info-circle"></i> About</a></li>
+            <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
+            <li><a class="cta" href="login.html"><i class="fas fa-sign-in-alt"></i> Log In</a></li>
+        </ul>
+    </div>
+</header>
+
+<main class="auth-main">
+    <div class="auth-card" style="max-width: 520px;">
+        <div class="auth-brand">
+            <img src="images/Asset%201.png" alt="Together Group" />
+            <h2>Create an Account</h2>
+        </div>
+
+        <h1 class="auth-title">Join Together Group</h1>
+        <p class="auth-subtitle">Fill in your details to get started</p>
+
+        <!-- Role Selector -->
+        <div class="auth-roles" role="tablist">
+            <button type="button" class="auth-role active" data-role="buyer" role="tab">
+                <i class="fas fa-user"></i> Property Buyer
+            </button>
+            <button type="button" class="auth-role" data-role="seller" role="tab">
+                <i class="fas fa-store"></i> Property Seller
+            </button>
+        </div>
+
+        <form class="auth-form" id="signup-form" action="#" method="post" onsubmit="handleSignup(event)">
+            <input type="hidden" id="role-input" name="role" value="buyer" />
+
+            <div class="form-group">
+                <label class="form-label" for="fullname">Full Name</label>
+                <div class="input-icon-wrapper">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="fullname" class="form-input" placeholder="Munal Tamang" required />
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label" for="email">Email Address</label>
+                    <div class="input-icon-wrapper">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="email" class="form-input" placeholder="munal@example.com" required />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="phone">Phone Number</label>
+                    <div class="input-icon-wrapper">
+                        <i class="fas fa-phone"></i>
+                        <input type="tel" id="phone" class="form-input" placeholder="+977 9800000000" required />
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="address">Address / Location</label>
+                <div class="input-icon-wrapper">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <input type="text" id="address" class="form-input" placeholder="Kathmandu, Nepal" required />
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label" for="password">Create Password</label>
+                    <div class="input-icon-wrapper">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="password" class="form-input" placeholder="••••••••" required oninput="checkPasswordStrength(this.value)" />
+                        <button type="button" class="toggle-password" aria-label="Toggle password visibility">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="confirm-password">Confirm Password</label>
+                    <div class="input-icon-wrapper">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="confirm-password" class="form-input" placeholder="••••••••" required />
+                    </div>
+                </div>
+            </div>
+
+            <div class="password-strength" id="strength-bars">
+                <div class="password-strength-bar"></div>
+                <div class="password-strength-bar"></div>
+                <div class="password-strength-bar"></div>
+            </div>
+
+            <div class="form-group" style="margin-top: 16px;">
+                <label class="form-check">
+                    <input type="checkbox" required />
+                    <span>I agree to the <a href="#" style="color:var(--accent);">Terms of Service</a> & <a href="#" style="color:var(--accent);">Privacy Policy</a></span>
+                </label>
+            </div>
+
+            <button type="submit" class="btn btn-primary auth-submit">
+                Create Account <i class="fas fa-arrow-right"></i>
+            </button>
+        </form>
+
+        <p class="auth-bottom">
+            Already have an account? <a href="login.html">Sign In</a>
+        </p>
+    </div>
+</main>
+
+<footer class="tg-footer">
+    <div class="tg-footer-bottom">
+        <small>© <span class="js-year"></span> Together Group. All rights reserved.</small>
+    </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script>
+    function checkPasswordStrength(val) {
+        const bars = document.querySelectorAll('.password-strength-bar');
+        bars.forEach(b => b.className = 'password-strength-bar');
+        if (!val) return;
+
+        if (val.length >= 8) {
+            bars[0].classList.add('weak');
+            if (/[A-Z]/.test(val) && /[0-9]/.test(val)) {
+                bars[1].classList.add('medium');
+                if (/[^A-Za-z0-9]/.test(val)) {
+                    bars[2].classList.add('strong');
+                }
+            }
+        } else {
+            bars[0].classList.add('weak');
+        }
+    }
+
+    function handleSignup(e) {
+        e.preventDefault();
+        const p1 = document.getElementById('password').value;
+        const p2 = document.getElementById('confirm-password').value;
+        if (p1 !== p2) {
+            showToast('Passwords do not match!', 'error');
+            return;
+        }
+        const role = document.getElementById('role-input').value;
+        showToast('Account created successfully! Redirecting...', 'success');
+        setTimeout(() => {
+            if (role === 'seller') window.location.href = 'seller-dashboard.html';
+            else window.location.href = 'buyer-dashboard.html';
+        }, 1200);
+    }
+</script>
+</body>
+</html>

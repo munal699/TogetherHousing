@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,6 +14,7 @@
     <link rel="stylesheet" href="css/components.css" />
     <link rel="stylesheet" href="css/auth.css" />
 </head>
+
 <body class="auth-page">
 
 <header class="tg-header" role="banner">
@@ -36,7 +38,11 @@
             <a class="tg-header-cta" href="login.html">
                 <i class="fas fa-sign-in-alt"></i> Log In
             </a>
-            <button class="tg-hamburger" id="tg-hamburger" aria-expanded="false" aria-controls="tg-mobile-menu" aria-label="Open menu">
+
+            <button class="tg-hamburger" id="tg-hamburger"
+                    aria-expanded="false"
+                    aria-controls="tg-mobile-menu"
+                    aria-label="Open menu">
                 <i class="fas fa-bars"></i>
             </button>
         </div>
@@ -49,13 +55,16 @@
             <li><a href="services.html"><i class="fas fa-concierge-bell"></i> Our Services</a></li>
             <li><a href="about.html"><i class="fas fa-info-circle"></i> About</a></li>
             <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
-            <li><a class="cta" href="login.html"><i class="fas fa-sign-in-alt"></i> Log In</a></li>
+            <li><a class="cta" href="login.html">
+                <i class="fas fa-sign-in-alt"></i> Log In
+            </a></li>
         </ul>
     </div>
 </header>
 
 <main class="auth-main">
     <div class="auth-card" style="max-width: 520px;">
+
         <div class="auth-brand">
             <img src="images/Asset%201.png" alt="Together Group" />
             <h2>Create an Account</h2>
@@ -66,135 +75,265 @@
 
         <!-- Role Selector -->
         <div class="auth-roles" role="tablist">
-            <button type="button" class="auth-role active" data-role="buyer" role="tab">
+
+            <button type="button"
+                    class="auth-role active"
+                    data-role="buyer"
+                    role="tab">
                 <i class="fas fa-user"></i> Property Buyer
             </button>
-            <button type="button" class="auth-role" data-role="seller" role="tab">
+
+            <button type="button"
+                    class="auth-role"
+                    data-role="seller"
+                    role="tab">
                 <i class="fas fa-store"></i> Property Seller
             </button>
+
         </div>
 
-        <form class="auth-form" id="signup-form" action="#" method="post" onsubmit="handleSignup(event)">
-            <input type="hidden" id="role-input" name="role" value="buyer" />
+        <!-- SIGNUP FORM -->
+        <form class="auth-form"
+              id="signup-form"
+              action="/signup"
+              method="post"
+              onsubmit="handleSignup(event)">
 
+            <!-- Role -->
+            <input type="hidden"
+                   id="role-input"
+                   name="role"
+                   value="buyer" />
+
+            <!-- Full Name -->
             <div class="form-group">
-                <label class="form-label" for="fullname">Full Name</label>
+                <label class="form-label" for="fullname">
+                    Full Name
+                </label>
+
                 <div class="input-icon-wrapper">
                     <i class="fas fa-user"></i>
-                    <input type="text" id="fullname" class="form-input" placeholder="Munal Tamang" required />
+
+                    <input type="text"
+                           id="fullname"
+                           name="fullname"
+                           class="form-input"
+                           placeholder="Munal Tamang"
+                           required />
                 </div>
             </div>
 
+            <!-- Email + Phone -->
             <div class="form-row">
+
                 <div class="form-group">
-                    <label class="form-label" for="email">Email Address</label>
+                    <label class="form-label" for="email">
+                        Email Address
+                    </label>
+
                     <div class="input-icon-wrapper">
                         <i class="fas fa-envelope"></i>
-                        <input type="email" id="email" class="form-input" placeholder="munal@example.com" required />
+
+                        <input type="email"
+                               id="email"
+                               name="email"
+                               class="form-input"
+                               placeholder="munal@example.com"
+                               required />
                     </div>
                 </div>
+
                 <div class="form-group">
-                    <label class="form-label" for="phone">Phone Number</label>
+                    <label class="form-label" for="phone">
+                        Phone Number
+                    </label>
+
                     <div class="input-icon-wrapper">
                         <i class="fas fa-phone"></i>
-                        <input type="tel" id="phone" class="form-input" placeholder="+977 9800000000" required />
+
+                        <input type="tel"
+                               id="phone"
+                               name="phone"
+                               class="form-input"
+                               placeholder="+977 9800000000"
+                               required />
                     </div>
                 </div>
+
             </div>
 
+            <!-- Address -->
             <div class="form-group">
-                <label class="form-label" for="address">Address / Location</label>
+                <label class="form-label" for="address">
+                    Address / Location
+                </label>
+
                 <div class="input-icon-wrapper">
                     <i class="fas fa-map-marker-alt"></i>
-                    <input type="text" id="address" class="form-input" placeholder="Kathmandu, Nepal" required />
+
+                    <input type="text"
+                           id="address"
+                           name="address"
+                           class="form-input"
+                           placeholder="Kathmandu, Nepal"
+                           required />
                 </div>
             </div>
 
+            <!-- Password + Confirm Password -->
             <div class="form-row">
+
                 <div class="form-group">
-                    <label class="form-label" for="password">Create Password</label>
+                    <label class="form-label" for="password">
+                        Create Password
+                    </label>
+
                     <div class="input-icon-wrapper">
                         <i class="fas fa-lock"></i>
-                        <input type="password" id="password" class="form-input" placeholder="••••••••" required oninput="checkPasswordStrength(this.value)" />
-                        <button type="button" class="toggle-password" aria-label="Toggle password visibility">
+
+                        <input type="password"
+                               id="password"
+                               name="password"
+                               class="form-input"
+                               placeholder="••••••••"
+                               required
+                               oninput="checkPasswordStrength(this.value)" />
+
+                        <button type="button"
+                                class="toggle-password"
+                                aria-label="Toggle password visibility">
                             <i class="fas fa-eye"></i>
                         </button>
                     </div>
                 </div>
+
                 <div class="form-group">
-                    <label class="form-label" for="confirm-password">Confirm Password</label>
+                    <label class="form-label" for="confirm-password">
+                        Confirm Password
+                    </label>
+
                     <div class="input-icon-wrapper">
                         <i class="fas fa-lock"></i>
-                        <input type="password" id="confirm-password" class="form-input" placeholder="••••••••" required />
+
+                        <input type="password"
+                               id="confirm-password"
+                               class="form-input"
+                               placeholder="••••••••"
+                               required />
                     </div>
                 </div>
+
             </div>
 
+            <!-- Password Strength -->
             <div class="password-strength" id="strength-bars">
                 <div class="password-strength-bar"></div>
                 <div class="password-strength-bar"></div>
                 <div class="password-strength-bar"></div>
             </div>
 
+            <!-- Terms -->
             <div class="form-group" style="margin-top: 16px;">
                 <label class="form-check">
+
                     <input type="checkbox" required />
-                    <span>I agree to the <a href="#" style="color:var(--accent);">Terms of Service</a> & <a href="#" style="color:var(--accent);">Privacy Policy</a></span>
+
+                    <span>
+                        I agree to the
+                        <a href="#" style="color:var(--accent);">
+                            Terms of Service
+                        </a>
+                        &
+                        <a href="#" style="color:var(--accent);">
+                            Privacy Policy
+                        </a>
+                    </span>
+
                 </label>
             </div>
 
-            <button type="submit" class="btn btn-primary auth-submit">
-                Create Account <i class="fas fa-arrow-right"></i>
+            <!-- Submit -->
+            <button type="submit"
+                    value="signup"
+                    class="btn btn-primary auth-submit">
+
+                Create Account
+                <i class="fas fa-arrow-right"></i>
+
             </button>
+
         </form>
 
         <p class="auth-bottom">
-            Already have an account? <a href="login.html">Sign In</a>
+            Already have an account?
+            <a href="login.html">Sign In</a>
         </p>
+
     </div>
 </main>
 
 <footer class="tg-footer">
     <div class="tg-footer-bottom">
-        <small>© <span class="js-year"></span> Together Group. All rights reserved.</small>
+        <small>
+            © <span class="js-year"></span>
+            Together Group. All rights reserved.
+        </small>
     </div>
 </footer>
 
 <script src="js/main.js"></script>
+
 <script>
+
     function checkPasswordStrength(val) {
+
         const bars = document.querySelectorAll('.password-strength-bar');
+
         bars.forEach(b => b.className = 'password-strength-bar');
+
         if (!val) return;
 
         if (val.length >= 8) {
+
             bars[0].classList.add('weak');
+
             if (/[A-Z]/.test(val) && /[0-9]/.test(val)) {
+
                 bars[1].classList.add('medium');
+
                 if (/[^A-Za-z0-9]/.test(val)) {
                     bars[2].classList.add('strong');
                 }
+
             }
+
         } else {
+
             bars[0].classList.add('weak');
+
         }
     }
 
+
     function handleSignup(e) {
-        e.preventDefault();
+
         const p1 = document.getElementById('password').value;
         const p2 = document.getElementById('confirm-password').value;
+
         if (p1 !== p2) {
+
+            e.preventDefault();
+
             showToast('Passwords do not match!', 'error');
+
             return;
         }
-        const role = document.getElementById('role-input').value;
-        showToast('Account created successfully! Redirecting...', 'success');
-        setTimeout(() => {
-            if (role === 'seller') window.location.href = 'seller-dashboard.html';
-            else window.location.href = 'buyer-dashboard.html';
-        }, 1200);
+
+
     }
+
 </script>
+
 </body>
 </html>
+

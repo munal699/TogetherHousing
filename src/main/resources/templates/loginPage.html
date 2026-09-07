@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Together Group — Login</title>
+    <meta name="description" content="Sign in to your Together Group account — Buyer, Seller, or Administrator." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="css/global.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/auth.css" />
+</head>
+<body class="auth-page">
+
+<!-- Header -->
+<header class="tg-header" role="banner">
+    <div class="tg-header-inner">
+        <a class="tg-brand" href="home.html" aria-label="Together Group home">
+            <img class="tg-brand-logo" src="images/Asset%201.png" alt="Together Group logo" />
+            <span class="tg-brand-title">Together group</span>
+        </a>
+
+        <nav class="tg-nav" role="navigation" aria-label="Main menu">
+            <ul class="tg-nav-list">
+                <li><a href="home.html">Home</a></li>
+                <li><a href="properties.html">Properties</a></li>
+                <li><a href="services.html">Our Services</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+
+        <div class="tg-header-actions">
+            <a class="tg-header-cta" href="signup.html">
+                <i class="fas fa-user-plus"></i> Sign Up
+            </a>
+            <button class="tg-hamburger" id="tg-hamburger" aria-expanded="false" aria-controls="tg-mobile-menu" aria-label="Open menu">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="tg-mobile-menu" class="tg-mobile-menu" aria-hidden="true">
+        <ul>
+            <li><a href="home.html"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="properties.html"><i class="fas fa-building"></i> Properties</a></li>
+            <li><a href="services.html"><i class="fas fa-concierge-bell"></i> Our Services</a></li>
+            <li><a href="about.html"><i class="fas fa-info-circle"></i> About</a></li>
+            <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
+            <li><a class="cta" href="signup.html"><i class="fas fa-user-plus"></i> Create Account</a></li>
+        </ul>
+    </div>
+</header>
+
+<!-- Auth Main Content -->
+<main class="auth-main">
+    <div class="auth-card">
+        <div class="auth-brand">
+            <img src="images/Asset%201.png" alt="Together Group" />
+            <h2>Together Group Portal</h2>
+        </div>
+
+        <h1 class="auth-title">Welcome Back</h1>
+        <p class="auth-subtitle">Select your account role to sign in</p>
+
+        <!-- Role Tabs Selector -->
+        <div class="auth-roles" role="tablist">
+            <button type="button" class="auth-role active" data-role="buyer" role="tab">
+                <i class="fas fa-user"></i> Buyer
+            </button>
+            <button type="button" class="auth-role" data-role="seller" role="tab">
+                <i class="fas fa-store"></i> Seller
+            </button>
+            <button type="button" class="auth-role" data-role="admin" role="tab">
+                <i class="fas fa-user-shield"></i> Admin
+            </button>
+        </div>
+
+        <form class="auth-form" id="login-form" action="#" method="post" onsubmit="handleLogin(event)">
+            <input type="hidden" id="role-input" name="role" value="buyer" />
+
+            <div class="form-group">
+                <label class="form-label" for="email">Email Address</label>
+                <div class="input-icon-wrapper">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="email" class="form-input" placeholder="name@example.com" required />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="password">Password</label>
+                <div class="input-icon-wrapper">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="password" class="form-input" placeholder="••••••••" required />
+                    <button type="button" class="toggle-password" aria-label="Toggle password visibility">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="auth-forgot">
+                <a href="forgot-password.html">Forgot password?</a>
+            </div>
+
+            <button type="submit" class="btn btn-primary auth-submit">
+                Sign In <i class="fas fa-arrow-right"></i>
+            </button>
+        </form>
+
+        <div class="auth-divider">or continue with</div>
+
+        <div class="auth-social">
+            <button type="button" class="auth-social-btn" onclick="showToast('Google login ready for backend', 'info')">
+                <i class="fab fa-google" style="color:#ea4335"></i> Google
+            </button>
+            <button type="button" class="auth-social-btn" onclick="showToast('Facebook login ready for backend', 'info')">
+                <i class="fab fa-facebook-f" style="color:#1877f2"></i> Facebook
+            </button>
+        </div>
+
+        <p class="auth-bottom">
+            Don't have an account? <a href="signup.html">Create an Account</a>
+        </p>
+    </div>
+</main>
+
+<!-- Footer -->
+<footer class="tg-footer">
+    <div class="tg-footer-bottom">
+        <small>© <span class="js-year"></span> Together Group. All rights reserved.</small>
+    </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script>
+    function handleLogin(e) {
+        e.preventDefault();
+        const role = document.getElementById('role-input').value;
+        showToast(`Logging in as ${role.toUpperCase()}...`, 'success');
+        setTimeout(() => {
+            if (role === 'admin') window.location.href = 'admin-dashboard.html';
+            else if (role === 'seller') window.location.href = 'seller-dashboard.html';
+            else window.location.href = 'buyer-dashboard.html';
+        }, 1000);
+    }
+</script>
+</body>
+</html>

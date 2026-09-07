@@ -1,11 +1,12 @@
 
 package org.example.togetherhousing.controller;
 
-import org.example.togetherhousing.model.UserTbl;
-import org.example.togetherhousing.repository.userRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.example.togetherhousing.model.UserTbl;
+import org.example.togetherhousing.repository.userRepository;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -13,28 +14,54 @@ import org.springframework.web.bind.annotation.PostMapping;
 @RequiredArgsConstructor
 public class SignupController {
 
-    private final userRepository userRepository;
+    private final userRepository uRepo;
 
+    // Open signup page
     @GetMapping("/signup")
     public String signup() {
         return "signupPage";
     }
 
+    @GetMapping("/login")
+    public String login()
+    {
+        return "loginPage";
+    }
+
+    // Process signup form
     @PostMapping("/signup")
     public String signupPost(HttpServletRequest request) {
 
         String fullname = request.getParameter("fullname");
         String email = request.getParameter("email");
+        String phone = request.getParameter("phone");
+        String address = request.getParameter("address");
         String password = request.getParameter("password");
+        String role = request.getParameter("role");
 
+        String hashPassword = DigestUtils.md5DigestAsHex(password.getBytes());
+        //md5 algorithm, this is basic algorithm, anyone can hack this
+
+        // Check if email already exists
+        if (uRepo.existsByEmail(email)) {
+            return "redirect:/signup?error=email";
+        }
+
+        // Create new user
         UserTbl user = new UserTbl();
 
         user.setFullname(fullname);
         user.setEmail(email);
+        user.setPhone(phone);
+        user.setAddress(address);
         user.setPassword(password);
+        user.setRole(role);
 
-        userRepository.save(user);
+        // Save user to TiDB
+        uRepo.save(user);
 
-        return "loginPage";
+
+        // Signup successful → go to login page
+        return "redirect:/login?success=true";
     }
 }

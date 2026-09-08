@@ -1,0 +1,162 @@
+/* Properties Page Styles */
+.properties-hero {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    color: #fff;
+    padding: 48px 0;
+    text-align: center;
+}
+
+.properties-hero h1 { color: #fff; margin-bottom: 8px; }
+.properties-hero p { color: rgba(255,255,255,0.85); }
+
+.properties-layout {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 28px;
+    margin: 32px 0;
+}
+
+/* Sidebar filter */
+.filter-card {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+    position: sticky;
+    top: calc(var(--header-height) + 16px);
+}
+
+.filter-group {
+    margin-bottom: 20px;
+}
+
+.filter-group label {
+    display: block;
+    font-weight: 600;
+    font-size: 0.88rem;
+    margin-bottom: 8px;
+}
+
+/* Property Grid */
+.properties-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.property-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+}
+
+.property-card {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: all var(--duration) var(--ease);
+    display: flex;
+    flex-direction: column;
+}
+
+.property-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+
+.property-card-img-wrapper {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+}
+
+.property-card-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--duration) var(--ease);
+}
+
+.property-card:hover .property-card-img-wrapper img {
+    transform: scale(1.05);
+}
+
+.property-badge-tag {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+}
+
+.property-price-tag {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    background: rgba(0, 49, 83, 0.9);
+    color: #fff;
+    padding: 6px 14px;
+    border-radius: var(--radius-full);
+    font-weight: 700;
+    font-size: 0.95rem;
+    backdrop-filter: blur(4px);
+}
+
+.property-card-body {
+    padding: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.property-title {
+    font-size: 1.1rem;
+    margin-bottom: 6px;
+}
+
+.property-location {
+    color: var(--muted);
+    font-size: 0.88rem;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.property-specs {
+    display: flex;
+    gap: 16px;
+    padding: 12px 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 16px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.property-specs span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.property-seller-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.85rem;
+}
+
+@media (max-width: 900px) {
+    .properties-layout {
+        grid-template-columns: 1fr;
+    }
+    .filter-card {
+        position: static;
+    }
+}

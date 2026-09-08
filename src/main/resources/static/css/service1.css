@@ -1,0 +1,323 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.m_header {
+    display: flex;
+    padding: 40px;
+    font-size: 20px;
+    margin-bottom: -35px;
+    background-color: #003153;
+}
+.logo {
+    background-color: white;
+    width: 180px;
+    margin-top: -15px;
+    margin-bottom: -4px;
+    border-radius: 10px;
+    padding: 10px;
+    margin-left: 85px;
+}
+.m_header-menu {
+    flex: 8;
+    margin-top: 60px;
+}
+.m_hamburger-icon {
+    display: none;
+}
+
+.m_header-icon {
+    flex: 2;
+    text-align: end;
+    margin-top: 25px;
+    margin-right: 20px;
+    font-size: 35px;
+    color: white;
+    margin-right: 85px;
+}
+.m_header-icon a {
+    text-decoration: none;
+    color: white;
+}
+.m_header-menu ul {
+    display: flex;
+    gap: 40px;
+    justify-content: center;
+    list-style: none;
+    color: white;
+}
+.m_header-menu ul a {
+    text-decoration: none;
+    color: white;
+}
+.m_header-menu ul a.underline {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    color: white;
+}
+.m_header-business {
+    font-size: 25px;
+    margin-bottom: 10px;
+}
+.m_header-image img {
+    width: 90px;
+    margin-left: 50px;
+}
+/* body section hai ta */
+.hero {
+    position: relative;
+    height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    overflow: hidden;
+    padding-top: 100px; /* adjust based on your navbar height */
+}
+
+
+.hero::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgsYRW5q08j1O5SyKT-2EVcTD2mq_skX-uzvIjG3W1SFr2v2bb117wKfAYi0jICCFKp_ex9jF0rVkv9X8Hc1PeNR_8mppwSsxKd2DrrlasLV749YN9Q7UcKXfsGn2EAFruK5vqJvz6Vn5T0j_iP0Tht1lQtxW15lUZq0z27i28aGdPmo5aChuOQRtfMiQ/s750/sanobharyanghousing-700-2.jpg') no-repeat center center/cover;
+    opacity: 0.6; /* adjust this value for darkness */
+    z-index: 0;
+    filter: brightness(80%); /* optional: dims image further without affecting opacity stacking */
+}
+
+.hero .overlay {
+    position: relative;
+    z-index: 1;
+    max-width: 600px;
+    padding: 20px;
+}
+
+
+.hero h1 {
+    font-size: 36px;
+    margin: 0 0 10px;
+    color: black;
+}
+
+.hero h2 {
+    font-size: 24px;
+    margin: 10px 0;
+    color: black;
+}
+
+.hero p {
+    font-size: 14px;
+    margin: 10px 0 20px;
+    color: black;
+}
+
+.hero a{
+    padding: 10px 20px;
+    border: none;
+    background: white;
+    color: black;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+.hero a {
+    display: inline-block;
+    color: black;
+    background-color: white;
+    padding: 10px 20px;
+    border: 2px solid black;
+    border-radius: 10px;
+    font-size: 20px;
+    cursor: pointer;
+    text-decoration: none;
+    margin-top: 30px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.hero a:hover {
+    background-color:  rgb(34, 34, 37);
+    color: rgb(207, 201, 201);
+}
+
+
+/* Properties Section */
+.properties {
+    padding: 40px 20px;
+    text-align: center;
+    background-color: #003366;
+}
+
+.properties h2 {
+    margin-bottom: 30px;
+    font-size: 30px;
+    color: white;
+}
+
+.property-cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+
+}
+
+.card {
+    background: #f1f1f1;
+    padding: 10px;
+    border-radius: 5px;
+    width: 220px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    text-align: left;
+}
+
+.card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.card p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+.card a{
+    margin-top: 10px;
+    padding: 5px 10px;
+    background: #004080;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-left: 38px;
+}
+.card a {
+    display: inline-block;
+    color: black;
+    background-color: white;
+    padding: 10px 20px;
+    border: 2px solid black;
+    border-radius: 10px;
+    font-size: 20px;
+    cursor: pointer;
+    text-decoration: none;
+    margin-top: 30px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.card a:hover {
+    background-color: rgb(154, 154, 160);
+    color: rgb(255, 255, 255);
+}
+
+/* Why Choose Us Section */
+.why-choose {
+    background: #003366;
+    color: white;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.why-choose h2 {
+    margin-bottom: 20px;
+    font-size: 30px;
+}
+
+.why-choose ul {
+    list-style: disc;
+    max-width: 400px;
+    margin: 0 auto;
+    text-align: left;
+    padding-left: 80px;
+
+}
+
+.why-choose li {
+    margin-bottom: 10px;
+    font-size: 20px;
+}
+
+/* footer */
+.m_footer-body {
+    display: flex;
+    padding: 40px;
+    font-size: 20px;
+    margin-bottom: -35px;
+    background-color: rgb(235, 230, 230);
+    padding-bottom: 50px;
+}
+
+.m_footer-business {
+    font-size: 25px;
+    margin-bottom: 10px;
+    width: 100%;
+}
+.m_footer-image img {
+    width: 90px;
+}
+.m_footer-image p {
+    font-size: 15px;
+}
+.m_footer-image {
+    flex: 2;
+    margin-left: 85px;
+}
+.m_footer-image {
+    flex: 3;
+}
+.m_footer-menu {
+    flex: 3;
+}
+.m_footer-companies {
+    flex: 3;
+}
+.m_contact-center {
+    flex: 2;
+}
+.m_footer-menu h2 {
+    margin-bottom: 20px;
+}
+.m_footer-menu ul {
+    list-style: none;
+    font-size: 20px;
+    text-align: left;
+}
+.m_footer-menu ul a {
+    text-decoration: none;
+    color: black;
+}
+.m_footer-menu ul li {
+    margin-bottom: 10px;
+}
+.m_footer-companies h2 {
+    margin-bottom: 20px;
+}
+.m_footer-companies ul {
+    list-style: none;
+    font-size: 20px;
+    text-align: left;
+}
+.m_footer-companies ul a {
+    text-decoration: none;
+    color: black;
+}
+.m_footer-companies ul li {
+    margin-bottom: 10px;
+}
+.m_contact-center {
+    text-align: left;
+    margin-right: 85px;
+}
+.m_footer-business {
+    flex: 2;
+    padding-right: 90px;
+    padding-top: 20px;
+}
+.m_contact-center h2 {
+    margin-bottom: 20px;
+}

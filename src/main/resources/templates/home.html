@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Together Housing — Property Buying, Selling & Installment Management Platform</title>
+  <meta name="description" content="Centralized digital housing platform for property booking, installment tracking, seller ratings, and internal chat." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <style>
+    /* Custom Home Styles */
+    .hero-section {
+      background: radial-gradient(circle at 80% 20%, rgba(14, 165, 164, 0.15) 0%, transparent 40%),
+      radial-gradient(circle at 20% 80%, rgba(0, 49, 83, 0.2) 0%, transparent 50%),
+      linear-gradient(135deg, #00243f 0%, #003153 100%);
+      color: #fff;
+      padding: 80px 0 100px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 40px;
+      align-items: center;
+    }
+    .hero-title {
+      font-size: 3rem;
+      font-weight: 800;
+      line-height: 1.15;
+      color: #fff;
+      margin-bottom: 20px;
+    }
+    .hero-title span {
+      background: linear-gradient(90deg, #14c8c7, #38ef7d);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-desc {
+      font-size: 1.125rem;
+      color: rgba(255, 255, 255, 0.85);
+      margin-bottom: 32px;
+      line-height: 1.7;
+    }
+    .hero-ctas {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    /* Calculator Widget on Hero */
+    .hero-calc-card {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(16px);
+      border-radius: var(--radius-xl);
+      padding: 32px;
+      color: var(--text);
+      box-shadow: var(--shadow-xl);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+    .hero-calc-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    /* Roles Section */
+    .portal-roles-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: -50px;
+      position: relative;
+      z-index: 20;
+    }
+    .portal-role-card {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      padding: 32px 24px;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border);
+      text-align: center;
+      transition: all var(--duration) var(--ease);
+    }
+    .portal-role-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--accent);
+    }
+    .portal-role-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      margin: 0 auto 20px;
+    }
+    .portal-role-icon.buyer { background: rgba(14, 165, 164, 0.12); color: var(--accent); }
+    .portal-role-icon.seller { background: rgba(0, 49, 83, 0.1); color: var(--primary); }
+    .portal-role-icon.admin { background: rgba(245, 158, 11, 0.12); color: var(--warning); }
+
+    /* Market Gap Section */
+    .gap-section {
+      padding: 80px 0;
+      background: var(--bg-alt);
+    }
+    .gap-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: center;
+    }
+    .gap-card {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      margin-bottom: 16px;
+      border: 1px solid var(--border);
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      box-shadow: var(--shadow-xs);
+    }
+    .gap-card-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+    .gap-card-icon.red { background: var(--danger-bg); color: var(--danger); }
+    .gap-card-icon.green { background: var(--success-bg); color: var(--success); }
+
+    /* Chairman Card */
+    .chairman-banner {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: #fff;
+      border-radius: var(--radius-xl);
+      padding: 48px;
+      display: grid;
+      grid-template-columns: 1fr 220px;
+      gap: 40px;
+      align-items: center;
+      box-shadow: var(--shadow-lg);
+      margin: 60px 0;
+    }
+    .chairman-banner img {
+      width: 220px;
+      height: 260px;
+      object-fit: cover;
+      border-radius: var(--radius-lg);
+      border: 4px solid rgba(255, 255, 255, 0.2);
+    }
+
+    @media (max-width: 900px) {
+      .hero-grid { grid-template-columns: 1fr; }
+      .portal-roles-grid { grid-template-columns: 1fr; margin-top: 20px; }
+      .gap-grid { grid-template-columns: 1fr; }
+      .chairman-banner { grid-template-columns: 1fr; text-align: center; justify-items: center; }
+      .hero-title { font-size: 2.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="tg-header" role="banner">
+  <div class="tg-header-inner">
+    <a class="tg-brand" href="home.html">
+      <img class="tg-brand-logo" src="/images/Asset%201.png" alt="Together Group logo" />
+      <span class="tg-brand-title">Together Housing</span>
+    </a>
+
+    <nav class="tg-nav" role="navigation" aria-label="Main menu">
+      <ul class="tg-nav-list">
+        <li><a href="home.html" class="active">Home</a></li>
+        <li><a href="properties.html">Properties</a></li>
+        <li><a href="services.html">Our Services</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+
+    <div class="tg-header-actions">
+      <a class="user-link" href="menu.html" aria-label="User account"><i class="fas fa-user-circle"></i></a>
+      <a class="tg-header-cta" href="login.html"><i class="fas fa-sign-in-alt"></i> Sign In</a>
+      <button class="tg-hamburger" id="tg-hamburger" aria-label="Open menu"><i class="fas fa-bars"></i></button>
+    </div>
+  </div>
+
+  <div id="tg-mobile-menu" class="tg-mobile-menu" aria-hidden="true">
+    <ul>
+      <li><a href="home.html"><i class="fas fa-home"></i> Home</a></li>
+      <li><a href="properties.html"><i class="fas fa-building"></i> Properties</a></li>
+      <li><a href="services.html"><i class="fas fa-concierge-bell"></i> Our Services</a></li>
+      <li><a href="about.html"><i class="fas fa-info-circle"></i> About</a></li>
+      <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
+      <li><a class="cta" href="login.html"><i class="fas fa-sign-in-alt"></i> Sign In</a></li>
+    </ul>
+  </div>
+</header>
+
+<!-- Hero Section -->
+<section class="hero-section">
+  <div class="container">
+    <div class="hero-grid">
+      <!-- Left Content -->
+      <div>
+          <span class="badge badge-accent mb-2" style="font-size:0.85rem; padding:6px 14px; background:rgba(20,200,199,0.2); color:#14c8c7;">
+            <i class="fas fa-shield-alt"></i> Official Academic Project — Virinchi College
+          </span>
+
+        <h1 class="hero-title">
+          Together Housing <span>Buying, Selling & Installment</span> Management System
+        </h1>
+
+        <p class="hero-desc">
+          A centralized digital platform automating property listings, online booking, 12-36 month installment calculations, verified seller ratings, and direct buyer-seller chat.
+        </p>
+
+        <div class="hero-ctas">
+          <a href="properties.html" class="btn btn-accent btn-lg">
+            <i class="fas fa-search"></i> Browse Properties
+          </a>
+          <a href="signup.html" class="btn btn-ghost btn-lg" style="color:#fff; border-color:rgba(255,255,255,0.3);">
+            <i class="fas fa-store"></i> Become a Seller
+          </a>
+        </div>
+
+        <!-- Trust Badges -->
+        <div class="flex gap-lg" style="margin-top: 36px; border-top: 1px solid rgba(255,255,255,0.15); padding-top: 24px;">
+          <div>
+            <div style="font-size: 1.5rem; font-weight: 800; color: #fff;">5,000+</div>
+            <small style="color: rgba(255,255,255,0.7);">Members Registered</small>
+          </div>
+          <div>
+            <div style="font-size: 1.5rem; font-weight: 800; color: #14c8c7;">10M+</div>
+            <small style="color: rgba(255,255,255,0.7);">Annual Turnover</small>
+          </div>
+          <div>
+            <div style="font-size: 1.5rem; font-weight: 800; color: #fff;">100%</div>
+            <small style="color: rgba(255,255,255,0.7);">Transparent Pricing</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Quick Calculator Widget -->
+      <div class="hero-calc-card">
+        <div class="hero-calc-header">
+          <h3 style="font-size: 1.15rem; color: var(--primary);"><i class="fas fa-calculator" style="color:var(--accent);"></i> Installment Estimator</h3>
+          <span class="badge badge-primary">Instant Preview</span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Property Value (NPR)</label>
+          <input type="number" id="home-calc-price" class="form-input" value="3000000" oninput="runHomeCalc()" />
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Down Payment</label>
+            <select id="home-calc-down" class="form-select" onchange="runHomeCalc()">
+              <option value="20">20% Down</option>
+              <option value="30">30% Down</option>
+              <option value="50">50% Down</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Period</label>
+            <select id="home-calc-months" class="form-select" onchange="runHomeCalc()">
+              <option value="12">12 Months</option>
+              <option value="24" selected>24 Months</option>
+              <option value="36">36 Months</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="background: var(--bg); padding: 16px; border-radius: var(--radius); margin-top: 12px;">
+          <div class="flex justify-between" style="font-size:0.88rem; margin-bottom:6px;">
+            <span>Down Payment Due:</span>
+            <strong id="res-down" style="color:var(--primary);">Rs 6,00,000</strong>
+          </div>
+          <div class="flex justify-between" style="font-size:0.88rem;">
+            <span>Est. Monthly Payment:</span>
+            <strong id="res-monthly" style="color:var(--accent); font-size:1.05rem;">Rs 1,00,000 / mo</strong>
+          </div>
+        </div>
+
+        <a href="booking.html" class="btn btn-primary" style="width: 100%; margin-top: 16px;">
+          Book Property Now <i class="fas fa-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Section 1: Three Role Portals -->
+<section class="container">
+  <div class="portal-roles-grid">
+    <div class="portal-role-card">
+      <div class="portal-role-icon buyer"><i class="fas fa-user-check"></i></div>
+      <h3>Buyer Portal</h3>
+      <p class="text-muted" style="font-size:0.9rem; margin: 10px 0 16px;">Browse verified housing listings, calculate 12-36 month installments, book online, and chat with sellers directly.</p>
+      <a href="buyer-dashboard.html" class="btn btn-outline btn-sm">Enter Buyer Portal</a>
+    </div>
+
+    <div class="portal-role-card">
+      <div class="portal-role-icon seller"><i class="fas fa-store"></i></div>
+      <h3>Seller Portal</h3>
+      <p class="text-muted" style="font-size:0.9rem; margin: 10px 0 16px;">Publish land/house listings, manage booking requests, track buyer payment logs, and build trust through seller ratings.</p>
+      <a href="seller-dashboard.html" class="btn btn-outline btn-sm">Enter Seller Portal</a>
+    </div>
+
+    <div class="portal-role-card">
+      <div class="portal-role-icon admin"><i class="fas fa-user-shield"></i></div>
+      <h3>Admin Panel</h3>
+      <p class="text-muted" style="font-size:0.9rem; margin: 10px 0 16px;">Approve property listings, monitor user accounts, track installment ledgers, and export PDF system analytics.</p>
+      <a href="admin-dashboard.html" class="btn btn-outline btn-sm">Enter Admin Panel</a>
+    </div>
+  </div>
+</section>
+
+<!-- Section 2: Market Gap & Project Solution (Proposal Details) -->
+<section class="gap-section" style="margin-top: 60px;">
+  <div class="container">
+    <div class="text-center" style="margin-bottom: 48px;">
+      <span class="badge badge-accent mb-2">Market Requirement Analysis</span>
+      <h2>Why Together Housing? (Solving Market Gaps)</h2>
+      <p class="text-muted" style="max-width: 640px; margin: 8px auto 0;">Traditional real estate relies on paper files, delayed communications, and unverified agents. Here is how our centralized system fixes it:</p>
+    </div>
+
+    <div class="gap-grid">
+      <!-- Traditional Gaps -->
+      <div>
+        <h3 style="color:var(--danger); margin-bottom:20px;"><i class="fas fa-times-circle"></i> Traditional Property Problems</h3>
+
+        <div class="gap-card">
+          <div class="gap-card-icon red"><i class="fas fa-file-excel"></i></div>
+          <div>
+            <h4>Paper & Spreadsheet Overhead</h4>
+            <p class="text-muted" style="font-size:0.88rem;">Manual record keeping causes duplicate entries, lost agreements, and payment tracking errors.</p>
+          </div>
+        </div>
+
+        <div class="gap-card">
+          <div class="gap-card-icon red"><i class="fas fa-eye-slash"></i></div>
+          <div>
+            <h4>Hidden Charges & Unknown Sellers</h4>
+            <p class="text-muted" style="font-size:0.88rem;">Buyers face unexpected hidden costs and lack reliable seller ratings or feedback history.</p>
+          </div>
+        </div>
+
+        <div class="gap-card">
+          <div class="gap-card-icon red"><i class="fas fa-phone-slash"></i></div>
+          <div>
+            <h4>Slow Intermediary Communication</h4>
+            <p class="text-muted" style="font-size:0.88rem;">Inquiries via phone calls and social media lead to delayed booking confirmation.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Together Housing Solutions -->
+      <div>
+        <h3 style="color:var(--success); margin-bottom:20px;"><i class="fas fa-check-circle"></i> Together Housing Solutions</h3>
+
+        <div class="gap-card">
+          <div class="gap-card-icon green"><i class="fas fa-calculator"></i></div>
+          <div>
+            <h4>Automated Installment Ledger</h4>
+            <p class="text-muted" style="font-size:0.88rem;">Instant monthly breakdown, due date reminders, and transparent balance tracking.</p>
+          </div>
+        </div>
+
+        <div class="gap-card">
+          <div class="gap-card-icon green"><i class="fas fa-star"></i></div>
+          <div>
+            <h4>Verified Seller Ratings & Reviews</h4>
+            <p class="text-muted" style="font-size:0.88rem;">Only buyers with completed transactions can rate sellers, ensuring total trust.</p>
+          </div>
+        </div>
+
+        <div class="gap-card">
+          <div class="gap-card-icon green"><i class="fas fa-comments"></i></div>
+          <div>
+            <h4>Integrated Chat & PDF Receipts</h4>
+            <p class="text-muted" style="font-size:0.88rem;">Direct Buyer ↔ Seller ↔ Admin messaging with downloadable payment receipts.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Section 3: Featured Properties with High Quality Generated Images -->
+<section class="container section">
+  <div class="flex justify-between items-center" style="margin-bottom: 32px; flex-wrap: wrap; gap: 12px;">
+    <div>
+      <h2>Featured Property Listings</h2>
+      <p class="text-muted">Available with 12 to 36 month installment plans</p>
+    </div>
+    <a href="properties.html" class="btn btn-outline">View All Listings <i class="fas fa-arrow-right"></i></a>
+  </div>
+
+  <div class="property-grid">
+    <!-- Property 1 -->
+    <article class="property-card">
+      <div class="property-card-img-wrapper">
+        <img src="images/villa.jpg" alt="Bhaktapur Modern Villa" />
+        <span class="badge badge-accent property-badge-tag">Available</span>
+        <div class="property-price-tag">Rs 30,00,000</div>
+      </div>
+      <div class="property-card-body">
+        <div>
+          <h3 class="property-title">Bhaktapur Modern Luxury Villa</h3>
+          <p class="property-location"><i class="fas fa-map-marker-alt"></i> Thimi, Bhaktapur</p>
+          <div class="property-specs">
+            <span><i class="fas fa-ruler-combined"></i> 1,000 sq ft</span>
+            <span><i class="fas fa-bed"></i> 3 Bed</span>
+            <span><i class="fas fa-bath"></i> 2 Bath</span>
+          </div>
+        </div>
+        <div>
+          <div class="property-seller-info">
+            <span><i class="fas fa-store" style="color:var(--accent);"></i> Together Housing</span>
+            <span class="stars"><i class="fas fa-star"></i> 4.9</span>
+          </div>
+          <div class="flex gap-sm" style="margin-top: 12px;">
+            <a href="property-detail.html?id=1" class="btn btn-outline btn-sm" style="flex:1;">Details</a>
+            <a href="booking.html?id=1" class="btn btn-primary btn-sm" style="flex:1;">Book Now</a>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Property 2 -->
+    <article class="property-card">
+      <div class="property-card-img-wrapper">
+        <img src="images/apartment.jpg" alt="Lalitpur Heights" />
+        <span class="badge badge-accent property-badge-tag">Available</span>
+        <div class="property-price-tag">Rs 45,00,000</div>
+      </div>
+      <div class="property-card-body">
+        <div>
+          <h3 class="property-title">Lalitpur Heights Apartment</h3>
+          <p class="property-location"><i class="fas fa-map-marker-alt"></i> Godawari, Lalitpur</p>
+          <div class="property-specs">
+            <span><i class="fas fa-ruler-combined"></i> 1,250 sq ft</span>
+            <span><i class="fas fa-bed"></i> 2 Bed</span>
+            <span><i class="fas fa-bath"></i> 2 Bath</span>
+          </div>
+        </div>
+        <div>
+          <div class="property-seller-info">
+            <span><i class="fas fa-store" style="color:var(--accent);"></i> Munal Tamang</span>
+            <span class="stars"><i class="fas fa-star"></i> 4.8</span>
+          </div>
+          <div class="flex gap-sm" style="margin-top: 12px;">
+            <a href="property-detail.html?id=2" class="btn btn-outline btn-sm" style="flex:1;">Details</a>
+            <a href="booking.html?id=2" class="btn btn-primary btn-sm" style="flex:1;">Book Now</a>
+          </div>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- Section 4: Chairman's Message Card -->
+<section class="container">
+  <div class="chairman-banner">
+    <div>
+      <span class="badge badge-accent mb-2" style="background:rgba(20,200,199,0.2); color:#14c8c7;">Leadership Vision</span>
+      <h2 style="color:#fff; font-size:2rem; margin-top:8px;">Chairman's Message</h2>
+      <p style="font-size:1.1rem; opacity:0.9; margin-top:14px; font-style:italic; line-height:1.7;">
+        "With pride and purpose, I present Together Housing — built to digitize real estate in Nepal. Our mission is to combine Advanced Java enterprise security with a simple, transparent housing booking platform for every household."
+      </p>
+      <div style="margin-top:20px; font-weight:700; font-size:1.1rem; color:#14c8c7;">Munal Tamang — Founder & Chairman</div>
+      <small style="opacity:0.7;">BICT Scholar · Virinchi College (Matrix: C30101250016)</small>
+    </div>
+
+    <img src="images/WhatsApp%20Image%202025-06-04%20at%2018.02.21.jpeg" alt="Chairman Munal Tamang" />
+  </div>
+</section>
+
+<!-- Section 5: Together Group Subsidiaries -->
+<section class="container section-sm">
+  <div class="text-center" style="margin-bottom: 32px;">
+    <h2>Together Group Ecosystem</h2>
+    <p class="text-muted">Explore our group companies driving community development</p>
+  </div>
+
+  <div class="services-grid" style="display:grid; grid-template-columns:repeat(4, 1fr); gap:16px;">
+    <div class="card text-center" style="padding:24px;">
+      <img src="images/house.png" alt="Housing" style="width:48px; margin:0 auto 12px;" />
+      <h4 style="font-size:0.95rem;">TO Housing</h4>
+      <small class="text-muted">Property Booking & Installments</small>
+    </div>
+    <div class="card text-center" style="padding:24px;">
+      <img src="images/co-opeartive.png" alt="Cooperative" style="width:48px; margin:0 auto 12px;" />
+      <h4 style="font-size:0.95rem;">TO Credit & Co-op</h4>
+      <small class="text-muted">Microfinance & Savings</small>
+    </div>
+    <div class="card text-center" style="padding:24px;">
+      <img src="images/cosmetics%20(1).png" alt="Cosmetics" style="width:48px; margin:0 auto 12px;" />
+      <h4 style="font-size:0.95rem;">TO Cosmetics</h4>
+      <small class="text-muted">Skincare & Makeup Tools</small>
+    </div>
+    <div class="card text-center" style="padding:24px;">
+      <img src="images/insurance.png" alt="Insurance" style="width:48px; margin:0 auto 12px;" />
+      <h4 style="font-size:0.95rem;">TO Insurance</h4>
+      <small class="text-muted">Property & Life Security</small>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="tg-footer">
+  <div class="tg-footer-inner">
+    <div class="tg-footer-brand">
+      <img src="images/Asset%201.png" alt="Together Group logo" />
+      <h3>Together group</h3>
+      <p>Automated housing booking & installment management platform.</p>
+    </div>
+    <div>
+      <h4>Quick Access</h4>
+      <ul>
+        <li><a href="home.html">Home</a></li>
+        <li><a href="properties.html">Properties</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Group Companies</h4>
+      <ul>
+        <li><a href="properties.html">TO Housing</a></li>
+        <li><a href="services.html">TO Credit & Co-op</a></li>
+      </ul>
+    </div>
+    <div class="tg-footer-contact">
+      <h4>Contact Center</h4>
+      <p><i class="fas fa-phone"></i> +977 9832543343</p>
+      <p><i class="fas fa-envelope"></i> info@togethergroup.gov</p>
+    </div>
+  </div>
+  <div class="tg-footer-bottom">
+    <small>© <span class="js-year"></span> Together Group. All rights reserved.</small>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script>
+  function runHomeCalc() {
+    const price = parseFloat(document.getElementById('home-calc-price').value) || 0;
+    const downPct = parseInt(document.getElementById('home-calc-down').value);
+    const months = parseInt(document.getElementById('home-calc-months').value);
+
+    const downVal = (price * downPct) / 100;
+    const remVal = price - downVal;
+    const monthlyVal = remVal / months;
+
+    document.getElementById('res-down').textContent = `Rs ${downVal.toLocaleString()}`;
+    document.getElementById('res-monthly').textContent = `Rs ${Math.round(monthlyVal).toLocaleString()} / mo`;
+  }
+</script>
+</body>
+</html>

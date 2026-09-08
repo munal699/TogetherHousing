@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Service 3</title>
+  <link rel="stylesheet" href="service3.css" />
+  <link rel="stylesheet" href="serviceresponsive.css" />
+
+  <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+</head>
+<body>
+<!--Header Starts-->
+<header class="m_header">
+  <div class="logo">
+    <div class="m_header-image">
+      <img src="images/Asset 1.png" alt="No" />
+    </div>
+    <h2 class="m_header-business">Together group</h2>
+  </div>
+  <nav class="m_header-menu">
+    <ul>
+      <li><a href="home.html">Home</a></li>
+      <li><a href="services.html" class="underline">Our services</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="about.html">About Us</a></li>
+    </ul>
+  </nav>
+  <!-- header-icon -->
+  <div class="m_header-icon">
+    <a href="menu.html"><i class="fas fa-user-circle fa-2x"></i></a>
+  </div>
+  <div class="m_hamburger-icon" onclick="togglenav()">
+    <i class="fas fa-bars fa-2x"></i>
+  </div>
+</header>
+<hr />
+<!--Header ends-->
+
+<!--Footer starts-->
+<hr />
+<footer>
+  <div class="m_footer-body">
+    <div class="m_footer-image">
+      <img src="images/Asset 1.png" alt="No" />
+      <h2 class="m_footer-business">Together group</h2>
+      <p>
+        We are here to step on the future era with most reliable use of
+        science and technology
+      </p>
+      <p>
+        Gathering the innovatives with us to create the best version of us
+      </p>
+    </div>
+    <nav class="m_footer-menu">
+      <ul>
+        <h2>Quick Access</h2>
+        <li><a href="home.html">Home</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="about.html">About Us</a></li>
+      </ul>
+    </nav>
+    <nav class="m_footer-companies">
+      <ul>
+        <h2>Our Companies</h2>
+        <li><a href="#">TO Housing</a></li>
+        <li><a href="#">TO Cosmetics</a></li>
+        <li><a href="#">TO Credit and Co-operative Ltd</a></li>
+        <li><a href="#">TO Education</a></li>
+        <li><a href="#">TO Fashion Wears</a></li>
+        <li><a href="#">TO Brewery</a></li>
+        <li><a href="#">TO Cement</a></li>
+        <p>and more</p>
+      </ul>
+    </nav>
+    <div class="m_contact-center">
+      <h2>Contact Center</h2>
+      <p>+977 9832543343</p>
+      <p>info@togethergroup.gov</p>
+    </div>
+  </div>
+</footer>
+<!--Footer ends-->
+</body>
+
+<script>
+  function togglenav() {
+    const nav = document.querySelector('.m_header-menu');
+    nav.classList.toggle('show');
+  }
+</script>
+</html>

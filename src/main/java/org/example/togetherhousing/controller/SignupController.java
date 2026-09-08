@@ -2,10 +2,12 @@
 package org.example.togetherhousing.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.example.togetherhousing.model.UserTbl;
 import org.example.togetherhousing.repository.userRepository;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,7 +45,7 @@ public class SignupController {
         //md5 algorithm, this is basic algorithm, anyone can hack this
 
         // Check if email already exists
-        if (uRepo.existsByEmail(email)) {
+        if (uRepo.existsByEmailAndPassword(email,hashPassword)) {
             return "redirect:/signup?error=email";
         }
 
@@ -60,8 +62,34 @@ public class SignupController {
         // Save user to TiDB
         uRepo.save(user);
 
-
         // Signup successful → go to login page
         return "redirect:/login?success=true";
+    }
+    @PostMapping("/login")
+    public String loginPost(HttpServletRequest request, Model m) {
+
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+
+        // Convert entered password into MD5 hash
+        String hashPassword = DigestUtils.md5DigestAsHex(password.getBytes());
+
+        // Check email and password in database
+        if (uRepo.existsByEmailAndPassword(email, hashPassword)) {
+
+            // Create session
+            HttpSession session = request.getSession();
+
+            // Store logged-in user's email in session
+            session.setAttribute("email", email);
+
+            // Login successful
+            return "home";
+        }
+
+        // Login failed
+        m.addAttribute("error", "Email or password is incorrect");
+
+        return "loginPage";
     }
 }

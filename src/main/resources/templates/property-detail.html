@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Together Housing — Property Details</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <style>
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 32px;
+      margin: 32px 0;
+    }
+    .main-img {
+      width: 100%;
+      height: 420px;
+      object-fit: cover;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+    }
+    .thumb-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 12px;
+    }
+    .thumb-img {
+      width: 100%;
+      height: 90px;
+      object-fit: cover;
+      border-radius: var(--radius);
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: all var(--duration-fast);
+    }
+    .thumb-img.active {
+      border-color: var(--accent);
+    }
+
+    .amenities-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin: 20px 0;
+    }
+    .amenity-item {
+      background: var(--bg);
+      padding: 12px;
+      border-radius: var(--radius);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.9rem;
+    }
+
+    .booking-sidebar-card {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-md);
+      position: sticky;
+      top: calc(var(--header-height) + 16px);
+    }
+
+    /* Rating Bars */
+    .rating-summary {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+      background: var(--surface);
+      padding: 24px;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      margin: 20px 0;
+    }
+    .rating-big-score {
+      font-size: 3rem;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1;
+    }
+    .rating-bar-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.85rem;
+      margin-bottom: 4px;
+    }
+
+    @media (max-width: 900px) {
+      .detail-grid { grid-template-columns: 1fr; }
+      .main-img { height: 280px; }
+      .booking-sidebar-card { position: static; }
+      .amenities-grid { grid-template-columns: repeat(2, 1fr); }
+      .rating-summary { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="tg-header" role="banner">
+  <div class="tg-header-inner">
+    <a class="tg-brand" href="home.html">
+      <img class="tg-brand-logo" src="images/Asset%201.png" alt="Together Group logo" />
+      <span class="tg-brand-title">Together Housing</span>
+    </a>
+
+    <nav class="tg-nav" role="navigation" aria-label="Main menu">
+      <ul class="tg-nav-list">
+        <li><a href="home.html">Home</a></li>
+        <li><a href="properties.html" class="active">Properties</a></li>
+        <li><a href="services.html">Our Services</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+
+    <div class="tg-header-actions">
+      <!-- Theme Toggle -->
+      <button class="btn-icon js-theme-toggle" aria-label="Toggle theme" title="Switch Light/Dark Mode">
+        <i class="fas fa-moon"></i>
+      </button>
+
+      <a class="user-link" href="menu.html" aria-label="User account"><i class="fas fa-user-circle"></i></a>
+      <a class="tg-header-cta" href="login.html">Sign In</a>
+      <button class="tg-hamburger" id="tg-hamburger" aria-label="Open menu"><i class="fas fa-bars"></i></button>
+    </div>
+  </div>
+</header>
+
+<!-- Main Content -->
+<main class="container">
+  <div style="margin-top: 24px;">
+    <a href="properties.html" class="btn btn-ghost btn-sm"><i class="fas fa-arrow-left"></i> Back to Properties</a>
+  </div>
+
+  <div class="detail-grid">
+    <!-- Left Info -->
+    <div>
+      <h1 id="prop-title">Bhaktapur Modern Luxury Villa</h1>
+      <p class="text-muted" style="margin-bottom: 16px;"><i class="fas fa-map-marker-alt" style="color:var(--accent);"></i> <span id="prop-loc">Thimi, Bhaktapur</span></p>
+
+      <!-- Gallery -->
+      <div>
+        <img id="main-image" class="main-img" src="images/villa.jpg" alt="Property Main View" />
+        <div class="thumb-grid">
+          <img class="thumb-img active" src="images/villa.jpg" onclick="changeImage(this.src, this)" />
+          <img class="thumb-img" src="images/apartment.jpg" onclick="changeImage(this.src, this)" />
+          <img class="thumb-img" src="images/land.jpg" onclick="changeImage(this.src, this)" />
+          <img class="thumb-img" src="images/community.jpg" onclick="changeImage(this.src, this)" />
+        </div>
+      </div>
+
+      <hr class="divider" />
+
+      <!-- Key Specs -->
+      <h2>Property Overview</h2>
+      <div class="flex gap-lg" style="margin: 16px 0; flex-wrap: wrap;">
+        <div class="card-glass" style="padding:16px; flex:1; min-width:140px; text-align:center;">
+          <i class="fas fa-ruler-combined" style="font-size:24px; color:var(--accent);"></i>
+          <div style="font-weight:700; margin-top:6px;">1,000 sq ft</div>
+          <small class="text-muted">Total Area</small>
+        </div>
+        <div class="card-glass" style="padding:16px; flex:1; min-width:140px; text-align:center;">
+          <i class="fas fa-bed" style="font-size:24px; color:var(--accent);"></i>
+          <div style="font-weight:700; margin-top:6px;">3 Bedrooms</div>
+          <small class="text-muted">Bedrooms</small>
+        </div>
+        <div class="card-glass" style="padding:16px; flex:1; min-width:140px; text-align:center;">
+          <i class="fas fa-bath" style="font-size:24px; color:var(--accent);"></i>
+          <div style="font-weight:700; margin-top:6px;">2 Bathrooms</div>
+          <small class="text-muted">Bathrooms</small>
+        </div>
+        <div class="card-glass" style="padding:16px; flex:1; min-width:140px; text-align:center;">
+          <i class="fas fa-calendar-alt" style="font-size:24px; color:var(--accent);"></i>
+          <div style="font-weight:700; margin-top:6px;">Built 2024</div>
+          <small class="text-muted">Year Built</small>
+        </div>
+      </div>
+
+      <h3>Description</h3>
+      <p style="margin-top: 8px;">
+        This beautiful 3-bedroom modern villa is situated in the peaceful neighborhood of Thimi, Bhaktapur. Features 24/7 water supply, electricity connection, drainage, paved road access, and scenic valley views. Perfect for families looking for quiet suburban living with easy access to Kathmandu highway.
+      </p>
+
+      <h3 style="margin-top: 24px;">Amenities & Infrastructure</h3>
+      <div class="amenities-grid">
+        <div class="amenity-item"><i class="fas fa-bolt" style="color:var(--warning);"></i> Electricity Supply</div>
+        <div class="amenity-item"><i class="fas fa-tint" style="color:var(--info);"></i> Water Supply (24/7)</div>
+        <div class="amenity-item"><i class="fas fa-road" style="color:var(--muted);"></i> 20ft Blacktopped Road</div>
+        <div class="amenity-item"><i class="fas fa-shield-alt" style="color:var(--success);"></i> Security & CCTV</div>
+        <div class="amenity-item"><i class="fas fa-parking" style="color:var(--primary);"></i> Dedicated Parking</div>
+        <div class="amenity-item"><i class="fas fa-file-contract" style="color:var(--accent);"></i> Clear Lalpurja Title</div>
+      </div>
+
+      <hr class="divider" />
+
+      <!-- Seller Ratings & Reviews Section -->
+      <div class="flex justify-between items-center">
+        <h2>Seller Ratings & Customer Reviews</h2>
+        <button class="btn btn-outline btn-sm" onclick="openModal('review-modal')"><i class="fas fa-edit"></i> Write a Review</button>
+      </div>
+
+      <div class="rating-summary">
+        <div>
+          <div class="rating-big-score">4.9</div>
+          <div class="stars" style="font-size:18px; margin:4px 0;"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+          <small class="text-muted">Based on 12 verified buyer reviews</small>
+        </div>
+
+        <div style="flex:1; width:100%;">
+          <div class="rating-bar-item">
+            <span>5 Stars</span>
+            <div class="progress-bar" style="flex:1;"><div class="progress-bar-fill" style="width: 85%;"></div></div>
+            <span>85%</span>
+          </div>
+          <div class="rating-bar-item">
+            <span>4 Stars</span>
+            <div class="progress-bar" style="flex:1;"><div class="progress-bar-fill" style="width: 15%;"></div></div>
+            <span>15%</span>
+          </div>
+          <div class="rating-bar-item">
+            <span>3 Stars</span>
+            <div class="progress-bar" style="flex:1;"><div class="progress-bar-fill" style="width: 0%;"></div></div>
+            <span>0%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Customer Review Cards -->
+      <div class="card mb-2" style="margin-bottom:12px;">
+        <div class="flex justify-between items-center" style="margin-bottom:8px;">
+          <div class="flex items-center gap-sm">
+            <div class="avatar" style="background:var(--accent); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700;">SR</div>
+            <div>
+              <strong>Sita R.</strong> <span class="badge badge-success">Verified Buyer</span>
+            </div>
+          </div>
+          <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+        </div>
+        <p style="font-size:0.9rem;">"Together Housing helped my family get a safe, affordable villa. The monthly installment process was completely transparent and supportive!"</p>
+      </div>
+    </div>
+
+    <!-- Right Sidebar Card -->
+    <aside>
+      <div class="booking-sidebar-card">
+        <div class="badge badge-accent mb-2">Installment Plan Eligible</div>
+        <div style="font-size: 0.9rem; color: var(--muted);">Property Price</div>
+        <div style="font-size: 2rem; font-weight: 800; color: var(--primary); margin: 4px 0 16px;">Rs 30,00,000</div>
+
+        <div style="background: var(--bg); padding: 16px; border-radius: var(--radius); margin-bottom: 20px;">
+          <div class="flex justify-between" style="font-size: 0.88rem; margin-bottom: 6px;">
+            <span>Min. Down Payment (20%)</span>
+            <strong style="color: var(--primary);">Rs 6,00,000</strong>
+          </div>
+          <div class="flex justify-between" style="font-size: 0.88rem;">
+            <span>Monthly (24 Months)</span>
+            <strong style="color: var(--accent);">Rs 1,00,000/mo</strong>
+          </div>
+        </div>
+
+        <!-- Schedule Modal Trigger Button -->
+        <button class="btn btn-ghost btn-sm" style="width: 100%; margin-bottom: 12px;" onclick="generateInstallmentScheduleModal(3000000, 20, 24, 'Bhaktapur Modern Luxury Villa')">
+          <i class="fas fa-calendar-alt"></i> View Full 24-Month Schedule
+        </button>
+
+        <a href="booking.html?id=1" class="btn btn-primary btn-lg" style="width: 100%; margin-bottom: 12px;">
+          Book This Property <i class="fas fa-arrow-right"></i>
+        </a>
+
+        <a href="chat.html" class="btn btn-outline" style="width: 100%;">
+          <i class="fas fa-comments"></i> Chat with Seller
+        </a>
+
+        <hr class="divider" />
+
+        <!-- Seller Info -->
+        <div class="flex items-center gap" style="margin-top: 16px;">
+          <div class="avatar avatar-lg" style="background:var(--primary); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700;">TH</div>
+          <div>
+            <div style="font-weight:700;">Together Housing</div>
+            <small class="text-muted">Verified Property Manager</small>
+            <div class="stars"><i class="fas fa-star"></i> 4.9 (12 reviews)</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<!-- Review Modal -->
+<div id="review-modal" class="modal-overlay">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Submit Seller Review</h3>
+      <button class="modal-close" onclick="closeModal('review-modal')">&times;</button>
+    </div>
+    <form onsubmit="event.preventDefault(); closeModal('review-modal'); showToast('Thank you for your rating!', 'success');">
+      <div class="form-group">
+        <label class="form-label">Rating</label>
+        <select class="form-select">
+          <option value="5">⭐⭐⭐⭐⭐ 5 Stars (Excellent)</option>
+          <option value="4">⭐⭐⭐⭐ 4 Stars (Good)</option>
+          <option value="3">⭐⭐⭐ 3 Stars (Average)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Review Comment</label>
+        <textarea class="form-textarea" rows="4" placeholder="Share your experience with this seller..." required></textarea>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" type="submit">Submit Review</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="tg-footer">
+  <div class="tg-footer-bottom">
+    <small>© <span class="js-year"></span> Together Group. All rights reserved.</small>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script>
+  function changeImage(src, el) {
+    document.getElementById('main-image').src = src;
+    document.querySelectorAll('.thumb-img').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+  }
+</script>
+</body>
+</html>

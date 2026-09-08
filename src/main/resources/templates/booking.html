@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Together Housing — Property Booking</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <style>
+    .booking-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 32px;
+      margin: 32px 0;
+    }
+    .summary-card {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+    }
+    .calc-box {
+      background: var(--bg);
+      padding: 20px;
+      border-radius: var(--radius);
+      margin: 20px 0;
+    }
+    .calc-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      font-size: 0.9rem;
+      border-bottom: 1px dashed var(--border);
+    }
+    .calc-row:last-child {
+      border-bottom: none;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    @media (max-width: 850px) {
+      .booking-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="tg-header" role="banner">
+  <div class="tg-header-inner">
+    <a class="tg-brand" href="home.html">
+      <img class="tg-brand-logo" src="images/Asset%201.png" alt="Together Group logo" />
+      <span class="tg-brand-title">Together Housing</span>
+    </a>
+
+    <nav class="tg-nav" role="navigation" aria-label="Main menu">
+      <ul class="tg-nav-list">
+        <li><a href="home.html">Home</a></li>
+        <li><a href="properties.html" class="active">Properties</a></li>
+        <li><a href="services.html">Our Services</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+
+    <div class="tg-header-actions">
+      <!-- Dark Mode Toggle -->
+      <button class="btn-icon js-theme-toggle" aria-label="Toggle theme" title="Switch Light/Dark Mode">
+        <i class="fas fa-moon"></i>
+      </button>
+
+      <a class="user-link" href="menu.html" aria-label="User account"><i class="fas fa-user-circle"></i></a>
+      <a class="tg-header-cta" href="login.html">Sign In</a>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+  <div style="margin-top: 24px;">
+    <a href="property-detail.html" class="btn btn-ghost btn-sm"><i class="fas fa-arrow-left"></i> Back to Property</a>
+  </div>
+
+  <div class="text-center" style="margin-top: 16px;">
+    <h1>Complete Your Property Booking</h1>
+    <p class="text-muted">Review installment terms and confirm your reservation</p>
+  </div>
+
+  <div class="booking-grid">
+    <!-- Form Left -->
+    <div class="summary-card">
+      <h3><i class="fas fa-user-edit" style="color:var(--accent);"></i> Buyer Information</h3>
+      <form id="booking-form" action="#" method="post" onsubmit="handleBookingSubmit(event)">
+        <div class="form-row" style="margin-top: 16px;">
+          <div class="form-group">
+            <label class="form-label" for="b-name">Full Name</label>
+            <input type="text" id="b-name" class="form-input" value="Munal Tamang" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="b-email">Email Address</label>
+            <input type="email" id="b-email" class="form-input" value="munal@example.com" required />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="b-phone">Phone Number</label>
+            <input type="tel" id="b-phone" class="form-input" value="+977 9800000000" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="b-citizenship">Citizenship / NID No.</label>
+            <input type="text" id="b-citizenship" class="form-input" placeholder="27-01-79-12345" required />
+          </div>
+        </div>
+
+        <h3 style="margin-top: 24px;"><i class="fas fa-calculator" style="color:var(--accent);"></i> Installment Plan Options</h3>
+
+        <div class="form-row" style="margin-top: 16px;">
+          <div class="form-group">
+            <label class="form-label" for="down-percent">Down Payment (%)</label>
+            <select id="down-percent" class="form-select" onchange="calculateInstallment()">
+              <option value="20">20% (Rs 6,00,000)</option>
+              <option value="30">30% (Rs 9,00,000)</option>
+              <option value="50">50% (Rs 15,00,000)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="duration-select">Installment Period</label>
+            <select id="duration-select" class="form-select" onchange="calculateInstallment()">
+              <option value="12">12 Months (1 Year)</option>
+              <option value="24" selected>24 Months (2 Years)</option>
+              <option value="36">36 Months (3 Years)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-check">
+            <input type="checkbox" required />
+            <span>I agree to the property booking terms, installment rules, and legal agreement.</span>
+          </label>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-lg" style="width: 100%; margin-top: 16px;">
+          Confirm & Reserve Property <i class="fas fa-check-circle"></i>
+        </button>
+      </form>
+    </div>
+
+    <!-- Right Summary -->
+    <div>
+      <div class="summary-card">
+        <h3>Property Summary</h3>
+        <div class="flex gap" style="margin-top: 16px;">
+          <img src="images/villa.jpg" alt="Property" style="width: 100px; height: 80px; object-fit: cover; border-radius: var(--radius);" />
+          <div>
+            <h4 style="font-size: 0.95rem;">Bhaktapur Modern Villa</h4>
+            <small class="text-muted"><i class="fas fa-map-marker-alt"></i> Thimi, Bhaktapur</small>
+            <div style="font-weight: 700; color: var(--accent); margin-top: 4px;">Rs 30,00,000</div>
+          </div>
+        </div>
+
+        <hr class="divider" />
+
+        <h3>Financial Breakdown</h3>
+        <div class="calc-box">
+          <div class="calc-row">
+            <span>Total Price</span>
+            <strong>Rs 30,00,000</strong>
+          </div>
+          <div class="calc-row">
+            <span>Down Payment Due</span>
+            <strong id="calc-down" style="color:var(--primary);">Rs 6,00,000</strong>
+          </div>
+          <div class="calc-row">
+            <span>Remaining Balance</span>
+            <strong id="calc-rem">Rs 24,00,000</strong>
+          </div>
+          <div class="calc-row">
+            <span>Est. Monthly Installment</span>
+            <strong id="calc-monthly" style="color:var(--accent);">Rs 1,00,000 / mo</strong>
+          </div>
+        </div>
+
+        <button class="btn btn-outline btn-sm" style="width: 100%; margin-bottom: 12px;" onclick="triggerModalSchedule()">
+          <i class="fas fa-calendar-alt"></i> View Full Payment Breakdown
+        </button>
+
+        <div style="font-size: 0.82rem; color: var(--muted); text-align: center;">
+          <i class="fas fa-shield-alt"></i> Backed by Together Group Agreement Guarantee
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="tg-footer">
+  <div class="tg-footer-bottom">
+    <small>© <span class="js-year"></span> Together Group. All rights reserved.</small>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script src="js/booking.js"></script>
+<script>
+  function triggerModalSchedule() {
+    const dp = parseInt(document.getElementById('down-percent').value);
+    const dur = parseInt(document.getElementById('duration-select').value);
+    generateInstallmentScheduleModal(3000000, dp, dur, 'Bhaktapur Modern Villa');
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Together Group — Contact Us</title>
+  <meta name="description" content="Contact Together Group — Send us a message, view our phone, email, and office location." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <style>
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 36px;
+      margin: 40px 0;
+    }
+    .contact-info-card {
+      background: var(--primary);
+      color: #fff;
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: var(--shadow-md);
+    }
+    .contact-info-card h2 { color: #fff; margin-bottom: 12px; }
+    .contact-info-card p { color: rgba(255,255,255,0.8); }
+    .contact-methods {
+      margin: 32px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .contact-method-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .contact-method-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius);
+      background: rgba(255,255,255,0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .contact-form-card {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .map-container {
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border);
+      margin-bottom: 48px;
+    }
+    .map-container iframe {
+      width: 100%;
+      height: 350px;
+      border: none;
+    }
+
+    @media (max-width: 768px) {
+      .contact-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="tg-header" role="banner">
+  <div class="tg-header-inner">
+    <a class="tg-brand" href="home.html">
+      <img class="tg-brand-logo" src="images/Asset%201.png" alt="Together Group logo" />
+      <span class="tg-brand-title">Together Housing</span>
+    </a>
+
+    <nav class="tg-nav" role="navigation" aria-label="Main menu">
+      <ul class="tg-nav-list">
+        <li><a href="home.html">Home</a></li>
+        <li><a href="properties.html">Properties</a></li>
+        <li><a href="services.html">Our Services</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html" class="active">Contact</a></li>
+      </ul>
+    </nav>
+
+    <div class="tg-header-actions">
+      <a class="user-link" href="menu.html" aria-label="User account"><i class="fas fa-user-circle"></i></a>
+      <a class="tg-header-cta" href="login.html">Sign In</a>
+      <button class="tg-hamburger" id="tg-hamburger" aria-label="Open menu"><i class="fas fa-bars"></i></button>
+    </div>
+  </div>
+
+  <div id="tg-mobile-menu" class="tg-mobile-menu" aria-hidden="true">
+    <ul>
+      <li><a href="home.html"><i class="fas fa-home"></i> Home</a></li>
+      <li><a href="properties.html"><i class="fas fa-building"></i> Properties</a></li>
+      <li><a href="services.html"><i class="fas fa-concierge-bell"></i> Our Services</a></li>
+      <li><a href="about.html"><i class="fas fa-info-circle"></i> About</a></li>
+      <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
+      <li><a class="cta" href="login.html"><i class="fas fa-sign-in-alt"></i> Sign In</a></li>
+    </ul>
+  </div>
+</header>
+
+<!-- Content -->
+<main class="container section-sm">
+  <div class="text-center" style="margin-bottom: 24px;">
+    <h1>Contact Us</h1>
+    <p class="text-muted">Have a question about a property, installment plan, or partnership? Get in touch!</p>
+  </div>
+
+  <div class="contact-grid">
+    <!-- Info Left -->
+    <div class="contact-info-card">
+      <div>
+        <h2>Get In Touch</h2>
+        <p>Reach out to our support center or visit our main office in Lalitpur.</p>
+
+        <div class="contact-methods">
+          <div class="contact-method-item">
+            <div class="contact-method-icon"><i class="fas fa-phone"></i></div>
+            <div>
+              <small style="opacity: 0.7;">Phone Support</small>
+              <div style="font-weight: 600;">+977 9832543343</div>
+            </div>
+          </div>
+
+          <div class="contact-method-item">
+            <div class="contact-method-icon"><i class="fas fa-envelope"></i></div>
+            <div>
+              <small style="opacity: 0.7;">Email Address</small>
+              <div style="font-weight: 600;">info@togethergroup.gov</div>
+            </div>
+          </div>
+
+          <div class="contact-method-item">
+            <div class="contact-method-icon"><i class="fas fa-map-marker-alt"></i></div>
+            <div>
+              <small style="opacity: 0.7;">Head Office</small>
+              <div style="font-weight: 600;">Godawari, Lalitpur, Nepal</div>
+            </div>
+          </div>
+
+          <div class="contact-method-item">
+            <div class="contact-method-icon"><i class="fas fa-clock"></i></div>
+            <div>
+              <small style="opacity: 0.7;">Office Hours</small>
+              <div style="font-weight: 600;">Sun - Fri: 10:00 AM - 5:00 PM</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="font-size: 0.88rem; opacity: 0.8;">
+        Together Housing © 2026 — Verified Real Estate Platform
+      </div>
+    </div>
+
+    <!-- Form Right -->
+    <div class="contact-form-card">
+      <h2>Send Us a Message</h2>
+      <p class="text-muted" style="margin-bottom: 24px;">Fill out the form below and our team will get back to you within 24 hours.</p>
+
+      <form id="contact-form" action="#" method="post" onsubmit="handleContactSubmit(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="c-name">Your Name</label>
+            <input type="text" id="c-name" class="form-input" placeholder="Munal Tamang" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="c-email">Email Address</label>
+            <input type="email" id="c-email" class="form-input" placeholder="munal@example.com" required />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="c-phone">Phone Number</label>
+            <input type="tel" id="c-phone" class="form-input" placeholder="+977 9800000000" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="c-subject">Subject</label>
+            <select id="c-subject" class="form-select">
+              <option value="property">Property Inquiry</option>
+              <option value="installment">Installment Plan Help</option>
+              <option value="seller">Become a Seller</option>
+              <option value="general">General Question</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="c-message">Your Message</label>
+          <textarea id="c-message" class="form-textarea" rows="5" placeholder="Write your message here..." required></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-lg" style="width: 100%;">
+          Send Message <i class="fas fa-paper-plane"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Map -->
+  <div class="map-container">
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14136.27376378479!2d85.378913!3d27.595679!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb170f80db454f%3A0x6b63c7ef23cbef92!2sGodawari%2C%20Lalitpur!5e0!3m2!1sen!2snp!4v1700000000000" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+  </div>
+</main>
+
+<!-- Footer -->
+<footer class="tg-footer">
+  <div class="tg-footer-inner">
+    <div class="tg-footer-brand">
+      <img src="images/Asset%201.png" alt="Together Group logo" />
+      <h3>Together group</h3>
+      <p>We use technology responsibly to automate property booking and installment management.</p>
+    </div>
+    <div>
+      <h4>Quick Access</h4>
+      <ul>
+        <li><a href="home.html">Home</a></li>
+        <li><a href="properties.html">Properties</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Group Companies</h4>
+      <ul>
+        <li><a href="properties.html">TO Housing</a></li>
+        <li><a href="services.html">TO Credit & Co-op</a></li>
+      </ul>
+    </div>
+    <div class="tg-footer-contact">
+      <h4>Contact Center</h4>
+      <p><i class="fas fa-phone"></i> +977 9832543343</p>
+      <p><i class="fas fa-envelope"></i> info@togethergroup.gov</p>
+    </div>
+  </div>
+  <div class="tg-footer-bottom">
+    <small>© <span class="js-year"></span> Together Group. All rights reserved.</small>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script>
+  function handleContactSubmit(e) {
+    e.preventDefault();
+    showToast('Thank you! Your message has been sent successfully.', 'success');
+    document.getElementById('contact-form').reset();
+  }
+</script>
+</body>
+</html>

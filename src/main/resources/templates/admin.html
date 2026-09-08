@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Together Group - Admin Panel</title>
+  <link rel="stylesheet" href="admin.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar">
+  <h2>Together Group</h2>
+  <ul>
+    <li><a href="#home">Home</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#about">About Us</a></li>
+    <li><a href="#menu">Menu</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</div>
+
+<!-- Main Content -->
+<div class="main-content">
+
+  <!-- Home -->
+  <section id="home" class="center-text">
+    <h1 class="editable" data-field="home-title">Welcome to Admin Panel</h1>
+    <p class="editable" data-field="home-subtitle">Manage and customize your organization here.</p>
+    <div class="home-icons">
+      <div class="editable" data-field="home-members">👥 500+ Members</div>
+      <div class="editable" data-field="home-companies">🏢 20+ Companies</div>
+      <div class="editable" data-field="home-regions">🌍 Operating in 10+ Regions</div>
+      <div class="editable" data-field="home-turnover">💰 10 Million Turnover</div>
+    </div>
+    <div class="chairman-msg">
+      <h2>Chairman’s Message</h2>
+      <p class="editable" data-field="chairman-message">
+        With pride and purpose, I welcome you to Together Group.
+        Our mission is to inspire collaboration, innovation, and growth.
+        As an admin, you can update services, manage information, and keep the system running smoothly.
+      </p>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section id="services">
+    <h1>Manage Services</h1>
+    <button onclick="openModal('add-service')">Add Service</button>
+    <div id="services-list" class="card">
+      <div class="service-item" data-category="Together Housing">
+        <strong class="editable" data-field="service-title-Together Housing">Together Housing</strong>
+        <button class="delete-btn" onclick="removeServiceCategory('Together Housing')">X</button>
+        <p class="editable" data-field="service-description-Together Housing">Discover a perfect home tailored just for you</p>
+        <ul>
+          <li class="editable" data-field="service-detail-Together Housing-1">With an outstanding living platform in good rates</li>
+        </ul>
+      </div>
+      <div class="sub-service-item" data-subcategory="Apartments" data-category="Together Housing">
+        <span class="editable" data-field="sub-service-title-Apartments">Apartments</span>
+        <button class="delete-btn" onclick="removeSubService('Apartments', 'Together Housing')">X</button>
+        <p class="editable" data-field="sub-service-description-Apartments">Modern living spaces with innovative designs.</p>
+      </div>
+      <div class="sub-service-item" data-subcategory="Houses" data-category="Together Housing">
+        <span class="editable" data-field="sub-service-title-Houses">Houses</span>
+        <button class="delete-btn" onclick="removeSubService('Houses', 'Together Housing')">X</button>
+        <p class="editable" data-field="sub-service-description-Houses">Spacious homes for families.</p>
+      </div>
+      <div class="service-item" data-category="Together Credit and Co-operative Ltd">
+        <strong class="editable" data-field="service-title-Together Credit and Co-operative Ltd">Together Credit and Co-operative Ltd</strong>
+        <button class="delete-btn" onclick="removeServiceCategory('Together Credit and Co-operative Ltd')">X</button>
+        <p class="editable" data-field="service-description-Together Credit and Co-operative Ltd">Create your future safe with the most trusted company</p>
+        <ul>
+          <li class="editable" data-field="service-detail-Together Credit and Co-operative Ltd-1">Start saving today with the minimum of prices</li>
+        </ul>
+      </div>
+      <div class="service-item" data-category="Together Cosmetics">
+        <strong class="editable" data-field="service-title-Together Cosmetics">Together Cosmetics</strong>
+        <button class="delete-btn" onclick="removeServiceCategory('Together Cosmetics')">X</button>
+        <p class="editable" data-field="service-description-Together Cosmetics">Making beautiful ladies even more beautiful</p>
+        <ul>
+          <li class="editable" data-field="service-detail-Together Cosmetics-1">Find the perfect make-up tools for your skin</li>
+        </ul>
+      </div>
+      <div class="service-item" data-category="Together Insurance Agency">
+        <strong class="editable" data-field="service-title-Together Insurance Agency">Together Insurance Agency</strong>
+        <button class="delete-btn" onclick="removeServiceCategory('Together Insurance Agency')">X</button>
+        <p class="editable" data-field="service-description-Together Insurance Agency">We offer extra security to you and your belongings</p>
+        <ul>
+          <li class="editable" data-field="service-detail-Together Insurance Agency-1">Create your future safe with the investment now as least as you can</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Us -->
+  <section id="about">
+    <h1>Manage About Us</h1>
+    <button onclick="openModal('edit-mission')">Edit Mission</button>
+    <button onclick="openModal('edit-vision')">Edit Vision</button>
+    <div class="card">
+      <h3>Mission</h3>
+      <p class="editable" data-field="about-mission">Our mission is to foster collaboration and innovation.</p>
+    </div>
+    <div class="card">
+      <h3>Vision</h3>
+      <p class="editable" data-field="about-vision">To be a global leader in community-driven growth.</p>
+    </div>
+  </section>
+
+  <!-- Menu -->
+  <section id="menu">
+    <h1>Manage Menu</h1>
+    <button onclick="openModal('add-menu')">Add Menu Item</button>
+    <div id="menu-list" class="card">
+      <div class="menu-item editable" data-field="menu-profile">
+        <i class="fas fa-user"></i>
+        <span>Profile</span>
+        <button class="delete-btn" onclick="removeMenuItem('Profile')">X</button>
+      </div>
+      <div class="menu-item editable" data-field="menu-dark-mode">
+        <i class="fas fa-moon"></i>
+        <span>Dark Mode</span>
+        <button class="delete-btn" onclick="removeMenuItem('Dark Mode')">X</button>
+      </div>
+      <div class="menu-item editable" data-field="menu-feedback">
+        <i class="fas fa-comment-dots"></i>
+        <span>Feedback</span>
+        <button class="delete-btn" onclick="removeMenuItem('Feedback')">X</button>
+      </div>
+      <div class="menu-item editable" data-field="menu-terms">
+        <i class="fas fa-file-alt"></i>
+        <span>Terms and Conditions</span>
+        <button class="delete-btn" onclick="removeMenuItem('Terms and Conditions')">X</button>
+      </div>
+      <div class="menu-item editable" data-field="menu-settings">
+        <i class="fas fa-cog"></i>
+        <span>Settings</span>
+        <button class="delete-btn" onclick="removeMenuItem('Settings')">X</button>
+      </div>
+      <div class="menu-item editable" data-field="menu-help">
+        <i class="fas fa-question-circle"></i>
+        <span>Help</span>
+        <button class="delete-btn" onclick="removeMenuItem('Help')">X</button>
+      </div>
+      <div class="menu-item editable" data-field="menu-exit">
+        <i class="fas fa-sign-out-alt"></i>
+        <span>Exit</span>
+        <button class="delete-btn" onclick="removeMenuItem('Exit')">X</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact">
+    <h1>Manage Contact</h1>
+    <button onclick="openModal('edit-contact')">Edit Contact Info</button>
+    <div class="card">
+      <p class="editable" data-field="contact-info">Emails: info@togethergroup.com | Phone: +1-800-555-1234 | Address: 123 Unity Lane, Harmony City</p>
+    </div>
+  </section>
+
+  <!-- Modal -->
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <input type="text" id="modal-input" placeholder="Enter content...">
+      <textarea id="modal-textarea" placeholder="Enter detailed content..."></textarea>
+      <button onclick="saveContent()">Save</button>
+      <button onclick="closeModal()">Cancel</button>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

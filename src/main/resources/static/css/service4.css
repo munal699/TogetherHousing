@@ -1,0 +1,145 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.m_header {
+    display: flex;
+    padding: 40px;
+    font-size: 20px;
+    margin-bottom: -35px;
+    background-color: #003153;
+}
+.logo {
+    background-color: white;
+    width: 180px;
+    margin-top: -15px;
+    margin-bottom: -4px;
+    border-radius: 10px;
+    padding: 10px;
+    margin-left: 85px;
+}
+.m_header-menu {
+    flex: 8;
+    margin-top: 60px;
+}
+.m_hamburger-icon {
+    display: none;
+}
+
+.m_header-icon {
+    flex: 2;
+    text-align: end;
+    margin-top: 25px;
+    margin-right: 20px;
+    font-size: 35px;
+    color: white;
+    margin-right: 85px;
+}
+.m_header-icon a {
+    text-decoration: none;
+    color: white;
+}
+.m_header-menu ul {
+    display: flex;
+    gap: 40px;
+    justify-content: center;
+    list-style: none;
+    color: white;
+}
+.m_header-menu ul a {
+    text-decoration: none;
+    color: white;
+}
+.m_header-menu ul a.underline {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    color: white;
+}
+.m_header-business {
+    font-size: 25px;
+    margin-bottom: 10px;
+}
+.m_header-image img {
+    width: 90px;
+    margin-left: 50px;
+}
+/* footer */
+.m_footer-body {
+    display: flex;
+    padding: 40px;
+    font-size: 20px;
+    margin-bottom: -35px;
+    background-color: rgb(235, 230, 230);
+    padding-bottom: 50px;
+}
+
+.m_footer-business {
+    font-size: 25px;
+    margin-bottom: 10px;
+    width: 100%;
+}
+.m_footer-image img {
+    width: 90px;
+}
+.m_footer-image p {
+    font-size: 15px;
+}
+.m_footer-image {
+    flex: 2;
+    margin-left: 85px;
+}
+.m_footer-image {
+    flex: 3;
+}
+.m_footer-menu {
+    flex: 3;
+}
+.m_footer-companies {
+    flex: 3;
+}
+.m_contact-center {
+    flex: 2;
+}
+.m_footer-menu h2 {
+    margin-bottom: 20px;
+}
+.m_footer-menu ul {
+    list-style: none;
+    font-size: 20px;
+    text-align: left;
+}
+.m_footer-menu ul a {
+    text-decoration: none;
+    color: black;
+}
+.m_footer-menu ul li {
+    margin-bottom: 10px;
+}
+.m_footer-companies h2 {
+    margin-bottom: 20px;
+}
+.m_footer-companies ul {
+    list-style: none;
+    font-size: 20px;
+    text-align: left;
+}
+.m_footer-companies ul a {
+    text-decoration: none;
+    color: black;
+}
+.m_footer-companies ul li {
+    margin-bottom: 10px;
+}
+.m_contact-center {
+    text-align: left;
+    margin-right: 85px;
+}
+.m_footer-business {
+    flex: 2;
+    padding-right: 90px;
+    padding-top: 20px;
+}
+.m_contact-center h2 {
+    margin-bottom: 20px;
+}

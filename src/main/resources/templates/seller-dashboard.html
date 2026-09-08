@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Seller Dashboard — Together Housing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+</head>
+<body class="dashboard-page">
+
+<!-- Header -->
+<header class="tg-header">
+  <div class="tg-header-inner">
+    <a class="tg-brand" href="home.html">
+      <img class="tg-brand-logo" src="images/Asset%201.png" alt="Together Group" />
+      <span class="tg-brand-title">Together Housing</span>
+    </a>
+
+    <div class="tg-header-actions">
+      <span class="badge badge-primary">Seller Portal</span>
+      <a class="user-link" href="menu.html"><i class="fas fa-user-circle"></i></a>
+      <a class="btn btn-ghost btn-sm" href="login.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </div>
+  </div>
+</header>
+
+<div class="dash-overlay"></div>
+
+<div class="dashboard-body">
+  <!-- Sidebar -->
+  <aside class="dash-sidebar">
+    <div class="dash-sidebar-user">
+      <div class="avatar avatar-lg" style="background:var(--accent); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700;">TH</div>
+      <div>
+        <div class="user-name">Together Housing</div>
+        <div class="user-role">Verified Seller</div>
+      </div>
+    </div>
+
+    <nav class="dash-nav">
+      <div class="dash-nav-label">Main Menu</div>
+      <a class="dash-nav-item active" data-section="overview" href="#overview">
+        <i class="fas fa-chart-line"></i> Overview
+      </a>
+      <a class="dash-nav-item" data-section="properties" href="#properties">
+        <i class="fas fa-building"></i> My Properties <span class="nav-badge">4</span>
+      </a>
+      <a class="dash-nav-item" data-section="add-property" href="#add-property">
+        <i class="fas fa-plus-circle"></i> Add Property
+      </a>
+      <a class="dash-nav-item" data-section="bookings" href="#bookings">
+        <i class="fas fa-handshake"></i> Booking Requests
+      </a>
+      <a class="dash-nav-item" data-section="chat" href="chat.html">
+        <i class="fas fa-comments"></i> Buyer Messages
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="dash-main">
+    <!-- 1. Overview Section -->
+    <section id="overview" class="dash-section active">
+      <div class="dash-page-header">
+        <div>
+          <h1>Seller Dashboard</h1>
+          <p>Manage your property listings, booking inquiries, and customer feedback.</p>
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="document.querySelector('[data-section=add-property]').click()"><i class="fas fa-plus"></i> Add New Property</button>
+      </div>
+
+      <div class="dash-stats">
+        <div class="stat-card">
+          <div class="stat-card-icon blue"><i class="fas fa-home"></i></div>
+          <div>
+            <div class="stat-card-value">4</div>
+            <div class="stat-card-label">Total Listings</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card-icon teal"><i class="fas fa-handshake"></i></div>
+          <div>
+            <div class="stat-card-value">2</div>
+            <div class="stat-card-label">Active Bookings</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card-icon green"><i class="fas fa-star"></i></div>
+          <div>
+            <div class="stat-card-value">4.9</div>
+            <div class="stat-card-label">Seller Rating (12)</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card-icon orange"><i class="fas fa-money-bill-wave"></i></div>
+          <div>
+            <div class="stat-card-value">Rs 1.95Cr</div>
+            <div class="stat-card-label">Portfolio Value</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Activity -->
+      <div class="dash-card">
+        <h3>Recent Booking Inquiries</h3>
+        <div class="table-wrapper" style="margin-top: 16px;">
+          <table class="tg-table">
+            <thead>
+            <tr>
+              <th>Buyer</th>
+              <th>Property</th>
+              <th>Plan</th>
+              <th>Date</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td>Munal Tamang</td>
+              <td>Bhaktapur Modern Villa</td>
+              <td>24 Months (20% Down)</td>
+              <td>Aug 29, 2026</td>
+              <td><span class="badge badge-success">Approved</span></td>
+              <td><a href="chat.html" class="btn btn-ghost btn-sm"><i class="fas fa-comment"></i> Chat</a></td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Properties Section -->
+    <section id="properties" class="dash-section">
+      <div class="dash-page-header">
+        <h1>My Listed Properties</h1>
+      </div>
+
+      <div class="dash-property-grid">
+        <div class="dash-property-card">
+          <img src="images/villa.jpg" alt="Villa" />
+          <div class="card-body">
+            <h4>Bhaktapur Modern Villa</h4>
+            <div class="price">Rs 30,00,000</div>
+            <p class="text-muted" style="font-size:0.85rem;"><i class="fas fa-map-marker-alt"></i> Thimi, Bhaktapur</p>
+            <div class="card-actions">
+              <button class="btn btn-ghost btn-sm" onclick="showToast('Property edit mode enabled', 'info')"><i class="fas fa-edit"></i> Edit</button>
+              <button class="btn btn-danger btn-sm" onclick="showToast('Property removed', 'error')"><i class="fas fa-trash"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="dash-property-card">
+          <img src="images/apartment.jpg" alt="Apartment" />
+          <div class="card-body">
+            <h4>Lalitpur Heights Apartment</h4>
+            <div class="price">Rs 45,00,000</div>
+            <p class="text-muted" style="font-size:0.85rem;"><i class="fas fa-map-marker-alt"></i> Godawari, Lalitpur</p>
+            <div class="card-actions">
+              <button class="btn btn-ghost btn-sm"><i class="fas fa-edit"></i> Edit</button>
+              <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Add Property Form -->
+    <section id="add-property" class="dash-section">
+      <div class="dash-page-header">
+        <h1>Add New Property Listing</h1>
+      </div>
+
+      <div class="dash-card" style="max-width: 650px;">
+        <form onsubmit="event.preventDefault(); showToast('Property submitted for admin approval!', 'success');">
+          <div class="form-group">
+            <label class="form-label">Property Title</label>
+            <input type="text" class="form-input" placeholder="e.g. Baneshwor Luxury Apartment" required />
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Property Type</label>
+              <select class="form-select">
+                <option value="house">House / Villa</option>
+                <option value="apartment">Apartment</option>
+                <option value="land">Land Plot</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Price (NPR)</label>
+              <input type="number" class="form-input" placeholder="3000000" required />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Location Address</label>
+            <input type="text" class="form-input" placeholder="City, Area, Ward No." required />
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Area (sq ft)</label>
+              <input type="text" class="form-input" placeholder="1000 sq ft" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Bedrooms</label>
+              <input type="number" class="form-input" placeholder="3" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Property Description</label>
+            <textarea class="form-textarea" rows="4" placeholder="Describe key features, road access, water supply..."></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Publish Property Listing <i class="fas fa-plus"></i></button>
+        </form>
+      </div>
+    </section>
+  </main>
+</div>
+
+<button class="dash-sidebar-toggle" aria-label="Toggle menu"><i class="fas fa-bars"></i></button>
+
+<script src="js/main.js"></script>
+</body>
+</html>

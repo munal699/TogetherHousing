@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Together Group — User Account & Options</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <style>
+    .menu-card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin: 32px 0;
+    }
+    .menu-card {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+      text-align: center;
+      transition: all var(--duration) var(--ease);
+      text-decoration: none;
+      color: inherit;
+    }
+    .menu-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--accent);
+    }
+    .menu-card i {
+      font-size: 32px;
+      color: var(--primary);
+      margin-bottom: 12px;
+    }
+    @media (max-width: 768px) {
+      .menu-card-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="tg-header" role="banner">
+  <div class="tg-header-inner">
+    <a class="tg-brand" href="home.html">
+      <img class="tg-brand-logo" src="images/Asset 1.png" alt="Together Group logo" />
+      <span class="tg-brand-title">Together Housing</span>
+    </a>
+
+    <nav class="tg-nav" role="navigation" aria-label="Main menu">
+      <ul class="tg-nav-list">
+        <li><a href="home.html">Home</a></li>
+        <li><a href="properties.html">Properties</a></li>
+        <li><a href="services.html">Our Services</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+
+    <div class="tg-header-actions">
+      <a class="tg-header-cta" href="login.html">Sign In</a>
+    </div>
+  </div>
+</header>
+
+<main class="container section-sm">
+  <div class="text-center" style="margin-bottom: 24px;">
+    <h1>Account Portal Options</h1>
+    <p class="text-muted">Select your destination or manage your settings</p>
+  </div>
+
+  <div class="menu-card-grid">
+    <a href="buyer-dashboard.html" class="menu-card">
+      <i class="fas fa-user-tie"></i>
+      <h3>Buyer Dashboard</h3>
+      <p class="text-muted" style="font-size:0.88rem;">Track bookings, installments, and receipts.</p>
+    </a>
+
+    <a href="seller-dashboard.html" class="menu-card">
+      <i class="fas fa-store"></i>
+      <h3>Seller Dashboard</h3>
+      <p class="text-muted" style="font-size:0.88rem;">Manage property listings and inquiries.</p>
+    </a>
+
+    <a href="admin-dashboard.html" class="menu-card">
+      <i class="fas fa-user-shield"></i>
+      <h3>Admin Panel</h3>
+      <p class="text-muted" style="font-size:0.88rem;">Full system management & report generation.</p>
+    </a>
+
+    <a href="chat.html" class="menu-card">
+      <i class="fas fa-comments"></i>
+      <h3>Messages & Chat</h3>
+      <p class="text-muted" style="font-size:0.88rem;">Communicate with buyers, sellers & admin.</p>
+    </a>
+
+    <a href="contact.html" class="menu-card">
+      <i class="fas fa-headset"></i>
+      <h3>Help & Support</h3>
+      <p class="text-muted" style="font-size:0.88rem;">Contact customer support center.</p>
+    </a>
+
+    <a href="login.html" class="menu-card">
+      <i class="fas fa-sign-out-alt" style="color:var(--danger);"></i>
+      <h3>Log In / Exit</h3>
+      <p class="text-muted" style="font-size:0.88rem;">Switch account or sign out.</p>
+    </a>
+  </div>
+</main>
+
+<footer class="tg-footer">
+  <div class="tg-footer-bottom">
+    <small>© <span class="js-year"></span> Together Group. All rights reserved.</small>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

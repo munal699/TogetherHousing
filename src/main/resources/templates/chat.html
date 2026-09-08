@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Together Housing — Messages & Chat</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/chat.css" />
+</head>
+<body>
+
+<!-- Header -->
+<header class="tg-header">
+  <div class="tg-header-inner">
+    <a class="tg-brand" href="home.html">
+      <img class="tg-brand-logo" src="images/Asset%201.png" alt="Together Group" />
+      <span class="tg-brand-title">Together Housing</span>
+    </a>
+
+    <div class="tg-header-actions">
+      <a class="btn btn-ghost btn-sm" href="buyer-dashboard.html"><i class="fas fa-tachometer-alt"></i> Back to Dashboard</a>
+    </div>
+  </div>
+</header>
+
+<!-- Chat Container -->
+<div class="chat-container">
+  <!-- Sidebar Contacts -->
+  <aside class="chat-sidebar">
+    <div class="chat-sidebar-header">Messages</div>
+    <div class="chat-list">
+      <div class="chat-item active">
+        <div class="avatar" style="background:var(--accent); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700;">TH</div>
+        <div>
+          <div class="chat-item-name">Together Housing</div>
+          <div class="chat-item-preview">Regarding Bhaktapur Villa booking...</div>
+        </div>
+      </div>
+
+      <div class="chat-item">
+        <div class="avatar" style="background:var(--primary); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700;">AD</div>
+        <div>
+          <div class="chat-item-name">Admin Support</div>
+          <div class="chat-item-preview">Your installment receipt is ready.</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Chat Window -->
+  <main class="chat-main-area">
+    <div class="chat-header">
+      <div class="avatar" style="background:var(--accent); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700;">TH</div>
+      <div>
+        <div style="font-weight:700;">Together Housing</div>
+        <small class="text-success"><i class="fas fa-circle" style="font-size:8px;"></i> Online</small>
+      </div>
+    </div>
+
+    <div id="chat-messages" class="chat-messages">
+      <div class="message-bubble incoming">
+        Hello Munal! Thank you for reserving Bhaktapur Modern Villa. Please let us know if you have any questions regarding your down payment or installment plan.
+        <div style="font-size:0.7rem; color:var(--muted); text-align:right; margin-top:4px;">10:30 AM</div>
+      </div>
+    </div>
+
+    <div class="chat-input-area">
+      <input type="text" id="chat-input" class="form-input" placeholder="Type your message here..." />
+      <button class="btn btn-primary" onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+    </div>
+  </main>
+</div>
+
+<script src="js/main.js"></script>
+<script src="js/chat.js"></script>
+</body>
+</html>

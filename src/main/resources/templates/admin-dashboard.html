@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard — Together Group</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+</head>
+<body class="dashboard-page">
+
+<!-- Header -->
+<header class="tg-header">
+  <div class="tg-header-inner">
+    <a class="tg-brand" href="home.html">
+      <img class="tg-brand-logo" src="images/Asset%201.png" alt="Together Group" />
+      <span class="tg-brand-title">Together group</span>
+    </a>
+
+    <div class="tg-header-actions">
+      <span class="badge badge-danger"><i class="fas fa-user-shield"></i> Admin System Control</span>
+      <a class="btn btn-ghost btn-sm" href="login.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </div>
+  </div>
+</header>
+
+<div class="dash-overlay"></div>
+
+<div class="dashboard-body">
+  <!-- Sidebar -->
+  <aside class="dash-sidebar">
+    <div class="dash-sidebar-user">
+      <div class="avatar avatar-lg" style="background:var(--primary); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700;">AD</div>
+      <div>
+        <div class="user-name">System Administrator</div>
+        <div class="user-role">Super Admin</div>
+      </div>
+    </div>
+
+    <nav class="dash-nav">
+      <div class="dash-nav-label">Management</div>
+      <a class="dash-nav-item active" data-section="overview" href="#overview">
+        <i class="fas fa-chart-pie"></i> Overview
+      </a>
+      <a class="dash-nav-item" data-section="users" href="#users">
+        <i class="fas fa-users"></i> Users & Sellers <span class="nav-badge">500+</span>
+      </a>
+      <a class="dash-nav-item" data-section="properties" href="#properties">
+        <i class="fas fa-building"></i> Property Listings <span class="nav-badge">12</span>
+      </a>
+      <a class="dash-nav-item" data-section="bookings" href="#bookings">
+        <i class="fas fa-file-contract"></i> All Bookings
+      </a>
+      <a class="dash-nav-item" data-section="installments" href="#installments">
+        <i class="fas fa-calculator"></i> Installment Monitor
+      </a>
+
+      <div class="dash-nav-label" style="margin-top:16px;">Reports & Data</div>
+      <a class="dash-nav-item" data-section="reports" href="#reports">
+        <i class="fas fa-chart-bar"></i> Analytics & Reports
+      </a>
+      <a class="dash-nav-item" data-section="chat" href="chat.html">
+        <i class="fas fa-comments"></i> System Support Chat
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="dash-main">
+    <!-- 1. Overview Section -->
+    <section id="overview" class="dash-section active">
+      <div class="dash-page-header">
+        <div>
+          <h1>Admin Control Panel</h1>
+          <p>System-wide metrics, user activity, property approvals, and revenue summaries.</p>
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="showToast('Exporting system summary PDF...', 'info')"><i class="fas fa-download"></i> Generate PDF Report</button>
+      </div>
+
+      <div class="dash-stats">
+        <div class="stat-card">
+          <div class="stat-card-icon blue"><i class="fas fa-users"></i></div>
+          <div>
+            <div class="stat-card-value">5,000+</div>
+            <div class="stat-card-label">Registered Members</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card-icon teal"><i class="fas fa-building"></i></div>
+          <div>
+            <div class="stat-card-value">20+</div>
+            <div class="stat-card-label">Active Companies / Listings</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card-icon green"><i class="fas fa-money-bill-wave"></i></div>
+          <div>
+            <div class="stat-card-value">10M+</div>
+            <div class="stat-card-label">Turnover (NPR)</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card-icon orange"><i class="fas fa-map-marked-alt"></i></div>
+          <div>
+            <div class="stat-card-value">10+</div>
+            <div class="stat-card-label">Operating Regions</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- System Activity Table -->
+      <div class="dash-card">
+        <div class="dash-card-header">
+          <h3>Recent System Activities</h3>
+          <span class="badge badge-accent">Live Log</span>
+        </div>
+
+        <div class="table-wrapper">
+          <table class="tg-table">
+            <thead>
+            <tr>
+              <th>Event</th>
+              <th>User / Entity</th>
+              <th>Role</th>
+              <th>Timestamp</th>
+              <th>Status</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td>Property Booking Reserved</td>
+              <td>Munal Tamang</td>
+              <td>Buyer</td>
+              <td>Aug 29, 2026 16:35</td>
+              <td><span class="badge badge-success">Completed</span></td>
+            </tr>
+            <tr>
+              <td>New Property Listed</td>
+              <td>Together Housing</td>
+              <td>Seller</td>
+              <td>Aug 29, 2026 15:10</td>
+              <td><span class="badge badge-warning">Pending Approval</span></td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Users Management -->
+    <section id="users" class="dash-section">
+      <div class="dash-page-header">
+        <h1>User & Seller Account Management</h1>
+      </div>
+
+      <div class="dash-toolbar">
+        <div class="dash-search">
+          <i class="fas fa-search"></i>
+          <input type="text" placeholder="Search user by name, email, role..." />
+        </div>
+        <button class="btn btn-primary btn-sm"><i class="fas fa-user-plus"></i> Add Account</button>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="tg-table">
+          <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>#USR-101</td>
+            <td>Munal Tamang</td>
+            <td>munal@example.com</td>
+            <td><span class="badge badge-accent">Buyer</span></td>
+            <td><span class="badge badge-success">Active</span></td>
+            <td>
+              <button class="btn btn-ghost btn-sm" onclick="showToast('Edit user details', 'info')"><i class="fas fa-edit"></i> Edit</button>
+              <button class="btn btn-danger btn-sm" onclick="showToast('User deactivated', 'error')"><i class="fas fa-ban"></i> Block</button>
+            </td>
+          </tr>
+          <tr>
+            <td>#USR-102</td>
+            <td>Together Housing</td>
+            <td>housing@togethergroup.gov</td>
+            <td><span class="badge badge-primary">Seller</span></td>
+            <td><span class="badge badge-success">Active</span></td>
+            <td>
+              <button class="btn btn-ghost btn-sm"><i class="fas fa-edit"></i> Edit</button>
+              <button class="btn btn-danger btn-sm"><i class="fas fa-ban"></i> Block</button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 3. Property Approvals -->
+    <section id="properties" class="dash-section">
+      <div class="dash-page-header">
+        <h1>Property Approval Queue</h1>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="tg-table">
+          <thead>
+          <tr>
+            <th>Property Title</th>
+            <th>Seller</th>
+            <th>Price</th>
+            <th>Location</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>Bhaktapur Modern Villa</td>
+            <td>Together Housing</td>
+            <td>Rs 30,00,000</td>
+            <td>Thimi, Bhaktapur</td>
+            <td><span class="badge badge-success">Approved</span></td>
+            <td><button class="btn btn-danger btn-sm">Remove</button></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 4. Reports & Analytics -->
+    <section id="reports" class="dash-section">
+      <div class="dash-page-header">
+        <h1>System Reports & Analytics</h1>
+      </div>
+
+      <div class="dash-stats">
+        <div class="stat-card" style="cursor:pointer;" onclick="showToast('Generating User Report PDF...', 'info')">
+          <div class="stat-card-icon blue"><i class="fas fa-file-pdf"></i></div>
+          <div>
+            <div style="font-weight:700;">User Accounts Report</div>
+            <small class="text-muted">Export all registered buyers & sellers</small>
+          </div>
+        </div>
+
+        <div class="stat-card" style="cursor:pointer;" onclick="showToast('Generating Financial Report PDF...', 'info')">
+          <div class="stat-card-icon green"><i class="fas fa-file-invoice-dollar"></i></div>
+          <div>
+            <div style="font-weight:700;">Installment & Revenue Report</div>
+            <small class="text-muted">Export installment ledger & due balances</small>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<button class="dash-sidebar-toggle" aria-label="Toggle menu"><i class="fas fa-bars"></i></button>
+
+<script src="js/main.js"></script>
+</body>
+</html>

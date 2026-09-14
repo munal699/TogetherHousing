@@ -25,7 +25,7 @@
     <div class="tg-header-actions">
       <span class="badge badge-primary">Seller Portal</span>
       <a class="user-link" href="menu.html"><i class="fas fa-user-circle"></i></a>
-      <a class="btn btn-ghost btn-sm" href="login.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+      <a class="btn btn-ghost btn-sm" th:href="@{/logout}"><i class="fas fa-sign-out-alt"></i> Logout</a>
     </div>
   </div>
 </header>
@@ -36,10 +36,12 @@
   <!-- Sidebar -->
   <aside class="dash-sidebar">
     <div class="dash-sidebar-user">
-      <div class="avatar avatar-lg" style="background:var(--accent); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700;">TH</div>
+      <div class="avatar avatar-lg" style="background:var(--accent); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700;">
+        <span th:text="${session.fullname != null ? #strings.substring(session.fullname, 0, 1).toUpperCase() : 'S'}">S</span>
+      </div>
       <div>
-        <div class="user-name">Together Housing</div>
-        <div class="user-role">Verified Seller</div>
+        <div class="user-name" th:text="${session.fullname ?: 'Property Seller'}">Together Housing</div>
+        <div class="user-role" th:text="${session.role ?: 'SELLER'}">Verified Seller</div>
       </div>
     </div>
 
@@ -137,6 +139,28 @@
           </table>
         </div>
       </div>
+      <!-- Notification Alert Center -->
+      <div class="dash-card" th:if="${notifications != null and !notifications.isEmpty()}" style="margin-top:20px;">
+        <div class="dash-card-header" style="display:flex; justify-content:space-between; align-items:center;">
+          <h3><i class="fas fa-bell" style="color:var(--warning);"></i> Status Notifications &amp; Alerts
+            <span th:if="${unreadCount != null and unreadCount > 0}" class="badge badge-danger" th:text="${unreadCount + ' new'}">0 new</span>
+          </h3>
+        </div>
+        <div style="max-height:300px; overflow-y:auto; margin-top:12px;">
+          <div th:each="n : ${notifications}" style="padding:12px 16px; border-radius:var(--radius); margin-bottom:8px; display:flex; align-items:flex-start; gap:12px;"
+               th:styleappend="${n.type == 'APPROVAL' ? 'background:#d4edda; border:1px solid #c3e6cb;' : (n.type == 'REJECTION' ? 'background:#f8d7da; border:1px solid #f5c6cb;' : 'background:var(--surface); border:1px solid var(--border);')}">
+            <i class="fas"
+               th:classappend="${n.type == 'APPROVAL' ? ' fa-check-circle' : (n.type == 'REJECTION' ? ' fa-times-circle' : ' fa-info-circle')}"
+               th:styleappend="${n.type == 'APPROVAL' ? 'color:#155724; font-size:1.2rem; margin-top:2px;' : (n.type == 'REJECTION' ? 'color:#721c24; font-size:1.2rem; margin-top:2px;' : 'color:var(--info); font-size:1.2rem; margin-top:2px;')}"></i>
+            <div style="flex:1;">
+              <div th:text="${n.message}" style="font-size:0.9rem; font-weight:500;"
+                   th:styleappend="${n.type == 'APPROVAL' ? 'color:#155724;' : (n.type == 'REJECTION' ? 'color:#721c24;' : '')}">Notification message</div>
+              <small class="text-muted" th:text="${#temporals.format(n.createdAt, 'MMM dd, yyyy hh:mm a')}">Date</small>
+            </div>
+            <span class="badge" th:classappend="${n.type == 'APPROVAL' ? ' badge-success' : (n.type == 'REJECTION' ? ' badge-danger' : ' badge-accent')}" th:text="${n.type}">TYPE</span>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- 2. Properties Section -->
@@ -145,30 +169,32 @@
         <h1>My Listed Properties</h1>
       </div>
 
-      <div class="dash-property-grid">
-        <div class="dash-property-card">
-          <img src="images/villa.jpg" alt="Villa" />
-          <div class="card-body">
-            <h4>Bhaktapur Modern Villa</h4>
-            <div class="price">Rs 30,00,000</div>
-            <p class="text-muted" style="font-size:0.85rem;"><i class="fas fa-map-marker-alt"></i> Thimi, Bhaktapur</p>
-            <div class="card-actions">
-              <button class="btn btn-ghost btn-sm" onclick="showToast('Property edit mode enabled', 'info')"><i class="fas fa-edit"></i> Edit</button>
-              <button class="btn btn-danger btn-sm" onclick="showToast('Property removed', 'error')"><i class="fas fa-trash"></i></button>
-            </div>
-          </div>
-        </div>
+      <div th:if="${param.success != null and param.success[0] == 'property_added'}"
+           style="color:#155724; background-color:#d4edda; border:1px solid #c3e6cb; padding:12px 16px; border-radius:var(--radius); margin-bottom:20px; font-weight:600;">
+        <i class="fas fa-check-circle"></i> Property submitted successfully! It is currently <strong>PENDING</strong> administrator approval.
+      </div>
 
-        <div class="dash-property-card">
-          <img src="images/apartment.jpg" alt="Apartment" />
+      <p class="text-muted" th:if="${myProperties == null or myProperties.isEmpty()}" style="padding:20px; background:var(--surface); border-radius:var(--radius);">
+        <i class="fas fa-info-circle"></i> You have not listed any properties yet. Click <strong>Add New Property</strong> below to submit your first listing.
+      </p>
+
+      <div class="dash-property-grid" th:if="${myProperties != null and !myProperties.isEmpty()}">
+        <div class="dash-property-card" th:each="p : ${myProperties}">
+          <img th:src="${p.image != null and !p.image.isEmpty() ? (p.image.startsWith('/') ? p.image : '/' + p.image) : '/images/villa.jpg'}"
+               alt="Property Image"
+               onerror="this.onerror=null; this.src='/images/villa.jpg';" />
           <div class="card-body">
-            <h4>Lalitpur Heights Apartment</h4>
-            <div class="price">Rs 45,00,000</div>
-            <p class="text-muted" style="font-size:0.85rem;"><i class="fas fa-map-marker-alt"></i> Godawari, Lalitpur</p>
-            <div class="card-actions">
-              <button class="btn btn-ghost btn-sm"><i class="fas fa-edit"></i> Edit</button>
-              <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+            <div class="flex justify-between items-center mb-1">
+              <h4 th:text="${p.title}">Property Title</h4>
+              <span class="badge"
+                    th:classappend="${p.status.name() == 'APPROVED' ? ' badge-success' : (p.status.name() == 'REJECTED' ? ' badge-danger' : ' badge-warning')}"
+                    th:text="${p.status}">PENDING</span>
             </div>
+            <div class="price" th:text="${p.priceFormatted ?: 'Rs ' + p.price}">Rs 30,00,000</div>
+            <p class="text-muted" style="font-size:0.85rem;"><i class="fas fa-map-marker-alt"></i> <span th:text="${p.location}">Location</span></p>
+            <p th:if="${p.rejectionReason != null and !p.rejectionReason.isEmpty()}" style="color:var(--danger); font-size:0.8rem; margin-top:4px;">
+              <strong>Rejection Reason:</strong> <span th:text="${p.rejectionReason}">Reason</span>
+            </p>
           </div>
         </div>
       </div>
@@ -181,49 +207,62 @@
       </div>
 
       <div class="dash-card" style="max-width: 650px;">
-        <form onsubmit="event.preventDefault(); showToast('Property submitted for admin approval!', 'success');">
+        <form th:action="@{/seller/property/add}" method="post" enctype="multipart/form-data">
           <div class="form-group">
-            <label class="form-label">Property Title</label>
-            <input type="text" class="form-input" placeholder="e.g. Baneshwor Luxury Apartment" required />
+            <label class="form-label" for="title">Property Title</label>
+            <input type="text" id="title" name="title" class="form-input" placeholder="e.g. Baneshwor Luxury Apartment" required />
           </div>
 
           <div class="form-row">
             <div class="form-group">
-              <label class="form-label">Property Type</label>
-              <select class="form-select">
+              <label class="form-label" for="propertyType">Property Type</label>
+              <select id="propertyType" name="propertyType" class="form-select">
                 <option value="house">House / Villa</option>
                 <option value="apartment">Apartment</option>
                 <option value="land">Land Plot</option>
               </select>
             </div>
             <div class="form-group">
-              <label class="form-label">Price (NPR)</label>
-              <input type="number" class="form-input" placeholder="3000000" required />
+              <label class="form-label" for="price">Price (NPR)</label>
+              <input type="number" id="price" name="price" class="form-input" placeholder="3000000" required />
             </div>
           </div>
 
           <div class="form-group">
-            <label class="form-label">Location Address</label>
-            <input type="text" class="form-input" placeholder="City, Area, Ward No." required />
+            <label class="form-label" for="location">Location Address</label>
+            <input type="text" id="location" name="location" class="form-input" placeholder="City, Area, Ward No." required />
           </div>
 
           <div class="form-row">
             <div class="form-group">
-              <label class="form-label">Area (sq ft)</label>
-              <input type="text" class="form-input" placeholder="1000 sq ft" />
+              <label class="form-label" for="area">Area (sq ft / Aana)</label>
+              <input type="text" id="area" name="area" class="form-input" placeholder="1000 sq ft or 4 Aana" />
             </div>
             <div class="form-group">
-              <label class="form-label">Bedrooms</label>
-              <input type="number" class="form-input" placeholder="3" />
+              <label class="form-label" for="bedrooms">Bedrooms</label>
+              <input type="number" id="bedrooms" name="bedrooms" class="form-input" placeholder="3" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="bathrooms">Bathrooms</label>
+              <input type="number" id="bathrooms" name="bathrooms" class="form-input" placeholder="2" />
             </div>
           </div>
 
           <div class="form-group">
-            <label class="form-label">Property Description</label>
-            <textarea class="form-textarea" rows="4" placeholder="Describe key features, road access, water supply..."></textarea>
+            <label class="form-label" for="description">Property Description</label>
+            <textarea id="description" name="description" class="form-textarea" rows="4" placeholder="Describe key features, road access, water supply..."></textarea>
           </div>
 
-          <button type="submit" class="btn btn-primary">Publish Property Listing <i class="fas fa-plus"></i></button>
+          <div class="form-group">
+            <label class="form-label" for="imageFile"><i class="fas fa-image" style="color:var(--accent);"></i> Property Image</label>
+            <input type="file" id="imageFile" name="imageFile" class="form-input" accept="image/*" style="padding:8px;" />
+            <small class="text-muted">Upload a photo of your property (JPG, PNG — max 10MB). If no image is uploaded, a default image will be used.</small>
+            <div id="image-preview" style="margin-top:10px; display:none;">
+              <img id="preview-img" src="" alt="Preview" style="max-width:100%; max-height:200px; border-radius:var(--radius); border:2px solid var(--border);" />
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Submit Property Listing <i class="fas fa-plus"></i></button>
         </form>
       </div>
     </section>
@@ -233,5 +272,26 @@
 <button class="dash-sidebar-toggle" aria-label="Toggle menu"><i class="fas fa-bars"></i></button>
 
 <script src="js/main.js"></script>
+<script>
+  // Image preview for property upload
+  const imageInput = document.getElementById('imageFile');
+  if (imageInput) {
+    imageInput.addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      const preview = document.getElementById('image-preview');
+      const previewImg = document.getElementById('preview-img');
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(ev) {
+          previewImg.src = ev.target.result;
+          preview.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+      } else {
+        preview.style.display = 'none';
+      }
+    });
+  }
+</script>
 </body>
 </html>

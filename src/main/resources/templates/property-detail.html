@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -145,17 +145,22 @@
   <div class="detail-grid">
     <!-- Left Info -->
     <div>
-      <h1 id="prop-title">Bhaktapur Modern Luxury Villa</h1>
-      <p class="text-muted" style="margin-bottom: 16px;"><i class="fas fa-map-marker-alt" style="color:var(--accent);"></i> <span id="prop-loc">Thimi, Bhaktapur</span></p>
+      <h1 id="prop-title" th:text="${property != null ? property.title : 'Bhaktapur Modern Luxury Villa'}">Bhaktapur Modern Luxury Villa</h1>
+      <p class="text-muted" style="margin-bottom: 16px;">
+        <i class="fas fa-map-marker-alt" style="color:var(--accent);"></i>
+        <span id="prop-loc" th:text="${property != null ? property.location : 'Thimi, Bhaktapur'}">Thimi, Bhaktapur</span>
+      </p>
 
       <!-- Gallery -->
       <div>
-        <img id="main-image" class="main-img" src="images/villa.jpg" alt="Property Main View" />
+        <img id="main-image" class="main-img"
+             th:src="@{'/' + ${property != null && property.image != null ? property.image : 'images/villa.jpg'}}"
+             alt="Property Main View" />
         <div class="thumb-grid">
-          <img class="thumb-img active" src="images/villa.jpg" onclick="changeImage(this.src, this)" />
-          <img class="thumb-img" src="images/apartment.jpg" onclick="changeImage(this.src, this)" />
-          <img class="thumb-img" src="images/land.jpg" onclick="changeImage(this.src, this)" />
-          <img class="thumb-img" src="images/community.jpg" onclick="changeImage(this.src, this)" />
+          <img class="thumb-img active" th:src="@{'/' + ${property != null && property.image != null ? property.image : 'images/villa.jpg'}}" onclick="changeImage(this.src, this)" />
+          <img class="thumb-img" th:src="@{/images/apartment.jpg}" onclick="changeImage(this.src, this)" />
+          <img class="thumb-img" th:src="@{/images/land.jpg}" onclick="changeImage(this.src, this)" />
+          <img class="thumb-img" th:src="@{/images/community.jpg}" onclick="changeImage(this.src, this)" />
         </div>
       </div>
 
@@ -166,28 +171,28 @@
       <div class="flex gap-lg" style="margin: 16px 0; flex-wrap: wrap;">
         <div class="card-glass" style="padding:16px; flex:1; min-width:140px; text-align:center;">
           <i class="fas fa-ruler-combined" style="font-size:24px; color:var(--accent);"></i>
-          <div style="font-weight:700; margin-top:6px;">1,000 sq ft</div>
+          <div style="font-weight:700; margin-top:6px;" th:text="${property != null && property.area != null ? property.area : '1,000 sq ft'}">1,000 sq ft</div>
           <small class="text-muted">Total Area</small>
         </div>
         <div class="card-glass" style="padding:16px; flex:1; min-width:140px; text-align:center;">
           <i class="fas fa-bed" style="font-size:24px; color:var(--accent);"></i>
-          <div style="font-weight:700; margin-top:6px;">3 Bedrooms</div>
+          <div style="font-weight:700; margin-top:6px;" th:text="${property != null && property.bedrooms != null ? property.bedrooms + ' Bedrooms' : '3 Bedrooms'}">3 Bedrooms</div>
           <small class="text-muted">Bedrooms</small>
         </div>
         <div class="card-glass" style="padding:16px; flex:1; min-width:140px; text-align:center;">
           <i class="fas fa-bath" style="font-size:24px; color:var(--accent);"></i>
-          <div style="font-weight:700; margin-top:6px;">2 Bathrooms</div>
+          <div style="font-weight:700; margin-top:6px;" th:text="${property != null && property.bathrooms != null ? property.bathrooms + ' Bathrooms' : '2 Bathrooms'}">2 Bathrooms</div>
           <small class="text-muted">Bathrooms</small>
         </div>
         <div class="card-glass" style="padding:16px; flex:1; min-width:140px; text-align:center;">
-          <i class="fas fa-calendar-alt" style="font-size:24px; color:var(--accent);"></i>
-          <div style="font-weight:700; margin-top:6px;">Built 2024</div>
-          <small class="text-muted">Year Built</small>
+          <i class="fas fa-building" style="font-size:24px; color:var(--accent);"></i>
+          <div style="font-weight:700; margin-top:6px;" th:text="${property != null && property.propertyType != null ? #strings.capitalize(property.propertyType) : 'Residential'}">Residential</div>
+          <small class="text-muted">Property Type</small>
         </div>
       </div>
 
       <h3>Description</h3>
-      <p style="margin-top: 8px;">
+      <p style="margin-top: 8px;" th:text="${property != null && property.description != null && !property.description.isEmpty() ? property.description : 'This beautiful property is situated in a prime peaceful neighborhood with 24/7 water supply, electricity connection, drainage, and paved road access. Perfect for families looking for quality living with transparent installment options.'}">
         This beautiful 3-bedroom modern villa is situated in the peaceful neighborhood of Thimi, Bhaktapur. Features 24/7 water supply, electricity connection, drainage, paved road access, and scenic valley views. Perfect for families looking for quiet suburban living with easy access to Kathmandu highway.
       </p>
 
@@ -253,42 +258,55 @@
     <!-- Right Sidebar Card -->
     <aside>
       <div class="booking-sidebar-card">
-        <div class="badge badge-accent mb-2">Installment Plan Eligible</div>
+        <div class="badge badge-accent mb-2" th:text="${property != null && property.installmentAvailable ? 'Installment Plan Eligible' : 'Full Payment'}">Installment Plan Eligible</div>
         <div style="font-size: 0.9rem; color: var(--muted);">Property Price</div>
-        <div style="font-size: 2rem; font-weight: 800; color: var(--primary); margin: 4px 0 16px;">Rs 30,00,000</div>
+        <div style="font-size: 2rem; font-weight: 800; color: var(--primary); margin: 4px 0 16px;"
+             th:text="${property != null ? (property.priceFormatted ?: 'Rs ' + property.price) : 'Rs 30,00,000'}">Rs 30,00,000</div>
 
         <div style="background: var(--bg); padding: 16px; border-radius: var(--radius); margin-bottom: 20px;">
           <div class="flex justify-between" style="font-size: 0.88rem; margin-bottom: 6px;">
             <span>Min. Down Payment (20%)</span>
-            <strong style="color: var(--primary);">Rs 6,00,000</strong>
+            <strong style="color: var(--primary);"
+                    th:text="${property != null && property.price != null ? 'Rs ' + #numbers.formatDecimal(property.price * 0.20, 0, 'COMMA', 0, 'POINT') : 'Rs 6,00,000'}">Rs 6,00,000</strong>
           </div>
           <div class="flex justify-between" style="font-size: 0.88rem;">
             <span>Monthly (24 Months)</span>
-            <strong style="color: var(--accent);">Rs 1,00,000/mo</strong>
+            <strong style="color: var(--accent);"
+                    th:text="${property != null && property.price != null ? 'Rs ' + #numbers.formatDecimal((property.price * 0.80) / 24, 0, 'COMMA', 0, 'POINT') + '/mo' : 'Rs 1,00,000/mo'}">Rs 1,00,000/mo</strong>
           </div>
         </div>
 
         <!-- Schedule Modal Trigger Button -->
-        <button class="btn btn-ghost btn-sm" style="width: 100%; margin-bottom: 12px;" onclick="generateInstallmentScheduleModal(3000000, 20, 24, 'Bhaktapur Modern Luxury Villa')">
+        <button class="btn btn-ghost btn-sm" style="width: 100%; margin-bottom: 12px;"
+                th:onclick="${property != null ? 'generateInstallmentScheduleModal(' + property.price + ', 20, 24, \'' + property.title + '\')' : 'generateInstallmentScheduleModal(3000000, 20, 24, \'Bhaktapur Modern Luxury Villa\')'}">
           <i class="fas fa-calendar-alt"></i> View Full 24-Month Schedule
         </button>
 
-        <a href="booking.html?id=1" class="btn btn-primary btn-lg" style="width: 100%; margin-bottom: 12px;">
+        <a th:href="@{/booking(id=${property != null ? property.id : 1})}" class="btn btn-primary btn-lg" style="width: 100%; margin-bottom: 12px;">
           Book This Property <i class="fas fa-arrow-right"></i>
         </a>
 
-        <a href="chat.html" class="btn btn-outline" style="width: 100%;">
+        <a th:if="${seller != null}"
+           th:href="@{/chat/{userId}(userId=${seller.id})}"
+           class="btn btn-outline"
+           style="width: 100%;">
           <i class="fas fa-comments"></i> Chat with Seller
         </a>
 
         <hr class="divider" />
 
         <!-- Seller Info -->
-        <div class="flex items-center gap" style="margin-top: 16px;">
-          <div class="avatar avatar-lg" style="background:var(--primary); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700;">TH</div>
+        <div class="flex items-center gap" style="margin-top: 16px;" th:if="${seller != null}">
+          <div class="avatar avatar-lg" style="background:var(--primary); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700;"
+               th:text="${#strings.substring(seller.fullname, 0, 1).toUpperCase()}">TH</div>
           <div>
-            <div style="font-weight:700;">Together Housing</div>
-            <small class="text-muted">Verified Property Manager</small>
+            <div style="font-weight:700;" th:text="${seller.fullname}">
+              Seller Name
+            </div>
+
+            <small class="text-muted" th:text="${seller.role}">
+              Seller
+            </small>
             <div class="stars"><i class="fas fa-star"></i> 4.9 (12 reviews)</div>
           </div>
         </div>

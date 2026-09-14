@@ -11,12 +11,16 @@ import org.springframework.ui.Model;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
-@RequiredArgsConstructor
 public class SignupController {
 
     private final userRepository uRepo;
+
+    public SignupController(userRepository uRepo) {
+        this.uRepo = uRepo;
+    }
 
     // Open signup page
     @GetMapping("/signup")
@@ -45,7 +49,7 @@ public class SignupController {
         //md5 algorithm, this is basic algorithm, anyone can hack this
 
         // Check if email already exists
-        if (uRepo.existsByEmailAndPassword(email,hashPassword)) {
+        if (uRepo.existsByEmail(email)) {
             return "redirect:/signup?error=email";
         }
 
@@ -56,7 +60,7 @@ public class SignupController {
         user.setEmail(email);
         user.setPhone(phone);
         user.setAddress(address);
-        user.setPassword(password);
+        user.setPassword(hashPassword);
         user.setRole(role);
 
         // Save user to TiDB
@@ -74,22 +78,48 @@ public class SignupController {
         // Convert entered password into MD5 hash
         String hashPassword = DigestUtils.md5DigestAsHex(password.getBytes());
 
-        // Check email and password in database
+        // Check email & password in database
         if (uRepo.existsByEmailAndPassword(email, hashPassword)) {
 
-            // Create session
-            HttpSession session = request.getSession();
+            UserTbl user = uRepo.findByEmail(email).orElse(null);
 
-            // Store logged-in user's email in session
-            session.setAttribute("email", email);
+            if (user != null) {
+                // Create session
+                HttpSession session = request.getSession();
 
-            // Login successful
-            return "home";
+                // Store logged-in user details in session
+                session.setAttribute("user", user);
+                session.setAttribute("email", user.getEmail());
+                session.setAttribute("userId", user.getId());
+                session.setAttribute("fullname", user.getFullname());
+                session.setAttribute("role", user.getRole());
+
+                String role = user.getRole() != null ? user.getRole().toUpperCase().trim() : "";
+
+                // Redirect based on user role
+                if ("BUYER".equals(role)) {
+                    return "redirect:/buyer-dashboard";
+                } else if ("SELLER".equals(role)) {
+                    return "redirect:/seller-dashboard";
+                } else if ("ADMIN".equals(role)) {
+                    return "redirect:/admin-dashboard";
+                }
+
+                return "redirect:/home";
+            }
         }
 
         // Login failed
         m.addAttribute("error", "Email or password is incorrect");
-
         return "loginPage";
+    }
+
+    // Logout endpoint
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        if (session != null) {
+            session.invalidate();
+        }
+        return "redirect:/login?logout=true";
     }
 }

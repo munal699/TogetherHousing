@@ -67,6 +67,22 @@
         <h1 class="auth-title">Welcome Back</h1>
         <p class="auth-subtitle">Select your account role to sign in</p>
 
+        <span th:if="${param.success}"
+              style="color:green; display:block; width:100%; text-align:center; margin:0 auto 18px auto; font-size:14px; font-weight:500;">
+            Signup successful! You can now login.
+        </span>
+        <span th:if="${param.logout}"
+              style="color:green; display:block; width:100%; text-align:center; margin:0 auto 18px auto; font-size:14px; font-weight:500;">
+            You have been logged out successfully.
+        </span>
+        <span th:if="${param.error != null and param.error[0] == 'unauthorized'}"
+              style="color:red; display:block; width:100%; text-align:center; margin:0 auto 18px auto; font-size:14px; font-weight:500;">
+            Please log in with the appropriate account to access that page.
+        </span>
+        <span th:if="${error}"
+              style="color:red; display:block; width:100%; text-align:center; margin:0 auto 18px auto; font-size:14px; font-weight:500;"
+              th:text="${error}">
+        </span>
         <!-- Role Tabs Selector -->
         <div class="auth-roles" role="tablist">
             <button type="button" class="auth-role active" data-role="buyer" role="tab">
@@ -80,7 +96,7 @@
             </button>
         </div>
 
-        <form class="auth-form" id="login-form" action="#" method="post" onsubmit="handleLogin(event)">
+        <form class="auth-form" id="login-form" action="/login" method="post">
             <input type="hidden" id="role-input" name="role" value="buyer" />
 
             <div class="form-group">
@@ -136,17 +152,6 @@
 </footer>
 
 <script src="js/main.js"></script>
-<script>
-    function handleLogin(e) {
-        e.preventDefault();
-        const role = document.getElementById('role-input').value;
-        showToast(`Logging in as ${role.toUpperCase()}...`, 'success');
-        setTimeout(() => {
-            if (role === 'admin') window.location.href = 'admin-dashboard.html';
-            else if (role === 'seller') window.location.href = 'seller-dashboard.html';
-            else window.location.href = '/buyer-dashboard.html';
-        }, 1000);
-    }
-</script>
+
 </body>
 </html>

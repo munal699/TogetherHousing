@@ -527,7 +527,11 @@ function renderProperties(props) {
             <span class="stars"><i class="fas fa-star"></i> ${p.rating}</span>
           </div>
           <div class="flex gap-sm" style="margin-top: 12px;">
-            <a href="property-detail.html?id=${p.id}" class="btn btn-outline btn-sm" style="flex:1;">View Details</a>
+           <a href="/property-detail?id=${p.id}&seller=${encodeURIComponent(p.seller)}"
+   class="btn btn-outline btn-sm"
+   style="flex:1;">
+   View Details
+</a>
             <a href="booking.html?id=${p.id}" class="btn btn-primary btn-sm" style="flex:1;">Book Now</a>
           </div>
         </div>

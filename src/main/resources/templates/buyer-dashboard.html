@@ -25,7 +25,7 @@
     <div class="tg-header-actions">
       <span class="badge badge-accent">Buyer Portal</span>
       <a class="user-link" href="menu.html"><i class="fas fa-user-circle"></i></a>
-      <a class="btn btn-ghost btn-sm" href="login.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+      <a class="btn btn-ghost btn-sm" th:href="@{/logout}"><i class="fas fa-sign-out-alt"></i> Logout</a>
     </div>
   </div>
 </header>
@@ -36,10 +36,12 @@
   <!-- Sidebar -->
   <aside class="dash-sidebar">
     <div class="dash-sidebar-user">
-      <div class="avatar avatar-lg" style="background:var(--primary); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700;">MT</div>
+      <div class="avatar avatar-lg" style="background:var(--primary); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700;">
+        <span th:text="${session.fullname != null ? #strings.substring(session.fullname, 0, 1).toUpperCase() : 'B'}">B</span>
+      </div>
       <div>
-        <div class="user-name">Munal Tamang</div>
-        <div class="user-role">Property Buyer</div>
+        <div class="user-name" th:text="${session.fullname ?: 'Property Buyer'}">Munal Tamang</div>
+        <div class="user-role" th:text="${session.role ?: 'BUYER'}">Property Buyer</div>
       </div>
     </div>
 

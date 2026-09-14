@@ -1,82 +1,276 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
   <title>Together Housing — Messages & Chat</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  <link rel="stylesheet" href="css/global.css" />
-  <link rel="stylesheet" href="css/components.css" />
-  <link rel="stylesheet" href="css/chat.css" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;600;700&display=swap"
+        rel="stylesheet"/>
+
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
+  <link rel="stylesheet" th:href="@{/css/global.css}"/>
+  <link rel="stylesheet" th:href="@{/css/components.css}"/>
+  <link rel="stylesheet" th:href="@{/css/chat.css}"/>
 </head>
+
 <body>
 
-<!-- Header -->
+<!-- HEADER-->
+
 <header class="tg-header">
+
   <div class="tg-header-inner">
-    <a class="tg-brand" href="home.html">
-      <img class="tg-brand-logo" src="images/Asset%201.png" alt="Together Group" />
-      <span class="tg-brand-title">Together Housing</span>
+
+    <a class="tg-brand" th:href="@{/home}">
+      <img class="tg-brand-logo"
+           th:src="@{/images/Asset%201.png}"
+           alt="Together Group"/>
+
+      <span class="tg-brand-title">
+        Together Housing
+      </span>
     </a>
 
     <div class="tg-header-actions">
-      <a class="btn btn-ghost btn-sm" href="buyer-dashboard.html"><i class="fas fa-tachometer-alt"></i> Back to Dashboard</a>
+
+      <a class="btn btn-ghost btn-sm"
+         th:href="@{/home}">
+        <i class="fas fa-arrow-left"></i>
+        Back to Dashboard
+      </a>
+
     </div>
+
   </div>
+
 </header>
 
-<!-- Chat Container -->
+
+<!--CHAT CONTAINER -->
+
 <div class="chat-container">
-  <!-- Sidebar Contacts -->
+
+
+  <!-- SIDEBAR  -->
+
   <aside class="chat-sidebar">
-    <div class="chat-sidebar-header">Messages</div>
+
+    <div class="chat-sidebar-header">
+      Messages
+    </div>
+
+
     <div class="chat-list">
+
+      <!-- Current conversation -->
+
       <div class="chat-item active">
-        <div class="avatar" style="background:var(--accent); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700;">TH</div>
-        <div>
-          <div class="chat-item-name">Together Housing</div>
-          <div class="chat-item-preview">Regarding Bhaktapur Villa booking...</div>
+
+        <div class="avatar"
+             style="background:var(--accent);
+                    color:#fff;
+                    display:flex;
+                    align-items:center;
+                    justify-content:center;
+                    font-weight:700;">
+
+          <span th:text="${#strings.substring(otherUser.fullname, 0, 1).toUpperCase()}">
+            U
+          </span>
+
         </div>
+
+
+        <div>
+
+          <div class="chat-item-name"
+               th:text="${otherUser.fullname}">
+            User
+          </div>
+
+          <div class="chat-item-preview">
+
+            <span th:if="${messages != null and !messages.isEmpty()}"
+                  th:text="${messages.get(messages.size() - 1).message}">
+              Last message
+            </span>
+
+            <span th:if="${messages == null or messages.isEmpty()}">
+              No messages yet
+            </span>
+
+          </div>
+
+        </div>
+
       </div>
 
-      <div class="chat-item">
-        <div class="avatar" style="background:var(--primary); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700;">AD</div>
-        <div>
-          <div class="chat-item-name">Admin Support</div>
-          <div class="chat-item-preview">Your installment receipt is ready.</div>
-        </div>
-      </div>
     </div>
+
   </aside>
 
-  <!-- Main Chat Window -->
+
+  <!-- MAIN CHAT -->
+
   <main class="chat-main-area">
+
+
+    <!-- CHAT HEADER -->
+
     <div class="chat-header">
-      <div class="avatar" style="background:var(--accent); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700;">TH</div>
+
+      <div class="avatar"
+           style="background:var(--accent);
+                  color:#fff;
+                  display:flex;
+                  align-items:center;
+                  justify-content:center;
+                  font-weight:700;">
+
+        <span th:text="${#strings.substring(otherUser.fullname, 0, 1).toUpperCase()}">
+          U
+        </span>
+
+      </div>
+
+
       <div>
-        <div style="font-weight:700;">Together Housing</div>
-        <small class="text-success"><i class="fas fa-circle" style="font-size:8px;"></i> Online</small>
+
+        <div style="font-weight:700;"
+             th:text="${otherUser.fullname}">
+          User
+        </div>
+
+        <small class="text-success">
+
+          <i class="fas fa-circle"
+             style="font-size:8px;">
+          </i>
+
+          Available
+
+        </small>
+
       </div>
+
     </div>
 
-    <div id="chat-messages" class="chat-messages">
-      <div class="message-bubble incoming">
-        Hello Munal! Thank you for reserving Bhaktapur Modern Villa. Please let us know if you have any questions regarding your down payment or installment plan.
-        <div style="font-size:0.7rem; color:var(--muted); text-align:right; margin-top:4px;">10:30 AM</div>
+
+    <!--MESSAGES  -->
+
+    <div id="chat-messages"
+         class="chat-messages">
+
+
+      <!-- No messages -->
+
+      <div th:if="${messages == null or messages.isEmpty()}"
+           style="text-align:center;
+                  color:var(--muted);
+                  padding:30px;">
+
+        <i class="fas fa-comments"
+           style="font-size:30px;
+                  margin-bottom:10px;">
+        </i>
+
+        <p>
+          No messages yet. Start the conversation.
+        </p>
+
       </div>
+
+
+      <!-- Messages from database -->
+
+      <div th:each="msg : ${messages}"
+           class="message-bubble"
+           th:classappend="${msg.sender.id == loggedInUser.id} ? ' outgoing' : ' incoming'">
+
+        <div th:text="${msg.message}">
+          Message
+        </div>
+
+
+        <div style="font-size:0.7rem;
+                    color:var(--muted);
+                    text-align:right;
+                    margin-top:4px;">
+
+          <span th:text="${#temporals.format(msg.sentAt, 'hh:mm a')}">
+            10:30 AM
+          </span>
+
+        </div>
+
+      </div>
+
     </div>
 
-    <div class="chat-input-area">
-      <input type="text" id="chat-input" class="form-input" placeholder="Type your message here..." />
-      <button class="btn btn-primary" onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
-    </div>
+
+    <!-- MESSAGE INPUT --->
+
+    <form class="chat-input-area"
+          th:action="@{/chat/send}"
+          method="post">
+
+      <!-- Receiver ID -->
+
+      <input type="hidden"
+             name="receiverId"
+             th:value="${otherUser.id}"/>
+
+
+      <!-- Message -->
+
+      <input type="text"
+             id="chat-input"
+             name="message"
+             class="form-input"
+             placeholder="Type your message here..."
+             autocomplete="off"
+             required/>
+
+
+      <!-- Send -->
+
+      <button type="submit"
+              class="btn btn-primary">
+
+        <i class="fas fa-paper-plane"></i>
+
+      </button>
+
+    </form>
+
   </main>
+
 </div>
 
-<script src="js/main.js"></script>
-<script src="js/chat.js"></script>
+
+<!--JAVASCRIPT  -->
+
+<script th:src="@{/js/main.js}"></script>
+
+<script>
+
+  // Automatically scroll to the latest message
+  const chatMessages = document.getElementById("chat-messages");
+
+  if (chatMessages) {
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
+
+</script>
+
 </body>
 </html>

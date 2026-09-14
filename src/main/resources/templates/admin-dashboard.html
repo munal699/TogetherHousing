@@ -24,7 +24,7 @@
 
     <div class="tg-header-actions">
       <span class="badge badge-danger"><i class="fas fa-user-shield"></i> Admin System Control</span>
-      <a class="btn btn-ghost btn-sm" href="login.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+      <a class="btn btn-ghost btn-sm" th:href="@{/logout}"><i class="fas fa-sign-out-alt"></i> Logout</a>
     </div>
   </div>
 </header>
@@ -35,10 +35,12 @@
   <!-- Sidebar -->
   <aside class="dash-sidebar">
     <div class="dash-sidebar-user">
-      <div class="avatar avatar-lg" style="background:var(--primary); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700;">AD</div>
+      <div class="avatar avatar-lg" style="background:var(--primary); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700;">
+        <span th:text="${session.fullname != null ? #strings.substring(session.fullname, 0, 1).toUpperCase() : 'A'}">A</span>
+      </div>
       <div>
-        <div class="user-name">System Administrator</div>
-        <div class="user-role">Super Admin</div>
+        <div class="user-name" th:text="${session.fullname ?: 'System Administrator'}">System Administrator</div>
+        <div class="user-role" th:text="${session.role ?: 'ADMIN'}">Super Admin</div>
       </div>
     </div>
 
@@ -166,7 +168,6 @@
           <i class="fas fa-search"></i>
           <input type="text" placeholder="Search user by name, email, role..." />
         </div>
-        <button class="btn btn-primary btn-sm"><i class="fas fa-user-plus"></i> Add Account</button>
       </div>
 
       <div class="table-wrapper">
@@ -176,33 +177,23 @@
             <th>ID</th>
             <th>Name</th>
             <th>Email</th>
+            <th>Phone</th>
             <th>Role</th>
             <th>Status</th>
-            <th>Action</th>
           </tr>
           </thead>
           <tbody>
-          <tr>
-            <td>#USR-101</td>
-            <td>Munal Tamang</td>
-            <td>munal@example.com</td>
-            <td><span class="badge badge-accent">Buyer</span></td>
-            <td><span class="badge badge-success">Active</span></td>
+          <tr th:each="u : ${allUsers}">
+            <td th:text="${'#USR-' + u.id}">#USR-101</td>
+            <td th:text="${u.fullname}">Full Name</td>
+            <td th:text="${u.email}">Email</td>
+            <td th:text="${u.phone ?: '-'}">Phone</td>
             <td>
-              <button class="btn btn-ghost btn-sm" onclick="showToast('Edit user details', 'info')"><i class="fas fa-edit"></i> Edit</button>
-              <button class="btn btn-danger btn-sm" onclick="showToast('User deactivated', 'error')"><i class="fas fa-ban"></i> Block</button>
+              <span class="badge"
+                    th:classappend="${u.role == 'ADMIN' ? ' badge-danger' : (u.role == 'SELLER' ? ' badge-primary' : ' badge-accent')}"
+                    th:text="${u.role}">Buyer</span>
             </td>
-          </tr>
-          <tr>
-            <td>#USR-102</td>
-            <td>Together Housing</td>
-            <td>housing@togethergroup.gov</td>
-            <td><span class="badge badge-primary">Seller</span></td>
             <td><span class="badge badge-success">Active</span></td>
-            <td>
-              <button class="btn btn-ghost btn-sm"><i class="fas fa-edit"></i> Edit</button>
-              <button class="btn btn-danger btn-sm"><i class="fas fa-ban"></i> Block</button>
-            </td>
           </tr>
           </tbody>
         </table>
@@ -215,26 +206,59 @@
         <h1>Property Approval Queue</h1>
       </div>
 
-      <div class="table-wrapper">
+      <div th:if="${param.success != null and param.success[0] == 'property_approved'}"
+           style="color:#155724; background-color:#d4edda; border:1px solid #c3e6cb; padding:12px 16px; border-radius:var(--radius); margin-bottom:20px; font-weight:600;">
+        <i class="fas fa-check-circle"></i> Property approved successfully! It is now published.
+      </div>
+
+      <div th:if="${param.success != null and param.success[0] == 'property_rejected'}"
+           style="color:#721c24; background-color:#f8d7da; border:1px solid #f5c6cb; padding:12px 16px; border-radius:var(--radius); margin-bottom:20px; font-weight:600;">
+        <i class="fas fa-times-circle"></i> Property rejected.
+      </div>
+
+      <p class="text-muted" th:if="${pendingProperties == null or pendingProperties.isEmpty()}" style="padding:20px; background:var(--surface); border-radius:var(--radius);">
+        <i class="fas fa-info-circle"></i> There are currently no pending seller property approval requests.
+      </p>
+
+      <div class="table-wrapper" th:if="${pendingProperties != null and !pendingProperties.isEmpty()}">
         <table class="tg-table">
           <thead>
           <tr>
+            <th>Image</th>
             <th>Property Title</th>
             <th>Seller</th>
             <th>Price</th>
             <th>Location</th>
             <th>Status</th>
-            <th>Action</th>
+            <th>Actions</th>
           </tr>
           </thead>
           <tbody>
-          <tr>
-            <td>Bhaktapur Modern Villa</td>
-            <td>Together Housing</td>
-            <td>Rs 30,00,000</td>
-            <td>Thimi, Bhaktapur</td>
-            <td><span class="badge badge-success">Approved</span></td>
-            <td><button class="btn btn-danger btn-sm">Remove</button></td>
+          <tr th:each="p : ${pendingProperties}">
+            <td>
+              <img th:src="${p.image != null and !p.image.isEmpty() ? (p.image.startsWith('/') ? p.image : '/' + p.image) : '/images/villa.jpg'}"
+                   alt="Property Image"
+                   style="width:70px; height:50px; object-fit:cover; border-radius:6px; border:1px solid var(--border);"
+                   onerror="this.onerror=null; this.src='/images/villa.jpg';" />
+            </td>
+            <td th:text="${p.title}">Bhaktapur Villa</td>
+            <td th:text="${p.seller != null ? p.seller.fullname : 'Seller'}">Together Housing</td>
+            <td th:text="${p.priceFormatted ?: 'Rs ' + p.price}">Rs 30,00,000</td>
+            <td th:text="${p.location}">Thimi, Bhaktapur</td>
+            <td><span class="badge badge-warning">PENDING</span></td>
+            <td>
+              <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
+                <form th:action="@{/admin/property/approve}" method="post" style="margin:0;">
+                  <input type="hidden" name="propertyId" th:value="${p.id}" />
+                  <button type="submit" class="btn btn-success btn-sm"><i class="fas fa-check"></i> Approve</button>
+                </form>
+                <form th:action="@{/admin/property/reject}" method="post" style="display:flex; gap:4px; margin:0;">
+                  <input type="hidden" name="propertyId" th:value="${p.id}" />
+                  <input type="text" name="reason" placeholder="Rejection reason..." required class="form-input" style="padding:4px 8px; font-size:0.8rem; width:150px;" />
+                  <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-times"></i> Reject</button>
+                </form>
+              </div>
+            </td>
           </tr>
           </tbody>
         </table>

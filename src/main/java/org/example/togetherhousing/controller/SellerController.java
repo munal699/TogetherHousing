@@ -61,9 +61,14 @@ public class SellerController {
         property.setBathrooms(bathrooms);
         property.setDescription(description);
 
-        // Handle image upload
+        // Handle image upload (stores in DB LONGBLOB + filesystem backup)
         if (imageFile != null && !imageFile.isEmpty()) {
             try {
+                // Store directly in database as required by assignment
+                property.setImageData(imageFile.getBytes());
+                property.setImageContentType(imageFile.getContentType() != null ? imageFile.getContentType() : "image/jpeg");
+
+                // Also maintain filesystem copy as secondary backup
                 String uploadDir = System.getProperty("user.dir") + "/src/main/resources/static/images/uploads/";
                 File dir = new File(uploadDir);
                 if (!dir.exists()) {

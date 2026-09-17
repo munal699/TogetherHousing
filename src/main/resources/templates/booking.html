@@ -82,7 +82,7 @@
 
 <main class="container">
   <div style="margin-top: 24px;">
-    <a href="property-detail.html" class="btn btn-ghost btn-sm"><i class="fas fa-arrow-left"></i> Back to Property</a>
+    <a th:href="@{${property != null ? '/property-detail?id=' + property.id : '/properties'}}" href="/properties" class="btn btn-ghost btn-sm"><i class="fas fa-arrow-left"></i> Back to Property</a>
   </div>
 
   <div class="text-center" style="margin-top: 16px;">
@@ -90,26 +90,32 @@
     <p class="text-muted">Review installment terms and confirm your reservation</p>
   </div>
 
+  <!-- Hidden field storing raw numeric property price for calculations -->
+  <input type="hidden" id="property-price" th:value="${property != null && property.price != null ? property.price : 3000000}" />
+
   <div class="booking-grid">
     <!-- Form Left -->
     <div class="summary-card">
       <h3><i class="fas fa-user-edit" style="color:var(--accent);"></i> Buyer Information</h3>
-      <form id="booking-form" action="#" method="post" onsubmit="handleBookingSubmit(event)">
+      <form id="booking-form" th:action="@{/booking/create}" action="/booking/create" method="post">
+        <input type="hidden" name="propertyId" th:value="${property != null ? property.id : 1}" />
+        <input type="hidden" name="downPayment" id="actual-down-payment" value="" />
+
         <div class="form-row" style="margin-top: 16px;">
           <div class="form-group">
             <label class="form-label" for="b-name">Full Name</label>
-            <input type="text" id="b-name" class="form-input" value="Munal Tamang" required />
+            <input type="text" id="b-name" class="form-input" th:value="${buyer != null ? buyer.fullname : 'Munal Tamang'}" readonly />
           </div>
           <div class="form-group">
             <label class="form-label" for="b-email">Email Address</label>
-            <input type="email" id="b-email" class="form-input" value="munal@example.com" required />
+            <input type="email" id="b-email" class="form-input" th:value="${buyer != null ? buyer.email : 'munal@example.com'}" readonly />
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-group">
             <label class="form-label" for="b-phone">Phone Number</label>
-            <input type="tel" id="b-phone" class="form-input" value="+977 9800000000" required />
+            <input type="tel" id="b-phone" class="form-input" th:value="${buyer != null && buyer.phone != null ? buyer.phone : '+977 9800000000'}" />
           </div>
           <div class="form-group">
             <label class="form-label" for="b-citizenship">Citizenship / NID No.</label>
@@ -123,20 +129,26 @@
           <div class="form-group">
             <label class="form-label" for="down-percent">Down Payment (%)</label>
             <select id="down-percent" class="form-select" onchange="calculateInstallment()">
-              <option value="20">20% (Rs 6,00,000)</option>
-              <option value="30">30% (Rs 9,00,000)</option>
-              <option value="50">50% (Rs 15,00,000)</option>
+              <option value="20" selected>20% Minimum</option>
+              <option value="30">30%</option>
+              <option value="40">40%</option>
+              <option value="50">50%</option>
             </select>
           </div>
 
           <div class="form-group">
             <label class="form-label" for="duration-select">Installment Period</label>
-            <select id="duration-select" class="form-select" onchange="calculateInstallment()">
+            <select id="duration-select" name="durationMonths" class="form-select" onchange="calculateInstallment()">
               <option value="12">12 Months (1 Year)</option>
               <option value="24" selected>24 Months (2 Years)</option>
               <option value="36">36 Months (3 Years)</option>
             </select>
           </div>
+        </div>
+
+        <div class="form-group" style="margin-top: 12px;">
+          <label class="form-label" for="notes">Notes or Special Requests (Optional)</label>
+          <textarea name="notes" id="notes" class="form-textarea" rows="2" placeholder="e.g., Preferred move-in date, payment schedule questions..."></textarea>
         </div>
 
         <div class="form-group">
@@ -157,11 +169,13 @@
       <div class="summary-card">
         <h3>Property Summary</h3>
         <div class="flex gap" style="margin-top: 16px;">
-          <img src="images/villa.jpg" alt="Property" style="width: 100px; height: 80px; object-fit: cover; border-radius: var(--radius);" />
+          <img th:src="@{${property != null && property.id != null ? '/property/image/' + property.id : '/images/villa.jpg'}}"
+               onerror="this.src='/images/villa.jpg'"
+               alt="Property" style="width: 100px; height: 80px; object-fit: cover; border-radius: var(--radius);" />
           <div>
-            <h4 style="font-size: 0.95rem;">Bhaktapur Modern Villa</h4>
-            <small class="text-muted"><i class="fas fa-map-marker-alt"></i> Thimi, Bhaktapur</small>
-            <div style="font-weight: 700; color: var(--accent); margin-top: 4px;">Rs 30,00,000</div>
+            <h4 style="font-size: 0.95rem;" th:text="${property != null ? property.title : 'Bhaktapur Modern Villa'}">Bhaktapur Modern Villa</h4>
+            <small class="text-muted"><i class="fas fa-map-marker-alt"></i> <span th:text="${property != null ? property.location : 'Thimi, Bhaktapur'}">Thimi, Bhaktapur</span></small>
+            <div style="font-weight: 700; color: var(--accent); margin-top: 4px;" th:text="${priceFormatted ?: 'Rs 30,00,000'}">Rs 30,00,000</div>
           </div>
         </div>
 
@@ -171,7 +185,7 @@
         <div class="calc-box">
           <div class="calc-row">
             <span>Total Price</span>
-            <strong>Rs 30,00,000</strong>
+            <strong th:text="${priceFormatted ?: 'Rs 30,00,000'}">Rs 30,00,000</strong>
           </div>
           <div class="calc-row">
             <span>Down Payment Due</span>
@@ -209,9 +223,13 @@
 <script src="js/booking.js"></script>
 <script>
   function triggerModalSchedule() {
+    const price = Number(document.getElementById('property-price')?.value || 3000000);
     const dp = parseInt(document.getElementById('down-percent').value);
     const dur = parseInt(document.getElementById('duration-select').value);
-    generateInstallmentScheduleModal(3000000, dp, dur, 'Bhaktapur Modern Villa');
+    const title = document.querySelector('h4')?.textContent || 'Property';
+    if (typeof generateInstallmentScheduleModal === 'function') {
+      generateInstallmentScheduleModal(price, dp, dur, title);
+    }
   }
 </script>
 </body>

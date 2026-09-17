@@ -58,9 +58,11 @@
       </a>
       <a class="dash-nav-item" data-section="bookings" href="#bookings">
         <i class="fas fa-handshake"></i> Booking Requests
+        <span class="nav-badge" th:if="${pendingBookingsCount != null and pendingBookingsCount > 0}" th:text="${pendingBookingsCount}">0</span>
       </a>
-      <a class="dash-nav-item" data-section="chat" href="chat.html">
+      <a class="dash-nav-item" data-section="chat" href="#chat">
         <i class="fas fa-comments"></i> Buyer Messages
+        <span class="nav-badge" th:if="${unreadMessageCount != null && unreadMessageCount > 0}" th:text="${unreadMessageCount}">0</span>
       </a>
     </nav>
   </aside>
@@ -89,7 +91,7 @@
         <div class="stat-card">
           <div class="stat-card-icon teal"><i class="fas fa-handshake"></i></div>
           <div>
-            <div class="stat-card-value">2</div>
+            <div class="stat-card-value" th:text="${sellerBookings != null ? sellerBookings.size() : 0}">0</div>
             <div class="stat-card-label">Active Bookings</div>
           </div>
         </div>
@@ -98,42 +100,61 @@
           <div class="stat-card-icon green"><i class="fas fa-star"></i></div>
           <div>
             <div class="stat-card-value">4.9</div>
-            <div class="stat-card-label">Seller Rating (12)</div>
+            <div class="stat-card-label">Seller Rating</div>
           </div>
         </div>
 
         <div class="stat-card">
           <div class="stat-card-icon orange"><i class="fas fa-money-bill-wave"></i></div>
           <div>
-            <div class="stat-card-value">Rs 1.95Cr</div>
-            <div class="stat-card-label">Portfolio Value</div>
+            <div class="stat-card-value" th:text="${myProperties != null ? myProperties.size() : 0}">0</div>
+            <div class="stat-card-label">Listed Properties</div>
           </div>
         </div>
       </div>
 
       <!-- Recent Activity -->
       <div class="dash-card">
-        <h3>Recent Booking Inquiries</h3>
+        <div class="dash-card-header" style="display:flex; justify-content:space-between; align-items:center;">
+          <h3>Recent Booking Inquiries</h3>
+          <a href="#bookings" onclick="document.querySelector('[data-section=bookings]').click()" class="btn btn-ghost btn-sm">View All</a>
+        </div>
         <div class="table-wrapper" style="margin-top: 16px;">
           <table class="tg-table">
             <thead>
             <tr>
               <th>Buyer</th>
               <th>Property</th>
-              <th>Plan</th>
+              <th>Down / Monthly</th>
               <th>Date</th>
               <th>Status</th>
               <th>Action</th>
             </tr>
             </thead>
             <tbody>
-            <tr>
-              <td>Munal Tamang</td>
-              <td>Bhaktapur Modern Villa</td>
-              <td>24 Months (20% Down)</td>
-              <td>Aug 29, 2026</td>
-              <td><span class="badge badge-success">Approved</span></td>
-              <td><a href="chat.html" class="btn btn-ghost btn-sm"><i class="fas fa-comment"></i> Chat</a></td>
+            <tr th:if="${sellerBookings == null or sellerBookings.isEmpty()}">
+              <td colspan="6" class="text-center text-muted" style="padding: 24px;">No booking requests received yet.</td>
+            </tr>
+            <tr th:each="b, iterStat : ${sellerBookings}" th:if="${iterStat.index < 5}">
+              <td>
+                <strong th:text="${b.buyer != null ? b.buyer.fullname : 'Buyer'}">Munal Tamang</strong><br/>
+                <small class="text-muted" th:text="${b.buyer != null ? b.buyer.email : ''}">buyer@example.com</small>
+              </td>
+              <td><strong th:text="${b.property != null ? b.property.title : 'Property'}">Bhaktapur Villa</strong></td>
+              <td>
+                <span th:text="${b.downPayment != null ? 'Rs ' + #numbers.formatDecimal(b.downPayment, 0, 'COMMA', 0, 'POINT') : '-'}">Rs 6,00,000</span> /
+                <span th:text="${b.monthlyPayment != null ? 'Rs ' + #numbers.formatDecimal(b.monthlyPayment, 0, 'COMMA', 0, 'POINT') + ' mo' : '-'}">Rs 1,00,000</span>
+              </td>
+              <td th:text="${b.createdAt != null ? #temporals.format(b.createdAt, 'MMM dd, yyyy') : '-'}">Aug 29, 2026</td>
+              <td>
+                <span th:if="${b.status.name() == 'PENDING'}" class="badge badge-warning">Pending</span>
+                <span th:if="${b.status.name() == 'CONFIRMED'}" class="badge badge-success">Confirmed</span>
+                <span th:if="${b.status.name() == 'REJECTED'}" class="badge badge-danger">Rejected</span>
+                <span th:if="${b.status.name() == 'CANCELLED'}" class="badge badge-muted">Cancelled</span>
+              </td>
+              <td>
+                <a th:if="${b.buyer != null}" th:href="@{/chat/{userId}(userId=${b.buyer.id})}" class="btn btn-ghost btn-sm"><i class="fas fa-comment"></i> Chat</a>
+              </td>
             </tr>
             </tbody>
           </table>
@@ -180,7 +201,7 @@
 
       <div class="dash-property-grid" th:if="${myProperties != null and !myProperties.isEmpty()}">
         <div class="dash-property-card" th:each="p : ${myProperties}">
-          <img th:src="${p.image != null and !p.image.isEmpty() ? (p.image.startsWith('/') ? p.image : '/' + p.image) : '/images/villa.jpg'}"
+          <img th:src="@{'/property/image/' + ${p.id}}"
                alt="Property Image"
                onerror="this.onerror=null; this.src='/images/villa.jpg';" />
           <div class="card-body">
@@ -264,6 +285,140 @@
 
           <button type="submit" class="btn btn-primary">Submit Property Listing <i class="fas fa-plus"></i></button>
         </form>
+      </div>
+    </section>
+
+    <!-- 4. Buyer Messages Section -->
+    <section id="chat" class="dash-section">
+      <div class="dash-page-header">
+        <div>
+          <h1>Buyer Messages & Inquiries</h1>
+          <p>Direct conversations with interested buyers regarding your property listings.</p>
+        </div>
+      </div>
+
+      <div class="dash-card">
+        <div th:if="${conversations == null or conversations.isEmpty()}" style="text-align: center; padding: 48px 20px;">
+          <i class="fas fa-comments" style="font-size: 48px; color: var(--muted); margin-bottom: 16px; display: block;"></i>
+          <h3 style="margin-bottom: 8px;">No Buyer Messages Yet</h3>
+          <p class="text-muted" style="max-width: 500px; margin: 0 auto 20px;">
+            When interested buyers message you about your property listings or ask questions, their chat inquiries will appear here.
+          </p>
+          <a th:href="@{/properties}" class="btn btn-outline btn-sm"><i class="fas fa-search"></i> View Public Catalog</a>
+        </div>
+
+        <div th:if="${conversations != null and !conversations.isEmpty()}" class="conversation-list">
+          <div th:each="c : ${conversations}" class="card mb-2" style="display: flex; align-items: center; justify-content: space-between; padding: 16px; border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 12px; gap: 16px; flex-wrap: wrap;">
+            <div style="display: flex; align-items: center; gap: 14px;">
+              <div class="avatar avatar-lg" style="background: var(--primary); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; width: 48px; height: 48px; border-radius: 50%; font-size: 1.1rem;"
+                   th:text="${c.otherUser.fullname != null && !c.otherUser.fullname.isEmpty() ? #strings.substring(c.otherUser.fullname, 0, 1).toUpperCase() : 'B'}">B</div>
+              <div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <strong style="font-size: 1rem;" th:text="${c.otherUser.fullname ?: 'Interested Buyer'}">Buyer Name</strong>
+                  <span class="badge badge-accent" th:if="${c.unreadCount > 0}" th:text="${c.unreadCount + ' new'}">New</span>
+                </div>
+                <div class="text-muted" style="font-size: 0.88rem; margin-top: 2px;" th:text="${c.lastMessage != null ? c.lastMessage.message : 'Started a conversation'}">
+                  Latest message preview...
+                </div>
+                <small class="text-muted" style="font-size: 0.75rem;" th:if="${c.lastMessage != null && c.lastMessage.sentAt != null}"
+                       th:text="${#temporals.format(c.lastMessage.sentAt, 'MMM dd, yyyy HH:mm')}">Time</small>
+              </div>
+            </div>
+
+            <div>
+              <a th:href="@{/chat/{userId}(userId=${c.otherUser.id})}" class="btn btn-primary btn-sm">
+                <i class="fas fa-reply"></i> Open Chat
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Booking Requests Section -->
+    <section id="bookings" class="dash-section">
+      <div class="dash-page-header">
+        <div>
+          <h1>Booking Requests &amp; Inquiries</h1>
+          <p>Review booking reservations and installment proposals submitted by buyers.</p>
+        </div>
+      </div>
+
+      <div class="dash-card">
+        <div th:if="${sellerBookings == null or sellerBookings.isEmpty()}" style="text-align: center; padding: 48px 20px;">
+          <i class="fas fa-handshake" style="font-size: 48px; color: var(--muted); margin-bottom: 16px; display: block;"></i>
+          <h3 style="margin-bottom: 8px;">No Booking Requests Yet</h3>
+          <p class="text-muted" style="max-width: 500px; margin: 0 auto;">
+            When buyers reserve one of your listed properties, their requests will appear here for you to confirm or decline.
+          </p>
+        </div>
+
+        <div th:if="${sellerBookings != null and !sellerBookings.isEmpty()}" class="table-wrapper">
+          <table class="tg-table">
+            <thead>
+            <tr>
+              <th>ID</th>
+              <th>Buyer Info</th>
+              <th>Property</th>
+              <th>Down Payment</th>
+              <th>Installment Plan</th>
+              <th>Notes</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="b : ${sellerBookings}">
+              <td><strong th:text="'#BK-' + ${b.id}">#BK-1</strong></td>
+              <td>
+                <div style="font-weight:600;" th:text="${b.buyer != null ? b.buyer.fullname : 'Buyer'}">Buyer Name</div>
+                <small class="text-muted" th:text="${b.buyer != null ? b.buyer.email : ''}">buyer@example.com</small>
+              </td>
+              <td>
+                <strong th:text="${b.property != null ? b.property.title : 'Property'}">Bhaktapur Villa</strong>
+                <div class="text-muted" style="font-size:0.8rem;" th:text="${b.property != null ? b.property.location : ''}">Thimi</div>
+              </td>
+              <td th:text="${b.downPayment != null ? 'Rs ' + #numbers.formatDecimal(b.downPayment, 0, 'COMMA', 0, 'POINT') : '-'}">Rs 6,00,000</td>
+              <td>
+                <strong th:text="${b.monthlyPayment != null ? 'Rs ' + #numbers.formatDecimal(b.monthlyPayment, 0, 'COMMA', 0, 'POINT') + ' / mo' : '-'}">Rs 1,00,000 / mo</strong>
+                <div class="text-muted" style="font-size:0.8rem;" th:text="${b.durationMonths != null ? b.durationMonths + ' Months' : '24 Months'}">24 Months</div>
+              </td>
+              <td style="max-width: 160px; font-size: 0.85rem;" th:text="${b.notes != null && !b.notes.isEmpty() ? b.notes : 'None'}">None</td>
+              <td>
+                <span th:if="${b.status.name() == 'PENDING'}" class="badge badge-warning">Pending Review</span>
+                <span th:if="${b.status.name() == 'CONFIRMED'}" class="badge badge-success">Confirmed</span>
+                <span th:if="${b.status.name() == 'REJECTED'}" class="badge badge-danger">Rejected</span>
+                <span th:if="${b.status.name() == 'CANCELLED'}" class="badge badge-muted">Cancelled</span>
+              </td>
+              <td>
+                <div style="display:flex; flex-direction:column; gap:6px;">
+                  <!-- Approve Form -->
+                  <form th:if="${b.status.name() == 'PENDING'}" th:action="@{/seller/booking/approve}" method="post" style="display:inline;">
+                    <input type="hidden" name="bookingId" th:value="${b.id}" />
+                    <button type="submit" class="btn btn-primary btn-sm" style="width:100%; padding:4px 8px; font-size:0.75rem;">
+                      <i class="fas fa-check"></i> Approve
+                    </button>
+                  </form>
+
+                  <!-- Reject Form -->
+                  <form th:if="${b.status.name() == 'PENDING'}" th:action="@{/seller/booking/reject}" method="post" style="display:inline;" onsubmit="const r = prompt('Enter rejection reason (optional):'); if(r !== null) { this.reason.value = r; return true; } return false;">
+                    <input type="hidden" name="bookingId" th:value="${b.id}" />
+                    <input type="hidden" name="reason" value="" />
+                    <button type="submit" class="btn btn-danger btn-sm" style="width:100%; padding:4px 8px; font-size:0.75rem;">
+                      <i class="fas fa-times"></i> Reject
+                    </button>
+                  </form>
+
+                  <!-- Chat With Buyer -->
+                  <a th:if="${b.buyer != null}" th:href="@{/chat/{userId}(userId=${b.buyer.id})}" class="btn btn-ghost btn-sm" style="width:100%; text-align:center; padding:4px 8px; font-size:0.75rem;">
+                    <i class="fas fa-comment"></i> Chat
+                  </a>
+                </div>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </section>
   </main>

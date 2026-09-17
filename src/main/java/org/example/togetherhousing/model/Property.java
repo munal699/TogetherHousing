@@ -42,6 +42,12 @@ public class Property {
 
     private String image;
 
+    @Lob
+    @Column(columnDefinition = "LONGBLOB")
+    private byte[] imageData;
+
+    private String imageContentType;
+
     private boolean installmentAvailable = true;
 
     @Enumerated(EnumType.STRING)
@@ -90,6 +96,10 @@ public class Property {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public Double getDownPayment() {
+        return price != null ? (price * 0.20) : 0.0;
     }
 
     public String getPriceFormatted() {
@@ -202,5 +212,21 @@ public class Property {
 
     public void setSeller(UserTbl seller) {
         this.seller = seller;
+    }
+
+    public byte[] getImageData() {
+        return imageData;
+    }
+
+    public void setImageData(byte[] imageData) {
+        this.imageData = imageData;
+    }
+
+    public String getImageContentType() {
+        return imageContentType;
+    }
+
+    public void setImageContentType(String imageContentType) {
+        this.imageContentType = imageContentType;
     }
 }

@@ -131,7 +131,7 @@
 
         <article th:each="p : ${approvedProperties}" class="property-card" th:data-type="${p.propertyType != null ? p.propertyType.toLowerCase() : 'house'}" th:data-price="${p.price}" th:data-lat="${p.latitude}" th:data-lng="${p.longitude}">
           <div class="property-card-img-wrapper">
-            <img th:src="@{'/' + ${p.image != null && !p.image.isEmpty() ? p.image : 'images/villa.jpg'}}" onerror="this.src='/images/villa.jpg'" alt="Property Image" loading="lazy" />
+            <img th:src="@{'/property/image/' + ${p.id}}" onerror="this.src='/images/villa.jpg'" alt="Property Image" loading="lazy" />
             <span class="badge badge-accent property-badge-tag" th:text="${p.propertyType ?: 'Available'}">Available</span>
             <div class="property-price-tag" th:text="${p.priceFormatted ?: ('Rs ' + p.price)}">Rs 0</div>
           </div>

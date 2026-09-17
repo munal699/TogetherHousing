@@ -1,47 +1,36 @@
-package org.example.togetherhousing.model;
+package org.example.togetherhousing.dto;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
-@Entity
 @Data
-public class UserTbl {
+public class SignupRequest {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
+    @NotBlank(message = "Full name is required")
+    @Size(min = 2, max = 100, message = "Full name must be between 2 and 100 characters")
     private String fullname;
 
+    @NotBlank(message = "Email is required")
+    @Email(message = "Invalid email format")
     private String email;
 
+    @NotBlank(message = "Phone number is required")
     private String phone;
 
     private String address;
 
+    @NotBlank(message = "Password is required")
+    @Size(min = 6, message = "Password must be at least 6 characters")
     private String password;
 
-    private String role;
+    private String role = "BUYER";
 
-    public UserTbl() {
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
+    public SignupRequest() {
     }
 
     public String getFullname() {
-        return fullname;
-    }
-
-    public String getFullName() {
         return fullname;
     }
 

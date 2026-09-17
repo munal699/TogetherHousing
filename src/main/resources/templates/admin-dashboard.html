@@ -236,7 +236,7 @@
           <tbody>
           <tr th:each="p : ${pendingProperties}">
             <td>
-              <img th:src="${p.image != null and !p.image.isEmpty() ? (p.image.startsWith('/') ? p.image : '/' + p.image) : '/images/villa.jpg'}"
+              <img th:src="@{'/property/image/' + ${p.id}}"
                    alt="Property Image"
                    style="width:70px; height:50px; object-fit:cover; border-radius:6px; border:1px solid var(--border);"
                    onerror="this.onerror=null; this.src='/images/villa.jpg';" />

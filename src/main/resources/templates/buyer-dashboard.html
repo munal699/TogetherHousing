@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -51,7 +51,7 @@
         <i class="fas fa-chart-pie"></i> Overview
       </a>
       <a class="dash-nav-item" data-section="bookings" href="#bookings">
-        <i class="fas fa-file-contract"></i> My Bookings <span class="nav-badge">1</span>
+        <i class="fas fa-file-contract"></i> My Bookings <span class="nav-badge" th:text="${bookingCount ?: 0}">0</span>
       </a>
       <a class="dash-nav-item" data-section="installments" href="#installments">
         <i class="fas fa-calculator"></i> Installment Tracker
@@ -59,8 +59,13 @@
       <a class="dash-nav-item" data-section="payments" href="#payments">
         <i class="fas fa-receipt"></i> Payment Records
       </a>
-      <a class="dash-nav-item" data-section="chat" href="chat.html">
+      <a class="dash-nav-item" data-section="chat" href="#chat">
         <i class="fas fa-comments"></i> Chat Messages
+        <span class="nav-badge" th:if="${unreadMessageCount != null && unreadMessageCount > 0}" th:text="${unreadMessageCount}">0</span>
+      </a>
+      <a class="dash-nav-item" data-section="notifications" href="#notifications">
+        <i class="fas fa-bell"></i> Email &amp; Alerts
+        <span class="nav-badge" th:if="${unreadCount != null && unreadCount > 0}" th:text="${unreadCount}">0</span>
       </a>
 
       <div class="dash-nav-label" style="margin-top:16px;">Account</div>
@@ -76,10 +81,26 @@
     <section id="overview" class="dash-section active">
       <div class="dash-page-header">
         <div>
-          <h1>Welcome back, Munal! 👋</h1>
+          <h1>Welcome back, <span th:text="${buyer != null ? buyer.fullname : (session.fullname ?: 'Buyer')}">Buyer</span>! 👋</h1>
           <p>Track your property bookings, upcoming installment dues, and receipts.</p>
         </div>
-        <a href="properties.html" class="btn btn-primary btn-sm"><i class="fas fa-search"></i> Browse Properties</a>
+        <a th:href="@{/properties}" href="/properties" class="btn btn-primary btn-sm"><i class="fas fa-search"></i> Browse Properties</a>
+      </div>
+
+      <!-- Success Notification Banner -->
+      <div th:if="${success != null}" style="background:#d4edda; color:#155724; border:1px solid #c3e6cb; padding:16px 20px; border-radius:var(--radius); margin-bottom:20px; display:flex; align-items:center; gap:14px; box-shadow:0 2px 8px rgba(21,87,36,0.1);">
+        <i class="fas fa-check-circle" style="font-size:1.8rem; color:#28a745;"></i>
+        <div>
+          <div style="font-size:1.1rem; font-weight:700; margin-bottom:2px;">You have successfully booked!</div>
+          <div style="font-size:0.92rem;" th:text="${success}">Your reservation request has been submitted to the owner for confirmation.</div>
+        </div>
+      </div>
+      <div th:if="${error != null}" style="background:#f8d7da; color:#721c24; border:1px solid #f5c6cb; padding:16px 20px; border-radius:var(--radius); margin-bottom:20px; display:flex; align-items:center; gap:14px;">
+        <i class="fas fa-exclamation-circle" style="font-size:1.8rem; color:#dc3545;"></i>
+        <div>
+          <div style="font-size:1.1rem; font-weight:700; margin-bottom:2px;">Booking Notice</div>
+          <div style="font-size:0.92rem;" th:text="${error}">An error occurred.</div>
+        </div>
       </div>
 
       <!-- Stats -->
@@ -87,7 +108,7 @@
         <div class="stat-card">
           <div class="stat-card-icon blue"><i class="fas fa-building"></i></div>
           <div>
-            <div class="stat-card-value">1</div>
+            <div class="stat-card-value" th:text="${bookingCount ?: 0}">0</div>
             <div class="stat-card-label">Active Bookings</div>
           </div>
         </div>
@@ -95,7 +116,7 @@
         <div class="stat-card">
           <div class="stat-card-icon teal"><i class="fas fa-coins"></i></div>
           <div>
-            <div class="stat-card-value">Rs 30L</div>
+            <div class="stat-card-value" th:text="${totalPropertyValue != null and totalPropertyValue > 0 ? 'Rs ' + #numbers.formatDecimal(totalPropertyValue, 0, 'COMMA', 0, 'POINT') : 'Rs 0'}">Rs 0</div>
             <div class="stat-card-label">Total Property Value</div>
           </div>
         </div>
@@ -103,34 +124,71 @@
         <div class="stat-card">
           <div class="stat-card-icon orange"><i class="fas fa-clock"></i></div>
           <div>
-            <div class="stat-card-value">Rs 1.0L</div>
-            <div class="stat-card-label">Next Due (Sep 15)</div>
+            <div class="stat-card-value" th:text="${nextDueAmount != null and nextDueAmount > 0 ? 'Rs ' + #numbers.formatDecimal(nextDueAmount, 0, 'COMMA', 0, 'POINT') : 'Rs 0'}">Rs 0</div>
+            <div class="stat-card-label" th:text="${nextDueAmount != null and nextDueAmount > 0 ? 'Monthly Installment Due' : 'No Payment Due'}">No Payment Due</div>
           </div>
         </div>
 
         <div class="stat-card">
           <div class="stat-card-icon green"><i class="fas fa-check-circle"></i></div>
           <div>
-            <div class="stat-card-value">Rs 6.0L</div>
-            <div class="stat-card-label">Total Paid</div>
+            <div class="stat-card-value" th:text="${totalPaid != null and totalPaid > 0 ? 'Rs ' + #numbers.formatDecimal(totalPaid, 0, 'COMMA', 0, 'POINT') : 'Rs 0'}">Rs 0</div>
+            <div class="stat-card-label">Total Down Paid</div>
           </div>
         </div>
       </div>
 
-      <!-- Active Booking Progress -->
-      <div class="dash-card">
+      <!-- Active Booking Progress (Shown when buyer has active booking) -->
+      <div class="dash-card" th:if="${myBookings != null and !myBookings.isEmpty()}">
         <div class="dash-card-header">
-          <h3>Active Installment Progress — Bhaktapur Modern Villa</h3>
-          <span class="badge badge-accent">20% Paid</span>
+          <h3 th:text="'Active Booking — ' + ${myBookings[0].property != null ? myBookings[0].property.title : 'Property'}">Active Installment Progress</h3>
+          <span class="badge"
+                th:classappend="${myBookings[0].status != null and myBookings[0].status.name() == 'CONFIRMED' ? ' badge-success' : (myBookings[0].status != null and myBookings[0].status.name() == 'REJECTED' ? ' badge-danger' : ' badge-warning')}"
+                th:text="${myBookings[0].status}">PENDING</span>
         </div>
 
         <div style="margin: 16px 0;">
           <div class="flex justify-between" style="font-size: 0.88rem; margin-bottom: 8px;">
-            <span>Paid: <strong>Rs 6,00,000</strong></span>
-            <span>Remaining: <strong>Rs 24,00,000</strong></span>
+            <span>Down Payment: <strong th:text="'Rs ' + ${#numbers.formatDecimal(myBookings[0].downPayment != null ? myBookings[0].downPayment : 0, 0, 'COMMA', 0, 'POINT')}">Rs 0</strong></span>
+            <span>Remaining: <strong th:text="'Rs ' + ${#numbers.formatDecimal(myBookings[0].remainingBalance, 0, 'COMMA', 0, 'POINT')}">Rs 0</strong></span>
           </div>
           <div class="progress-bar">
-            <div class="progress-bar-fill" style="width: 20%;"></div>
+            <div class="progress-bar-fill" th:style="'width: ' + ${myBookings[0].progressPercentage} + '%;'"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Empty State Card (Shown for new buyers with 0 bookings) -->
+      <div class="dash-card" th:if="${myBookings == null or myBookings.isEmpty()}">
+        <div style="text-align: center; padding: 36px 16px;">
+          <i class="fas fa-home" style="font-size: 40px; color: var(--muted); margin-bottom: 12px; display: block;"></i>
+          <h3>No Active Bookings Yet</h3>
+          <p class="text-muted" style="max-width: 480px; margin: 0 auto 16px;">
+            You haven't reserved any properties yet. Browse our verified listings, select your installment plan, and reserve your future home!
+          </p>
+          <a th:href="@{/properties}" class="btn btn-primary btn-sm"><i class="fas fa-search"></i> Browse Properties</a>
+        </div>
+      </div>
+
+      <!-- Notification Alert Center -->
+      <div class="dash-card" th:if="${notifications != null and !notifications.isEmpty()}" style="margin-top:20px;">
+        <div class="dash-card-header" style="display:flex; justify-content:space-between; align-items:center;">
+          <h3><i class="fas fa-bell" style="color:var(--warning);"></i> Email Notifications &amp; Alerts
+            <span th:if="${unreadCount != null and unreadCount > 0}" class="badge badge-danger" th:text="${unreadCount + ' new'}">0 new</span>
+          </h3>
+        </div>
+        <div style="max-height:300px; overflow-y:auto; margin-top:12px;">
+          <div th:each="n : ${notifications}" style="padding:12px 16px; border-radius:var(--radius); margin-bottom:8px; display:flex; align-items:flex-start; gap:12px;"
+               th:styleappend="${n.type == 'REGISTRATION' || n.type == 'BOOKING_CONFIRMED' ? 'background:#d4edda; border:1px solid #c3e6cb;' : (n.type == 'BOOKING_REJECTED' ? 'background:#f8d7da; border:1px solid #f5c6cb;' : 'background:var(--surface); border:1px solid var(--border);')}">
+            <i class="fas"
+               th:classappend="${n.type == 'REGISTRATION' || n.type == 'BOOKING_CONFIRMED' ? ' fa-check-circle' : (n.type == 'BOOKING_REJECTED' ? ' fa-times-circle' : ' fa-envelope')}"
+               th:styleappend="${n.type == 'REGISTRATION' || n.type == 'BOOKING_CONFIRMED' ? 'color:#155724; font-size:1.2rem; margin-top:2px;' : (n.type == 'BOOKING_REJECTED' ? 'color:#721c24; font-size:1.2rem; margin-top:2px;' : 'color:var(--info); font-size:1.2rem; margin-top:2px;')}"></i>
+            <div style="flex:1;">
+              <div th:text="${n.message}" style="font-size:0.9rem; font-weight:500;"
+                   th:styleappend="${n.type == 'REGISTRATION' || n.type == 'BOOKING_CONFIRMED' ? 'color:#155724;' : (n.type == 'BOOKING_REJECTED' ? 'color:#721c24;' : '')}">Notification message</div>
+              <small class="text-muted" th:text="${#temporals.format(n.createdAt, 'MMM dd, yyyy hh:mm a')}">Date</small>
+            </div>
+            <span class="badge" th:classappend="${n.type == 'REGISTRATION' || n.type == 'BOOKING_CONFIRMED' ? ' badge-success' : (n.type == 'BOOKING_REJECTED' ? ' badge-danger' : ' badge-accent')}" th:text="${n.type}">TYPE</span>
           </div>
         </div>
       </div>
@@ -139,7 +197,14 @@
     <!-- 2. Bookings Section -->
     <section id="bookings" class="dash-section">
       <div class="dash-page-header">
-        <h1>My Bookings</h1>
+        <h1>My Bookings & Reservations</h1>
+      </div>
+
+      <div th:if="${success != null}" style="background:#d4edda; color:#155724; border:1px solid #c3e6cb; padding:12px 16px; border-radius:var(--radius); margin-bottom:16px; font-weight:500;">
+        <i class="fas fa-check-circle"></i> <span th:text="${success}">Success message</span>
+      </div>
+      <div th:if="${error != null}" style="background:#f8d7da; color:#721c24; border:1px solid #f5c6cb; padding:12px 16px; border-radius:var(--radius); margin-bottom:16px; font-weight:500;">
+        <i class="fas fa-exclamation-circle"></i> <span th:text="${error}">Error message</span>
       </div>
 
       <div class="table-wrapper">
@@ -148,22 +213,46 @@
           <tr>
             <th>Booking ID</th>
             <th>Property</th>
-            <th>Price</th>
+            <th>Total Price</th>
             <th>Down Payment</th>
-            <th>Monthly</th>
+            <th>Monthly Due</th>
             <th>Status</th>
             <th>Action</th>
           </tr>
           </thead>
           <tbody>
-          <tr>
-            <td><strong>#TH-2026-8942</strong></td>
-            <td>Bhaktapur Modern Villa</td>
-            <td>Rs 30,00,000</td>
-            <td>Rs 6,00,000</td>
-            <td>Rs 1,00,000 / mo</td>
-            <td><span class="badge badge-success">Confirmed</span></td>
-            <td><a href="property-detail.html?id=1" class="btn btn-ghost btn-sm">View</a></td>
+          <tr th:if="${myBookings == null or myBookings.isEmpty()}">
+            <td colspan="7" class="text-center text-muted" style="padding: 36px 16px;">
+              <i class="fas fa-file-contract" style="font-size: 32px; display:block; margin-bottom: 8px; color: var(--muted);"></i>
+              You have no active bookings yet. <a th:href="@{/properties}" class="btn btn-outline btn-sm" style="margin-top:8px;">Browse Properties</a>
+            </td>
+          </tr>
+          <tr th:each="b : ${myBookings}">
+            <td><strong th:text="'#TH-BK-' + ${b.id}">#TH-2026-8942</strong></td>
+            <td>
+              <strong th:text="${b.property != null ? b.property.title : 'Property'}">Bhaktapur Modern Villa</strong>
+              <div th:if="${b.property != null and b.property.location != null}" class="text-muted" style="font-size:0.8rem;" th:text="${b.property.location}">Thimi</div>
+            </td>
+            <td th:text="${b.totalPrice != null ? 'Rs ' + #numbers.formatDecimal(b.totalPrice, 0, 'COMMA', 0, 'POINT') : '-'}">Rs 30,00,000</td>
+            <td th:text="${b.downPayment != null ? 'Rs ' + #numbers.formatDecimal(b.downPayment, 0, 'COMMA', 0, 'POINT') : '-'}">Rs 6,00,000</td>
+            <td th:text="${b.monthlyPayment != null ? 'Rs ' + #numbers.formatDecimal(b.monthlyPayment, 0, 'COMMA', 0, 'POINT') + ' / mo' : '-'}">Rs 1,00,000 / mo</td>
+            <td>
+              <span th:if="${b.status.name() == 'PENDING'}" class="badge badge-warning">Pending Review</span>
+              <span th:if="${b.status.name() == 'CONFIRMED'}" class="badge badge-success">Confirmed</span>
+              <span th:if="${b.status.name() == 'REJECTED'}" class="badge badge-danger">Rejected</span>
+              <span th:if="${b.status.name() == 'CANCELLED'}" class="badge badge-muted">Cancelled</span>
+            </td>
+            <td>
+              <div style="display:flex; gap:6px; align-items:center;">
+                <a th:if="${b.property != null}" th:href="@{/property-detail(id=${b.property.id})}" class="btn btn-ghost btn-sm" title="View Property Details">
+                  <i class="fas fa-eye"></i> View
+                </a>
+                <form th:if="${b.status.name() == 'PENDING'}" th:action="@{/booking/cancel}" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to cancel this booking request?');">
+                  <input type="hidden" name="bookingId" th:value="${b.id}" />
+                  <button type="submit" class="btn btn-danger btn-sm" style="padding:4px 8px; font-size:0.75rem;">Cancel</button>
+                </form>
+              </div>
+            </td>
           </tr>
           </tbody>
         </table>
@@ -188,26 +277,25 @@
           </tr>
           </thead>
           <tbody>
-          <tr>
-            <td>Down Payment</td>
-            <td>Aug 29, 2026</td>
-            <td>Rs 6,00,000</td>
-            <td><span class="badge badge-success">Paid</span></td>
-            <td><button class="btn btn-icon" onclick="showToast('Downloading Down Payment Receipt...', 'info')"><i class="fas fa-download"></i></button></td>
+          <tr th:if="${myBookings == null or myBookings.isEmpty()}">
+            <td colspan="5" class="text-center text-muted" style="padding: 36px 16px;">
+              <i class="fas fa-calendar-times" style="font-size: 32px; display:block; margin-bottom:8px; color:var(--muted);"></i>
+              No active installment schedules yet. When you reserve a property, your payment schedule will appear here.
+            </td>
           </tr>
-          <tr>
-            <td>Installment 1</td>
-            <td>Sep 15, 2026</td>
-            <td>Rs 1,00,000</td>
-            <td><span class="badge badge-warning">Upcoming</span></td>
-            <td>-</td>
-          </tr>
-          <tr>
-            <td>Installment 2</td>
-            <td>Oct 15, 2026</td>
-            <td>Rs 1,00,000</td>
-            <td><span class="badge badge-primary">Pending</span></td>
-            <td>-</td>
+          <tr th:each="b : ${myBookings}">
+            <td><strong th:text="${b.property != null ? b.property.title : 'Property'}">Property</strong> (Down Payment)</td>
+            <td th:text="${b.createdAt != null ? #temporals.format(b.createdAt, 'MMM dd, yyyy') : '-'}">Date</td>
+            <td th:text="${b.downPayment != null ? 'Rs ' + #numbers.formatDecimal(b.downPayment, 0, 'COMMA', 0, 'POINT') : '-'}">Rs 6,00,000</td>
+            <td>
+              <span th:if="${b.status.name() == 'CONFIRMED'}" class="badge badge-success">Confirmed</span>
+              <span th:if="${b.status.name() == 'PENDING'}" class="badge badge-warning">Pending Approval</span>
+              <span th:if="${b.status.name() == 'REJECTED'}" class="badge badge-danger">Rejected</span>
+              <span th:if="${b.status.name() == 'CANCELLED'}" class="badge badge-muted">Cancelled</span>
+            </td>
+            <td>
+              <span class="text-muted" style="font-size:0.85rem;" th:text="${b.monthlyPayment != null ? ('Est. Rs ' + #numbers.formatDecimal(b.monthlyPayment, 0, 'COMMA', 0, 'POINT') + ' / mo') : '-'}">-</span>
+            </td>
           </tr>
           </tbody>
         </table>
@@ -220,7 +308,17 @@
         <h1>Payment Records</h1>
       </div>
       <div class="dash-card">
-        <p class="text-muted">Down payment of Rs 6,00,000 received on Aug 29, 2026 via Bank Deposit.</p>
+        <p class="text-muted" th:if="${myBookings == null or myBookings.isEmpty()}">
+          <i class="fas fa-receipt"></i> No payment records found. Completed down payments and installment receipts will be recorded here.
+        </p>
+        <div th:if="${myBookings != null and !myBookings.isEmpty()}">
+          <div th:each="b : ${myBookings}" style="padding: 12px 0; border-bottom: 1px solid var(--border);">
+            <i class="fas fa-check-circle" style="color:var(--success);"></i>
+            Down payment terms: <strong th:text="${b.downPayment != null ? 'Rs ' + #numbers.formatDecimal(b.downPayment, 0, 'COMMA', 0, 'POINT') : 'Rs 0'}">Rs 6,00,000</strong> for
+            <strong th:text="${b.property != null ? b.property.title : 'Property'}">Property</strong>.
+            Status: <span class="badge" th:classappend="${b.status.name() == 'CONFIRMED' ? ' badge-success' : ' badge-warning'}" th:text="${b.status}">PENDING</span>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -233,18 +331,106 @@
         <form onsubmit="event.preventDefault(); showToast('Profile updated!', 'success');">
           <div class="form-group">
             <label class="form-label">Full Name</label>
-            <input type="text" class="form-input" value="Munal Tamang" />
+            <input type="text" class="form-input" th:value="${buyer != null ? buyer.fullname : (session.fullname ?: '')}" readonly />
           </div>
           <div class="form-group">
             <label class="form-label">Email</label>
-            <input type="email" class="form-input" value="munal@example.com" />
+            <input type="email" class="form-input" th:value="${buyer != null ? buyer.email : (session.email ?: '')}" readonly />
           </div>
           <div class="form-group">
             <label class="form-label">Phone</label>
-            <input type="tel" class="form-input" value="+977 9800000000" />
+            <input type="tel" class="form-input" th:value="${buyer != null && buyer.phone != null ? buyer.phone : ''}" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Address</label>
+            <input type="text" class="form-input" th:value="${buyer != null && buyer.address != null ? buyer.address : ''}" />
           </div>
           <button class="btn btn-primary" type="submit">Save Changes</button>
         </form>
+      </div>
+    </section>
+
+    <!-- 6. Chat Messages Section -->
+    <section id="chat" class="dash-section">
+      <div class="dash-page-header">
+        <div>
+          <h1>Chat Messages & Inquiries</h1>
+          <p>Direct conversations with property sellers and property managers.</p>
+        </div>
+      </div>
+
+      <div class="dash-card">
+        <div th:if="${conversations == null or conversations.isEmpty()}" style="text-align: center; padding: 48px 20px;">
+          <i class="fas fa-comments" style="font-size: 48px; color: var(--muted); margin-bottom: 16px; display: block;"></i>
+          <h3 style="margin-bottom: 8px;">No Chat Messages Yet</h3>
+          <p class="text-muted" style="max-width: 500px; margin: 0 auto 20px;">
+            Browse properties and click "Chat with Seller" to start a direct message thread.
+          </p>
+          <a th:href="@{/properties}" class="btn btn-primary btn-sm"><i class="fas fa-search"></i> Browse Properties</a>
+        </div>
+
+        <div th:if="${conversations != null and !conversations.isEmpty()}" class="conversation-list">
+          <div th:each="c : ${conversations}" class="card mb-2" style="display: flex; align-items: center; justify-content: space-between; padding: 16px; border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 12px; gap: 16px; flex-wrap: wrap;">
+            <div style="display: flex; align-items: center; gap: 14px;">
+              <div class="avatar avatar-lg" style="background: var(--primary); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; width: 48px; height: 48px; border-radius: 50%; font-size: 1.1rem;"
+                   th:text="${c.otherUser.fullname != null && !c.otherUser.fullname.isEmpty() ? #strings.substring(c.otherUser.fullname, 0, 1).toUpperCase() : 'S'}">S</div>
+              <div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <strong style="font-size: 1rem;" th:text="${c.otherUser.fullname ?: 'Property Seller'}">Seller Name</strong>
+                  <span class="badge badge-accent" th:if="${c.unreadCount > 0}" th:text="${c.unreadCount + ' new'}">New</span>
+                </div>
+                <div class="text-muted" style="font-size: 0.88rem; margin-top: 2px;" th:text="${c.lastMessage != null ? c.lastMessage.message : 'Started a conversation'}">
+                  Latest message preview...
+                </div>
+                <small class="text-muted" style="font-size: 0.75rem;" th:if="${c.lastMessage != null && c.lastMessage.sentAt != null}"
+                       th:text="${#temporals.format(c.lastMessage.sentAt, 'MMM dd, yyyy HH:mm')}">Time</small>
+              </div>
+            </div>
+
+            <div>
+              <a th:href="@{/chat/{userId}(userId=${c.otherUser.id})}" class="btn btn-primary btn-sm">
+                <i class="fas fa-comments"></i> Open Chat
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Email & Activity Alerts Section -->
+    <section id="notifications" class="dash-section">
+      <div class="dash-page-header">
+        <div>
+          <h1>Email &amp; System Notifications</h1>
+          <p>Review all registration confirmations, login security alerts, and booking updates.</p>
+        </div>
+      </div>
+
+      <div class="dash-card">
+        <div th:if="${notifications == null or notifications.isEmpty()}" style="text-align: center; padding: 48px 20px;">
+          <i class="fas fa-bell-slash" style="font-size: 48px; color: var(--muted); margin-bottom: 16px; display: block;"></i>
+          <h3 style="margin-bottom: 8px;">No Notifications Yet</h3>
+          <p class="text-muted" style="max-width: 500px; margin: 0 auto;">
+            When you register, log in, or submit property booking requests, all email alerts and activity logs will appear here.
+          </p>
+        </div>
+
+        <div th:if="${notifications != null and !notifications.isEmpty()}">
+          <div th:each="n : ${notifications}" class="card mb-2" style="padding: 16px; border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 12px; display: flex; align-items: flex-start; gap: 14px;"
+               th:styleappend="${n.type == 'REGISTRATION' || n.type == 'BOOKING_CONFIRMED' ? 'background:#d4edda; border:1px solid #c3e6cb;' : (n.type == 'BOOKING_REJECTED' ? 'background:#f8d7da; border:1px solid #f5c6cb;' : 'background:var(--surface);')}">
+            <i class="fas"
+               th:classappend="${n.type == 'REGISTRATION' || n.type == 'BOOKING_CONFIRMED' ? ' fa-check-circle' : (n.type == 'BOOKING_REJECTED' ? ' fa-times-circle' : ' fa-envelope')}"
+               th:styleappend="${n.type == 'REGISTRATION' || n.type == 'BOOKING_CONFIRMED' ? 'color:#155724; font-size:1.4rem; margin-top:2px;' : (n.type == 'BOOKING_REJECTED' ? 'color:#721c24; font-size:1.4rem; margin-top:2px;' : 'color:var(--info); font-size:1.4rem; margin-top:2px;')}"></i>
+            <div style="flex: 1;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                <span class="badge" th:classappend="${n.type == 'REGISTRATION' || n.type == 'BOOKING_CONFIRMED' ? ' badge-success' : (n.type == 'BOOKING_REJECTED' ? ' badge-danger' : ' badge-accent')}" th:text="${n.type}">TYPE</span>
+                <small class="text-muted" th:text="${#temporals.format(n.createdAt, 'MMM dd, yyyy hh:mm a')}">Date</small>
+              </div>
+              <div th:text="${n.message}" style="font-size: 0.95rem; font-weight: 500;"
+                   th:styleappend="${n.type == 'REGISTRATION' || n.type == 'BOOKING_CONFIRMED' ? 'color:#155724;' : (n.type == 'BOOKING_REJECTED' ? 'color:#721c24;' : '')}">Message</div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   </main>

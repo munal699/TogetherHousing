@@ -6,6 +6,10 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.example.togetherhousing.model.UserTbl;
 import org.example.togetherhousing.repository.userRepository;
+import org.example.togetherhousing.service.EmailService;
+import org.example.togetherhousing.service.NotificationService;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.DigestUtils;
@@ -16,10 +20,19 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 public class SignupController {
 
+    private final JavaMailSender jms;
     private final userRepository uRepo;
+    private final EmailService emailService;
+    private final NotificationService notificationService;
 
-    public SignupController(userRepository uRepo) {
+    @org.springframework.beans.factory.annotation.Value("${spring.mail.username:togetherhousing.notifications@gmail.com}")
+    private String fromEmail;
+
+    public SignupController(JavaMailSender jms, userRepository uRepo, EmailService emailService, NotificationService notificationService) {
+        this.jms = jms;
         this.uRepo = uRepo;
+        this.emailService = emailService;
+        this.notificationService = notificationService;
     }
 
     // Open signup page
@@ -66,6 +79,24 @@ public class SignupController {
         // Save user to TiDB
         uRepo.save(user);
 
+        // mail sender using JavaMailSender (jms)
+        try {
+            SimpleMailMessage message = new SimpleMailMessage();
+            if (fromEmail != null && !fromEmail.trim().isEmpty()) {
+                message.setFrom(fromEmail);
+            }
+            message.setTo(user.getEmail());
+            message.setSubject("Registration Successful - Welcome to Together Housing");
+            message.setText("Congratulations " + user.getFullname() + "!\n\nYou have successfully signed up for Together Housing.\nYou can now log in, explore shared properties, calculate installments, and reserve your future home.\n\nBest regards,\nTogether Housing Team");
+            jms.send(message);
+            System.out.println("📧 [GMAIL SMTP SUCCESS] Signup confirmation email delivered to: " + user.getEmail());
+        } catch (Exception ex) {
+            System.err.println("⚠️ [GMAIL SMTP NOTICE] Could not send live email to " + user.getEmail() + " : " + ex.getMessage());
+            System.err.println("   👉 Set your Gmail address & 16-character App Password in application.properties to receive live emails.");
+        }
+
+        notificationService.sendNotification(user, null, "Welcome to Together Housing! Confirmation email dispatched to " + user.getEmail(), "REGISTRATION");
+
         // Signup successful → go to login page
         return "redirect:/login?success=true";
     }
@@ -93,6 +124,24 @@ public class SignupController {
                 session.setAttribute("userId", user.getId());
                 session.setAttribute("fullname", user.getFullname());
                 session.setAttribute("role", user.getRole());
+
+                // Send email on login using JavaMailSender (jms)
+                try {
+                    SimpleMailMessage message = new SimpleMailMessage();
+                    if (fromEmail != null && !fromEmail.trim().isEmpty()) {
+                        message.setFrom(fromEmail);
+                    }
+                    message.setTo(user.getEmail());
+                    message.setSubject("Security Alert: Successful Login to Together Housing");
+                    message.setText("Hello " + user.getFullname() + ",\n\nYou have successfully logged in to your Together Housing account.\n\nTime: " + new java.util.Date() + "\n\nIf this was you, you can safely disregard this email.\nIf you did not initiate this login, please secure your account immediately.\n\nBest regards,\nTogether Housing Security Team");
+                    jms.send(message);
+                    System.out.println("📧 [GMAIL SMTP SUCCESS] Login notification email delivered to: " + user.getEmail());
+                } catch (Exception ex) {
+                    System.err.println("⚠️ [GMAIL SMTP NOTICE] Could not send live email to " + user.getEmail() + " : " + ex.getMessage());
+                    System.err.println("   👉 Set your Gmail address & 16-character App Password in application.properties to receive live emails.");
+                }
+
+                notificationService.sendNotification(user, null, "Security Alert: Successful login to your account from " + user.getEmail(), "LOGIN_ALERT");
 
                 String role = user.getRole() != null ? user.getRole().toUpperCase().trim() : "";
 

@@ -507,32 +507,32 @@ function renderProperties(props) {
     container.innerHTML = props.map(p => `
     <article class="property-card">
       <div class="property-card-img-wrapper">
-        <img src="${p.image}" alt="${p.title}" loading="lazy" />
-        <span class="badge badge-accent property-badge-tag">${p.status}</span>
-        <div class="property-price-tag">${p.priceFormatted}</div>
+        <img src="${p.image}" alt="${p.title}" loading="lazy" onerror="this.src='/images/villa.jpg'" />
+        <span class="badge badge-accent property-badge-tag">${p.status || 'Available'}</span>
+        <div class="property-price-tag">${p.priceFormatted || ('Rs ' + p.price)}</div>
       </div>
       <div class="property-card-body">
         <div>
           <h3 class="property-title">${p.title}</h3>
           <p class="property-location"><i class="fas fa-map-marker-alt"></i> ${p.location}</p>
           <div class="property-specs">
-            <span><i class="fas fa-ruler-combined"></i> ${p.area}</span>
+            <span><i class="fas fa-ruler-combined"></i> ${p.area || 'N/A'}</span>
             ${p.bedrooms ? `<span><i class="fas fa-bed"></i> ${p.bedrooms} Bed</span>` : ''}
             ${p.bathrooms ? `<span><i class="fas fa-bath"></i> ${p.bathrooms} Bath</span>` : ''}
           </div>
         </div>
         <div>
           <div class="property-seller-info">
-            <span><i class="fas fa-store" style="color:var(--accent);"></i> ${p.seller}</span>
-            <span class="stars"><i class="fas fa-star"></i> ${p.rating}</span>
+            <span><i class="fas fa-store" style="color:var(--accent);"></i> ${p.seller || 'Together Housing'}</span>
+            <span class="stars"><i class="fas fa-star"></i> ${p.rating || 4.9}</span>
           </div>
           <div class="flex gap-sm" style="margin-top: 12px;">
-           <a href="/property-detail?id=${p.id}&seller=${encodeURIComponent(p.seller)}"
+           <a href="/property-detail?id=${p.id}${p.seller ? '&seller=' + encodeURIComponent(p.seller) : ''}"
    class="btn btn-outline btn-sm"
    style="flex:1;">
    View Details
 </a>
-            <a href="booking.html?id=${p.id}" class="btn btn-primary btn-sm" style="flex:1;">Book Now</a>
+            <a href="/property-detail?id=${p.id}" class="btn btn-primary btn-sm" style="flex:1;">Book Now</a>
           </div>
         </div>
       </div>
@@ -540,6 +540,13 @@ function renderProperties(props) {
   `).join('');
 
     updateMapMarkers(props);
+}
+
+function getActiveProperties() {
+    if (typeof dbProperties !== 'undefined' && Array.isArray(dbProperties) && dbProperties.length > 0) {
+        return dbProperties;
+    }
+    return sampleProperties;
 }
 
 function initMap() {
@@ -553,7 +560,7 @@ function initMap() {
     }).addTo(leafletMap);
 
     markersGroup = L.layerGroup().addTo(leafletMap);
-    updateMapMarkers(sampleProperties);
+    updateMapMarkers(getActiveProperties());
 }
 
 function updateMapMarkers(props) {
@@ -562,13 +569,14 @@ function updateMapMarkers(props) {
     markersGroup.clearLayers();
 
     props.forEach(p => {
+        if (!p.lat || !p.lng) return;
         const marker = L.marker([p.lat, p.lng]).addTo(markersGroup);
         marker.bindPopup(`
       <div style="width:180px; text-align:center;">
-        <img src="${p.image}" style="width:100%; height:90px; object-fit:cover; border-radius:6px; margin-bottom:6px;" />
+        <img src="${p.image}" onerror="this.src='/images/villa.jpg'" style="width:100%; height:90px; object-fit:cover; border-radius:6px; margin-bottom:6px;" />
         <strong style="font-size:0.85rem; display:block;">${p.title}</strong>
-        <div style="color:var(--accent); font-weight:700; font-size:0.9rem;">${p.priceFormatted}</div>
-        <a href="property-detail.html?id=${p.id}" style="display:inline-block; margin-top:6px; padding:4px 10px; background:#003153; color:#fff; border-radius:4px; font-size:0.75rem; text-decoration:none;">View Details</a>
+        <div style="color:var(--accent); font-weight:700; font-size:0.9rem;">${p.priceFormatted || ('Rs ' + p.price)}</div>
+        <a href="/property-detail?id=${p.id}" style="display:inline-block; margin-top:6px; padding:4px 10px; background:#003153; color:#fff; border-radius:4px; font-size:0.75rem; text-decoration:none;">View Details</a>
       </div>
     `);
     });
@@ -605,9 +613,10 @@ function filterProperties() {
     const type = document.getElementById('type-select')?.value || 'all';
     const maxPrice = parseInt(document.getElementById('price-range')?.value) || 10000000;
 
-    const filtered = sampleProperties.filter(p => {
+    const activeList = getActiveProperties();
+    const filtered = activeList.filter(p => {
         const matchesSearch = p.title.toLowerCase().includes(query) || p.location.toLowerCase().includes(query);
-        const matchesType = type === 'all' || p.type === type;
+        const matchesType = type === 'all' || (p.type && p.type.toLowerCase() === type.toLowerCase());
         const matchesPrice = p.price <= maxPrice;
         return matchesSearch && matchesType && matchesPrice;
     });
@@ -620,11 +629,11 @@ function resetFilters() {
     if (document.getElementById('type-select')) document.getElementById('type-select').value = 'all';
     if (document.getElementById('price-range')) document.getElementById('price-range').value = 10000000;
     if (document.getElementById('price-display')) document.getElementById('price-display').textContent = 'Rs 1,00,00,000';
-    renderProperties(sampleProperties);
+    renderProperties(getActiveProperties());
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    renderProperties(sampleProperties);
+    renderProperties(getActiveProperties());
 
     const priceRange = document.getElementById('price-range');
     const priceDisplay = document.getElementById('price-display');

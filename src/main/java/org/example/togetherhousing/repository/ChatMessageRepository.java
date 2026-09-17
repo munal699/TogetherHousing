@@ -20,4 +20,9 @@ public interface ChatMessageRepository extends JpaRepository<ChatMessage, Intege
 
     // Get unread messages received by a user
     List<ChatMessage> findByReceiverAndIsReadFalse(UserTbl receiver);
+
+    @org.springframework.data.jpa.repository.Query("SELECT m FROM ChatMessage m WHERE m.sender = :user OR m.receiver = :user ORDER BY m.sentAt DESC")
+    List<ChatMessage> findAllByUserOrderBySentAtDesc(@org.springframework.data.repository.query.Param("user") UserTbl user);
+
+    long countByReceiverAndIsReadFalse(UserTbl receiver);
 }
